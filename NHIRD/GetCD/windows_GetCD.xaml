@@ -1,0 +1,94 @@
+﻿<Window x:Name="WindowGetCD" x:Class="NHIRD.GetCD"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NHIRD"
+        mc:Ignorable="d"
+        Title="Window1" Height="700" Width="1200" Unloaded="WindowGetCD_Unloaded">
+
+
+    <Grid Width="700" HorizontalAlignment="Left">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="640"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0">
+            <Button  Click="SelectInputDir_Click">Select Input Dir</Button>
+            <TextBox x:Name="txtbox_InputDir" Text="{Binding InputDir, Mode=TwoWay}"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="400"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Vertical" Margin="2,0" Grid.Column="1">
+                    <TextBlock>Available Year</TextBlock>
+                    <ListView x:Name="listview_years"  ItemsSource="{Binding years}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="30">
+                                    <GridViewColumn.Header>
+                                        <CheckBox IsChecked="True" Checked="yearsCheckAll_Checked" Unchecked="yearsCheckAll_Unchecked"/>
+                                    </GridViewColumn.Header>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding selected}" Checked="yearsCheckOne_Checked" Unchecked="yearsCheckOne_UnChecked"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Year" Width ="50" DisplayMemberBinding="{Binding str_year}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="2,0" Grid.Column="2">
+                    <TextBlock>Available Group</TextBlock>
+                    <ListView x:Name="listview_groups"  ItemsSource="{Binding groups}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="30">
+                                    <GridViewColumn.Header>
+                                        <CheckBox IsChecked="True" Checked="groupsCheckAll_Checked" Unchecked="groupsCheckAll_Unchecked"/>
+                                    </GridViewColumn.Header>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding selected}"  Checked="groupsCheckOne_Checked" Unchecked="groupsCheckOne_UnChecked"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Group" Width ="50" DisplayMemberBinding="{Binding str_group}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock>File List</TextBlock>
+                    <ListView x:Name="listview_files" Height="300" Width="400" ItemsSource="{Binding files}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="30">
+                                    <GridViewColumn.Header>
+                                        <CheckBox Name="chkWspSelectAll" IsChecked="True" Checked="FilesCheckAll_Checked"  Unchecked="FilesCheckAll_Unchecked"/>
+                                    </GridViewColumn.Header>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding selected}" Checked="FilesCheckOne_Checked" Unchecked="FilesCheckOne_UnChecked"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="FileName" Width="150" DisplayMemberBinding="{Binding name}"/>
+                                <GridViewColumn Header="Size" Width="100"  DisplayMemberBinding="{Binding sizeMB}"/>
+                                <GridViewColumn Header="Year" Width="40"  DisplayMemberBinding="{Binding year}"/>
+                                <GridViewColumn Header="Group" Width="40"  DisplayMemberBinding="{Binding group}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+            </Grid>
+
+            <Button  Click="SelectInputDir_Click">Select Output Dir</Button>
+            <TextBox x:Name="txtbox_OutputDir"></TextBox>
+        </StackPanel>
+    </Grid>
+</Window>

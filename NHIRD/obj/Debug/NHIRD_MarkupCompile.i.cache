@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-D:\文件\GitHub\NHIRD\NHIRD\NHIRD\obj\Debug\
+D:\文件\GitHub\NHIRD\obj\Debug\
 NHIRD
 none
 false
 DEBUG;TRACE
-D:\文件\GitHub\NHIRD\NHIRD\NHIRD\App.xaml
-21776233846
+D:\文件\GitHub\NHIRD\App.xaml
+21037965291
 
-10-555834167
+141057962654
 14-1787462521
-MainWindow.xaml;windows_GetCD.xaml;
+MainWindow.xaml;GetCD\windows_GetCD.xaml;
 
 True
 

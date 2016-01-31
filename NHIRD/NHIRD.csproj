@@ -56,7 +56,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="windows_GetCD.xaml.cs">
+    <Compile Include="datatype.cs" />
+    <Compile Include="Extentions.cs" />
+    <Compile Include="GetCD\GetCD_Model.cs" />
+    <Compile Include="GetCD\GetCD_ViewModel.cs" />
+    <Compile Include="GetCD\windows_GetCD.xaml.cs">
       <DependentUpon>windows_GetCD.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
@@ -71,7 +75,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="windows_GetCD.xaml">
+    <Page Include="GetCD\windows_GetCD.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
