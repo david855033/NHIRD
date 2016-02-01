@@ -15,7 +15,7 @@ namespace NHIRD
         public string sizeMB { get { return (size / 1024 / 1024).Round() + "MB"; } }
         public string year { get; set; }
         public string group { get; set; }
-        public bool selected { get; set; }
+        public bool? selected{ get; set; }
         public file(string filepath)
         {
             path = filepath;
@@ -59,7 +59,7 @@ namespace NHIRD
     public class year
     {
         public string str_year { get; set; }
-        public bool selected { get; set; }
+        public bool? selected { get; set; }
         public year(string yr)
         {
             str_year = yr;
@@ -70,7 +70,7 @@ namespace NHIRD
     public class group
     {
         public string str_group { get; set; }
-        public bool selected { get; set; }
+        public bool? selected { get; set; }
         public group(string grp)
         {
             str_group = grp;

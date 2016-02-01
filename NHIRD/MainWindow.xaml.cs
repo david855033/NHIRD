@@ -29,7 +29,7 @@ namespace NHIRD
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.Hide();
-            var GetCD_instance = new GetCD(this);
+            var GetCD_instance = new GetCD_Window(this);
             GetCD_instance.Show();
         }
     }

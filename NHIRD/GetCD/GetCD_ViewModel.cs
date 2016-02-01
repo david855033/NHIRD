@@ -8,14 +8,23 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows;
+using System.Windows.Input;
 
 namespace NHIRD
 {
     public class GetCD_ViewModel : INotifyPropertyChanged
     {
-        private readonly GetCD_Model Model_Instance = new GetCD_Model();
-        private Window parentWindow;
-        public GetCD_ViewModel(Window parent) { parentWindow = parent; }
+        public readonly GetCD_Model Model_Instance;
+        public Window parentWindow;
+        public GetCD_ViewModel(Window parent)
+        {
+            parentWindow = parent;
+            Model_Instance = new GetCD_Model(parent);
+        }
+
+        /// <summary>
+        /// 資料夾的路徑，更動時自動更新fileList
+        /// </summary>
         public string InputDir
         {
             get
@@ -29,7 +38,7 @@ namespace NHIRD
                 // -- 初始化 file / year / group list
                 try
                 {
-                    paths = Directory.EnumerateFiles(value, "*.DAT", SearchOption.AllDirectories).ToArray();
+                    paths = Directory.EnumerateFiles(value, "*CD*.DAT", SearchOption.AllDirectories).ToArray();
                     Array.Sort(paths);
                     // -- file
                     var newfiles = new ObservableCollection<file>();
@@ -55,6 +64,7 @@ namespace NHIRD
                     }
                     groups.Clear();
                     groups = newgroups;
+                    (parentWindow as GetCD_Window).refresh_Listviews();
                 }
                 catch
                 {
@@ -64,7 +74,9 @@ namespace NHIRD
             }
         }
 
-
+        /// <summary>
+        /// 檔案清單
+        /// </summary>
         public ObservableCollection<file> files
         {
             get
@@ -77,6 +89,9 @@ namespace NHIRD
                 OnPropertyChanged("");
             }
         }
+        /// <summary>
+        /// 年份清單(於載入檔案清單時建立)
+        /// </summary>
         public ObservableCollection<year> years
         {
             get
@@ -89,6 +104,9 @@ namespace NHIRD
                 OnPropertyChanged("");
             }
         }
+        /// <summary>
+        /// 組別清單(於載入檔案清單時建立)
+        /// </summary>
         public ObservableCollection<group> groups
         {
             get
@@ -102,6 +120,16 @@ namespace NHIRD
             }
         }
 
+        public string FileStatus
+        {
+            get { return Model_Instance.str_filestatus; }
+            set { Model_Instance.str_filestatus = value;
+                OnPropertyChanged(nameof(FileStatus)); }
+        }
+
+        /// <summary>
+        /// 輸出資料夾
+        /// </summary>
         public string str_outputDir
         {
             get
@@ -118,7 +146,7 @@ namespace NHIRD
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string propertyName = null)
         {
-            if (propertyName != null)
+            if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
