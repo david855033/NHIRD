@@ -78,4 +78,24 @@ namespace NHIRD
         }
     }
 
+    public class RawDataFormat
+    {
+        public string FileName { get; set; }
+        public string FileNameCH { get; set; }
+        public int start_year { get; set; }
+        public int end_year { get; set; }
+        public string ColumnName{ get; set; }
+        public string ColumnNameCH { get; set; }
+        public string DataType { get; set; }
+        public int Postion { get; set; }
+        public int Lengths { get; set; }
+        public string Description { get; set; }
+        public RawDataFormat()
+        {
+            start_year = 0;
+            end_year = 0;
+            Postion = 0;
+            Lengths = 0;
+        }
+    }
 }

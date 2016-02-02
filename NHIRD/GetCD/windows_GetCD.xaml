@@ -93,16 +93,18 @@
                         </ListView.View>
                     </ListView>
                 </StackPanel>
-                
+
             </Grid>
             <TextBlock x:Name="TextBlock_FileStatus" Margin="10" Text="{Binding FileStatus}"/>
-            <Button  Click="SelectInputDir_Click">Select Output Dir</Button>
-            <TextBox x:Name="txtbox_OutputDir"></TextBox>
+            <Button  Click="SelectOutputDir_Click">Select Output Dir</Button>
+            <TextBox x:Name="txtbox_OutputDir" Text="{Binding str_outputDir}"></TextBox>
         </StackPanel>
-        <StackPanel Grid.Column="1" Margin="50">
-            <TextBlock x:Name="TextBlockMessage" Height="300" MinWidth="200" Margin="50"
+        <StackPanel Grid.Column="1">
+            <StackPanel>
+                <TextBlock Margin="0,25,0,25"  x:Name="TextBlockMessage" Height="100" MinWidth="400"
                    HorizontalAlignment="Center" Background="Azure">Message</TextBlock>
-            <Button Command="{Binding Command_checkFileByCriteria}">fire</Button>
+            </StackPanel>
+            <Button Width="400" Margin="0,25">Extract</Button>
         </StackPanel>
     </Grid>
 </Window>

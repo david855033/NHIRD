@@ -176,5 +176,14 @@ namespace NHIRD
             ViewModal_Instance.FileStatus = "Selected " + ViewModal_Instance.files.Where(x => x.selected == true).Count() +
                 " / " + ViewModal_Instance.files.Count + " files.";
         }
+
+        private void SelectOutputDir_Click(object sender, RoutedEventArgs e)
+        {
+            var FolderSelector = new FolderBrowserDialog();
+            if (FolderSelector.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                ViewModal_Instance.str_outputDir = FolderSelector.SelectedPath;
+            }
+        }
     }
 }
