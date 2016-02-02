@@ -15,11 +15,12 @@ namespace NHIRD
     public class GetCD_ViewModel : INotifyPropertyChanged
     {
         public readonly GetCD_Model Model_Instance;
-        public Window parentWindow;
-        public GetCD_ViewModel(Window parent)
+        public GetCD_Window parentWindow;
+        public GetCD_ViewModel(GetCD_Window parent)
         {
             parentWindow = parent;
-            Model_Instance = new GetCD_Model(parent);
+            Model_Instance = new GetCD_Model(parentWindow, this);
+            Do_ExtractData = new RelayCommand(ExtractData, (x) => true);
         }
 
         /// <summary>
@@ -41,26 +42,26 @@ namespace NHIRD
                     paths = Directory.EnumerateFiles(value, "*CD*.DAT", SearchOption.AllDirectories).ToArray();
                     Array.Sort(paths);
                     // -- file
-                    var newfiles = new ObservableCollection<file>();
+                    var newfiles = new ObservableCollection<File>();
                     foreach (string str_filepath in paths)
                     {
-                        newfiles.Add(new file(str_filepath));
+                        newfiles.Add(new File(str_filepath));
                     }
                     files.Clear();
                     files = newfiles;
                     // -- year
-                    var newyears = new ObservableCollection<year>();
+                    var newyears = new ObservableCollection<Year>();
                     foreach (string s in files.Select(x => x.year).Distinct())
                     {
-                        newyears.Add(new year(s));
+                        newyears.Add(new Year(s));
                     }
                     years.Clear();
                     years = newyears;
                     // -- group
-                    var newgroups = new ObservableCollection<group>();
+                    var newgroups = new ObservableCollection<Group>();
                     foreach (string s in files.Select(x => x.group).Distinct())
                     {
-                        newgroups.Add(new group(s));
+                        newgroups.Add(new Group(s));
                     }
                     groups.Clear();
                     groups = newgroups;
@@ -77,7 +78,7 @@ namespace NHIRD
         /// <summary>
         /// 檔案清單
         /// </summary>
-        public ObservableCollection<file> files
+        public ObservableCollection<File> files
         {
             get
             {
@@ -92,7 +93,7 @@ namespace NHIRD
         /// <summary>
         /// 年份清單(於載入檔案清單時建立)
         /// </summary>
-        public ObservableCollection<year> years
+        public ObservableCollection<Year> years
         {
             get
             {
@@ -107,7 +108,7 @@ namespace NHIRD
         /// <summary>
         /// 組別清單(於載入檔案清單時建立)
         /// </summary>
-        public ObservableCollection<group> groups
+        public ObservableCollection<Group> groups
         {
             get
             {
@@ -123,8 +124,11 @@ namespace NHIRD
         public string FileStatus
         {
             get { return Model_Instance.str_filestatus; }
-            set { Model_Instance.str_filestatus = value;
-                OnPropertyChanged(nameof(FileStatus)); }
+            set
+            {
+                Model_Instance.str_filestatus = value;
+                OnPropertyChanged(nameof(FileStatus));
+            }
         }
 
         /// <summary>
@@ -141,6 +145,18 @@ namespace NHIRD
                 Model_Instance.str_outputDir = value;
                 OnPropertyChanged("");
             }
+        }
+
+        public string message
+        {
+            get { return Model_Instance.message; }
+            set { Model_Instance.message = value;  OnPropertyChanged(nameof(message)); }
+        }
+
+        public ICommand Do_ExtractData { get; }
+        public void ExtractData(object obj)
+        {
+            Model_Instance.ExtractData();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

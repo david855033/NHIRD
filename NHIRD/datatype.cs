@@ -7,7 +7,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 namespace NHIRD
 {
-    public class file
+    public class File
     {
         public string name { get; set; }
         public string path { get; set; }
@@ -16,7 +16,7 @@ namespace NHIRD
         public string year { get; set; }
         public string group { get; set; }
         public bool? selected{ get; set; }
-        public file(string filepath)
+        public File(string filepath)
         {
             path = filepath;
             name = path.PathToFileName();
@@ -56,22 +56,22 @@ namespace NHIRD
         }
     }
 
-    public class year
+    public class Year
     {
         public string str_year { get; set; }
         public bool? selected { get; set; }
-        public year(string yr)
+        public Year(string yr)
         {
             str_year = yr;
             selected = true;
         }
     }
 
-    public class group
+    public class Group
     {
         public string str_group { get; set; }
         public bool? selected { get; set; }
-        public group(string grp)
+        public Group(string grp)
         {
             str_group = grp;
             selected = true;

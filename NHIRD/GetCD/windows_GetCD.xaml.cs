@@ -22,17 +22,17 @@ namespace NHIRD
 
     public partial class GetCD_Window : Window
     {
-        private readonly GetCD_ViewModel ViewModal_Instance;
-        private Window _parentWindow;
+        public readonly GetCD_ViewModel ViewModal_Instance;
+        public MainWindow parentWindow;
         /// <summary>
         /// 初始化元件(constructior)
         /// </summary>
         /// <param name="parent"></param>
-        public GetCD_Window(Window parent)
+        public GetCD_Window(MainWindow parent)
         {
             InitializeComponent();
             ViewModal_Instance = new GetCD_ViewModel(this);
-            _parentWindow = parent;
+            parentWindow = parent;
             this.Left = parent.Left + parent.Width;
             this.Top = parent.Top;
             this.DataContext = ViewModal_Instance;
@@ -45,7 +45,7 @@ namespace NHIRD
         /// <param name="e"></param>
         private void WindowGetCD_Unloaded(object sender, RoutedEventArgs e)
         {
-            _parentWindow.Show();
+            parentWindow.Show();
         }
         /// <summary>
         /// 選取資料夾
@@ -65,7 +65,7 @@ namespace NHIRD
         private void FilesCheckAll_Checked(object sender, RoutedEventArgs e)
         {
             if (listview_files.ItemsSource == null) return;
-            foreach (file item in listview_files.ItemsSource)
+            foreach (File item in listview_files.ItemsSource)
             {
                 item.selected = true;
             }
@@ -74,7 +74,7 @@ namespace NHIRD
         private void FilesCheckAll_Unchecked(object sender, RoutedEventArgs e)
         {
             if (listview_files.ItemsSource == null) return;
-            foreach (file item in listview_files.ItemsSource)
+            foreach (File item in listview_files.ItemsSource)
             {
                 item.selected = false;
             }
@@ -83,13 +83,13 @@ namespace NHIRD
         private void FilesCheckOne_Checked(object sender, RoutedEventArgs e)
         {
             System.Windows.Controls.CheckBox checkbox = sender as System.Windows.Controls.CheckBox;
-            (checkbox.DataContext as file).selected = true;
+            (checkbox.DataContext as File).selected = true;
             refresh_Listviews();
         }
         private void FilesCheckOne_UnChecked(object sender, RoutedEventArgs e)
         {
             System.Windows.Controls.CheckBox checkbox = sender as System.Windows.Controls.CheckBox;
-            (checkbox.DataContext as file).selected = false;
+            (checkbox.DataContext as File).selected = false;
             refresh_Listviews();
         }
         #endregion
@@ -98,7 +98,7 @@ namespace NHIRD
         private void yearsCheckAll_Checked(object sender, RoutedEventArgs e)
         {
             if (listview_years.ItemsSource == null) return;
-            foreach (year item in listview_years.ItemsSource)
+            foreach (Year item in listview_years.ItemsSource)
             {
                 item.selected = true;
             }
@@ -108,7 +108,7 @@ namespace NHIRD
         private void yearsCheckAll_Unchecked(object sender, RoutedEventArgs e)
         {
             if (listview_years.ItemsSource == null) return;
-            foreach (year item in listview_years.ItemsSource)
+            foreach (Year item in listview_years.ItemsSource)
             {
                 item.selected = false;
             }
@@ -118,14 +118,14 @@ namespace NHIRD
         private void yearsCheckOne_Checked(object sender, RoutedEventArgs e)
         {
             System.Windows.Controls.CheckBox checkbox = sender as System.Windows.Controls.CheckBox;
-            (checkbox.DataContext as year).selected = true;
+            (checkbox.DataContext as Year).selected = true;
             ViewModal_Instance.Model_Instance.checkFileByCriteria();
             refresh_Listviews();
         }
         private void yearsCheckOne_UnChecked(object sender, RoutedEventArgs e)
         {
             System.Windows.Controls.CheckBox checkbox = sender as System.Windows.Controls.CheckBox;
-            (checkbox.DataContext as year).selected = false;
+            (checkbox.DataContext as Year).selected = false;
             ViewModal_Instance.Model_Instance.checkFileByCriteria();
             refresh_Listviews();
         }
@@ -135,7 +135,7 @@ namespace NHIRD
         private void groupsCheckAll_Checked(object sender, RoutedEventArgs e)
         {
             if (listview_groups.ItemsSource == null) return;
-            foreach (group item in listview_groups.ItemsSource)
+            foreach (Group item in listview_groups.ItemsSource)
             {
                 item.selected = true;
             }
@@ -145,7 +145,7 @@ namespace NHIRD
         private void groupsCheckAll_Unchecked(object sender, RoutedEventArgs e)
         {
             if (listview_groups.ItemsSource == null) return;
-            foreach (group item in listview_groups.ItemsSource)
+            foreach (Group item in listview_groups.ItemsSource)
             {
                 item.selected = false;
             }
@@ -155,14 +155,14 @@ namespace NHIRD
         private void groupsCheckOne_Checked(object sender, RoutedEventArgs e)
         {
             System.Windows.Controls.CheckBox checkbox = sender as System.Windows.Controls.CheckBox;
-            (checkbox.DataContext as group).selected = true;
+            (checkbox.DataContext as Group).selected = true;
             ViewModal_Instance.Model_Instance.checkFileByCriteria();
             refresh_Listviews();
         }
         private void groupsCheckOne_UnChecked(object sender, RoutedEventArgs e)
         {
             System.Windows.Controls.CheckBox checkbox = sender as System.Windows.Controls.CheckBox;
-            (checkbox.DataContext as group).selected = false;
+            (checkbox.DataContext as Group).selected = false;
             ViewModal_Instance.Model_Instance.checkFileByCriteria();
             refresh_Listviews();
         }
@@ -170,9 +170,9 @@ namespace NHIRD
 
         public void refresh_Listviews()
         {
-            ViewModal_Instance.years = new ObservableCollection<year>(ViewModal_Instance.years);
-            ViewModal_Instance.files = new ObservableCollection<file>(ViewModal_Instance.files);
-            ViewModal_Instance.groups = new ObservableCollection<group>(ViewModal_Instance.groups);
+            ViewModal_Instance.years = new ObservableCollection<Year>(ViewModal_Instance.years);
+            ViewModal_Instance.files = new ObservableCollection<File>(ViewModal_Instance.files);
+            ViewModal_Instance.groups = new ObservableCollection<Group>(ViewModal_Instance.groups);
             ViewModal_Instance.FileStatus = "Selected " + ViewModal_Instance.files.Where(x => x.selected == true).Count() +
                 " / " + ViewModal_Instance.files.Count + " files.";
         }
@@ -185,5 +185,7 @@ namespace NHIRD
                 ViewModal_Instance.str_outputDir = FolderSelector.SelectedPath;
             }
         }
+
+    
     }
 }

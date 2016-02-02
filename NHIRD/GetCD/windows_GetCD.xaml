@@ -102,9 +102,9 @@
         <StackPanel Grid.Column="1">
             <StackPanel>
                 <TextBlock Margin="0,25,0,25"  x:Name="TextBlockMessage" Height="100" MinWidth="400"
-                   HorizontalAlignment="Center" Background="Azure">Message</TextBlock>
+                   HorizontalAlignment="Center" Background="Azure" Text="{Binding message}"/>
             </StackPanel>
-            <Button Width="400" Margin="0,25">Extract</Button>
+            <Button Width="400" Margin="0,25" Command="{Binding Do_ExtractData}">Extract</Button>
         </StackPanel>
     </Grid>
 </Window>

@@ -35,28 +35,28 @@ namespace NHIRD
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            LoadRawDataFormat(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\NHIRD Format.txt",
-                RawDataFormats);
+            rawDataFormats= new List<RawDataFormat>();
+            LoadRawDataFormat(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                + @"\NHIRD Format.txt", rawDataFormats);
         }
 
-        public List<RawDataFormat> RawDataFormats;
+        public List<RawDataFormat> rawDataFormats;
         public void LoadRawDataFormat(string path, List<RawDataFormat> RawDataFormats)
         {
-            RawDataFormats = new List<RawDataFormat>();
             using (var sr = new StreamReader(path, System.Text.Encoding.Default))
             {
                 string title = sr.ReadLine();
                 string[] titles = title.Split('\t');
-                int Index_FileName = Array.IndexOf(titles,"英文檔案名");
-                int Index_FileNameCH = Array.IndexOf(titles,"中文檔案名");
-                int Index_start_year = Array.IndexOf(titles,"適用年分開始");
-                int Index_end_year = Array.IndexOf(titles,"適用年份結束");
-                int Index_ColumnName = Array.IndexOf(titles,"英文欄位");
-                int Index_ColumnNameCH = Array.IndexOf(titles,"中文欄位");
-                int Index_DataType = Array.IndexOf(titles,"資料型態");
-                int Index_Lengths = Array.IndexOf(titles,"長度");
-                int Index_Postion = Array.IndexOf(titles,"起始位置");
-                int Index_Description = Array.IndexOf(titles,"資料描述");
+                int Index_FileName = Array.IndexOf(titles, "英文檔案名");
+                int Index_FileNameCH = Array.IndexOf(titles, "中文檔案名");
+                int Index_start_year = Array.IndexOf(titles, "適用年分開始");
+                int Index_end_year = Array.IndexOf(titles, "適用年份結束");
+                int Index_ColumnName = Array.IndexOf(titles, "英文欄位");
+                int Index_ColumnNameCH = Array.IndexOf(titles, "中文欄位");
+                int Index_DataType = Array.IndexOf(titles, "資料型態");
+                int Index_Lengths = Array.IndexOf(titles, "長度");
+                int Index_Postion = Array.IndexOf(titles, "起始位置");
+                int Index_Description = Array.IndexOf(titles, "資料描述");
                 while (!sr.EndOfStream)
                 {
                     string[] cols = sr.ReadLine().Split('\t');
