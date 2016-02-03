@@ -78,6 +78,7 @@
     </ApplicationDefinition>
     <Compile Include="datatype.cs" />
     <Compile Include="Extentions.cs" />
+    <Compile Include="Extract Data.cs" />
     <Compile Include="GetCD\Command.cs" />
     <Compile Include="GetCD\GetCD_Model.cs" />
     <Compile Include="GetCD\GetCD_ViewModel.cs" />

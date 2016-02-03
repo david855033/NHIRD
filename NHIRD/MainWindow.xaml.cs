@@ -40,7 +40,15 @@ namespace NHIRD
                 + @"\NHIRD Format.txt", rawDataFormats);
         }
 
+        /// <summary>
+        /// 儲存NHIRD_FORMATS，實作於選單視窗中
+        /// </summary>
         public List<RawDataFormat> rawDataFormats;
+        /// <summary>
+        /// 於選單視窗載入時候觸發，載入NHIRD_FORMATS
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="RawDataFormats"></param>
         public void LoadRawDataFormat(string path, List<RawDataFormat> RawDataFormats)
         {
             using (var sr = new StreamReader(path, System.Text.Encoding.Default))

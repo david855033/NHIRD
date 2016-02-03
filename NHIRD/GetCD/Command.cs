@@ -8,6 +8,9 @@ using System.Windows.Input;
 
 namespace NHIRD
 {
+    /// <summary>
+    /// 用以支持MVVM架構之ICommand
+    /// </summary>
     public class RelayCommand : ICommand
     {
         private Action<object> execute;

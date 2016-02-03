@@ -48,7 +48,7 @@ namespace NHIRD
             parentWindow.Show();
         }
         /// <summary>
-        /// 選取資料夾
+        /// 選取讀入資料夾
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -168,6 +168,9 @@ namespace NHIRD
         }
         #endregion
 
+        /// <summary>
+        /// 更動各種list後呼叫，後重建三個list以觸發OnPropertyChanged
+        /// </summary>
         public void refresh_Listviews()
         {
             ViewModal_Instance.years = new ObservableCollection<Year>(ViewModal_Instance.years);
@@ -176,7 +179,11 @@ namespace NHIRD
             ViewModal_Instance.FileStatus = "Selected " + ViewModal_Instance.files.Where(x => x.selected == true).Count() +
                 " / " + ViewModal_Instance.files.Count + " files.";
         }
-
+        /// <summary>
+        /// 選取輸出資料夾
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SelectOutputDir_Click(object sender, RoutedEventArgs e)
         {
             var FolderSelector = new FolderBrowserDialog();

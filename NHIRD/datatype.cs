@@ -7,6 +7,9 @@ using System.IO;
 using System.Text.RegularExpressions;
 namespace NHIRD
 {
+    /// <summary>
+    /// 定義讀入檔案清單之欄位
+    /// </summary>
     public class File
     {
         public string name { get; set; }
@@ -55,7 +58,9 @@ namespace NHIRD
 
         }
     }
-
+    /// <summary>
+    /// 定義年份群組欄位
+    /// </summary>
     public class Year
     {
         public string str_year { get; set; }
@@ -66,7 +71,9 @@ namespace NHIRD
             selected = true;
         }
     }
-
+    /// <summary>
+    /// 定義R group欄位
+    /// </summary>
     public class Group
     {
         public string str_group { get; set; }
@@ -78,6 +85,9 @@ namespace NHIRD
         }
     }
 
+    /// <summary>
+    /// 定義儲存NHIRD_FORMATS之資料欄位
+    /// </summary>
     public class RawDataFormat
     {
         public string FileName { get; set; }
@@ -98,4 +108,35 @@ namespace NHIRD
             Lengths = 0;
         }
     }
+
+    #region Extract Data使用的class
+    public class StringDataFormat
+    {
+        public string name;
+        public int start_year;
+        public int end_year;
+        public int position;
+        public int length;
+    }
+
+    public class NumberDataFormat
+    {
+        public string name;
+        public int start_year;
+        public int end_year;
+        public int position;
+        public int length;
+    }
+
+    public class DataRow
+    {
+        public string[] stringData;
+        public double?[] numberData;
+        public DataRow(int strDataCount, int numDataCount)
+        {
+            stringData = new string[strDataCount];
+            numberData = new double?[numDataCount];
+        }
+    }
+    #endregion
 }

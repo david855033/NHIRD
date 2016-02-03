@@ -14,12 +14,19 @@ namespace NHIRD
 {
     public class GetCD_ViewModel : INotifyPropertyChanged
     {
+        /// <summary>
+        /// 實作Model
+        /// </summary>
         public readonly GetCD_Model Model_Instance;
+        /// <summary>
+        /// 實作此VM之上級視窗
+        /// </summary>
         public GetCD_Window parentWindow;
+        // -- Consturctor, 需實作所有ICommand
         public GetCD_ViewModel(GetCD_Window parent)
         {
             parentWindow = parent;
-            Model_Instance = new GetCD_Model(parentWindow, this);
+            Model_Instance = new GetCD_Model(this);
             Do_ExtractData = new RelayCommand(ExtractData, (x) => true);
         }
 
@@ -120,7 +127,9 @@ namespace NHIRD
                 OnPropertyChanged("");
             }
         }
-
+        /// <summary>
+        /// 顯示目前選取的檔案數量
+        /// </summary>
         public string FileStatus
         {
             get { return Model_Instance.str_filestatus; }
@@ -146,17 +155,26 @@ namespace NHIRD
                 OnPropertyChanged("");
             }
         }
-
+        /// <summary>
+        /// 顯示訊息(除錯用)
+        /// </summary>
         public string message
         {
             get { return Model_Instance.message; }
             set { Model_Instance.message = value;  OnPropertyChanged(nameof(message)); }
         }
 
+        /// <summary>
+        /// 開始運算 for data bingding(於建構子中初始化)
+        /// </summary>
         public ICommand Do_ExtractData { get; }
+        /// <summary>
+        /// 呼叫Model開始運算
+        /// </summary>
+        /// <param name="obj"></param>
         public void ExtractData(object obj)
         {
-            Model_Instance.ExtractData();
+            Model_Instance.DoExtractData();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
