@@ -17,19 +17,22 @@ namespace NHIRD
         List<NumberDataFormat> numberDataFormats = new List<NumberDataFormat>();
         public void Do(List<RawDataFormat> rawDataFormats, string selectedFileType, IEnumerable<File> list_file, string outputDir)
         {
-            
+
             ///使用rawDataFormats初始化資料清單(分為數值資料跟字串資料)
             this.selectedFileType = selectedFileType;
             this.rawDataFormats = rawDataFormats;
             this.outputDir = outputDir;
             this.list_file = list_file;
-            initializeDataSet(rawDataFormats);
+            initializeDataSet();
 
             //逐個檔案執行讀寫
             ReadWriteFiles();
         }
-
-        void initializeDataSet(List<RawDataFormat> rawDataFormats)
+        /// <summary>
+        /// 載入指定selectedFileType的格式資料，並且儲存在numberDataFormats及stringDataFormats中
+        /// </summary>
+        /// <param name="rawDataFormats"></param>
+        void initializeDataSet()
         {
             var queryStr =
                 from r in rawDataFormats
@@ -66,7 +69,9 @@ namespace NHIRD
                 numberDataFormats.Add(toAdd);
             }
         }
-
+        /// <summary>
+        /// 逐個檔案進行讀寫+判斷
+        /// </summary>
         void ReadWriteFiles()
         {
 
@@ -89,7 +94,7 @@ namespace NHIRD
                 ReadFile(currentfile, dataRowList,
                     queryStringDataFormats, queryNumberDataFormats);
                 //****這邊加入判斷式
-                WriteFile(outputDir, dataRowList,
+                WriteFile(currentfile, dataRowList,
                     queryStringDataFormats, queryNumberDataFormats);
             }
         }
@@ -105,21 +110,21 @@ namespace NHIRD
                 {
                     string line = sr.ReadLine();
 
-                    var newDataRow = new DataRow(stringDataFormats.Count(),
-                        numberDataFormats.Count());
+                    var newDataRow = new DataRow(queryStringDataFormats.Count(),
+                        queryNumberDataFormats.Count());
 
-                    for (int i = 0; i < stringDataFormats.Count(); i++)
+                    for (int i = 0; i < queryStringDataFormats.Count(); i++)
                     {
                         newDataRow.stringData[i] =
-                            line.Substring(stringDataFormats[i].position,
-                            stringDataFormats[i].length);
+                            line.Substring(queryStringDataFormats[i].position,
+                            queryStringDataFormats[i].length);
                     }
 
-                    for (int i = 0; i < numberDataFormats.Count(); i++)
+                    for (int i = 0; i < queryNumberDataFormats.Count(); i++)
                     {
                         var data =
-                            line.Substring(numberDataFormats[i].position,
-                            numberDataFormats[i].length);
+                            line.Substring(queryNumberDataFormats[i].position,
+                            queryNumberDataFormats[i].length);
                         if (data == "")
                         {
                             newDataRow.numberData[i] = null;
@@ -135,11 +140,43 @@ namespace NHIRD
             }
         }
 
-        void WriteFile(string dirPath, List<DataRow> dataRowList,
-        List<StringDataFormat> stringDataFormats,
-            List<NumberDataFormat> numberDataFormats)
+        void WriteFile(File currentfile, List<DataRow> dataRowList,
+        List<StringDataFormat> queryStringDataFormats,
+            List<NumberDataFormat> queryNumberDataFormats)
         {
+            //檢查目錄是否存在
+            if (!Directory.Exists(outputDir))
+                Directory.CreateDirectory(outputDir);
 
+            string outpath = outputDir + "\\" + currentfile.name.Split('.')[0] + ".EXT";
+            using (var sw = new StreamWriter(outpath))
+            {
+                string title = "";
+                foreach (var q in queryStringDataFormats)
+                {
+                    title += q.name + '\t';
+                }
+
+                foreach (var q in queryNumberDataFormats)
+                {
+                    title += q.name + '\t';
+                }
+                sw.WriteLine(title.TrimEnd('\t'));
+
+                foreach (var currentData in dataRowList)
+                {
+                    string line = "";
+                    foreach (string  s in currentData.stringData)
+                    {
+                        line += s + '\t';
+                    }
+                    foreach (double? db in currentData.numberData)
+                    {
+                        line += db.ToString() + '\t';
+                    }
+                    sw.WriteLine(line.TrimEnd('\t'));
+                }
+            }
         }
 
     }
