@@ -30,6 +30,8 @@ namespace NHIRD
             Do_ExtractData = new RelayCommand(ExtractData, (x) => true);
         }
 
+
+        // -- Properties
         /// <summary>
         /// 資料夾的路徑，更動時自動更新fileList
         /// </summary>
@@ -41,7 +43,7 @@ namespace NHIRD
             }
             set
             {
-                Model_Instance.str_inputDir = value;
+                Model_Instance.str_inputDir = GlobalSetting.inputDir = value;
                 string[] paths;
                 // -- 初始化 file / year / group list
                 try
@@ -72,7 +74,7 @@ namespace NHIRD
                     }
                     groups.Clear();
                     groups = newgroups;
-                    (parentWindow as GetCD_Window).refresh_Listviews();
+                    parentWindow.refresh_Listviews();
                 }
                 catch
                 {
@@ -151,7 +153,7 @@ namespace NHIRD
             }
             set
             {
-                Model_Instance.str_outputDir = value;
+                Model_Instance.str_outputDir = GlobalSetting.outputDir = value;
                 OnPropertyChanged("");
             }
         }
@@ -163,7 +165,41 @@ namespace NHIRD
             get { return Model_Instance.message; }
             set { Model_Instance.message = value;  OnPropertyChanged(nameof(message)); }
         }
+        
+        /// <summary>
+        /// ICD include清單
+        /// </summary>
+        public ObservableCollection<string> ICDIncludes
+        {
+            get
+            {
+                return Model_Instance.list_ICDinclude;
+            }
+            set
+            {
+                Model_Instance.list_ICDinclude = value;
+                OnPropertyChanged(nameof(ICDIncludes));
+            }
+        }
 
+
+        /// <summary>
+        /// ICD include清單
+        /// </summary>
+        public ObservableCollection<string> ICDExcludes
+        {
+            get
+            {
+                return Model_Instance.list_ICDExclude;
+            }
+            set
+            {
+                Model_Instance.list_ICDExclude = value;
+                OnPropertyChanged(nameof(ICDExcludes));
+            }
+        }
+
+        // -- Actions
         /// <summary>
         /// 開始運算 for data bingding(於建構子中初始化)
         /// </summary>

@@ -24,10 +24,7 @@ namespace NHIRD
     {
         public readonly GetCD_ViewModel ViewModal_Instance;
         public MainWindow parentWindow;
-        /// <summary>
-        /// 初始化元件(constructior)
-        /// </summary>
-        /// <param name="parent"></param>
+        // -- constructor
         public GetCD_Window(MainWindow parent)
         {
             InitializeComponent();
@@ -36,6 +33,8 @@ namespace NHIRD
             this.Left = parent.Left + parent.Width;
             this.Top = parent.Top;
             this.DataContext = ViewModal_Instance;
+            ViewModal_Instance.InputDir = GlobalSetting.inputDir;
+            ViewModal_Instance.str_outputDir = GlobalSetting.outputDir;
             refresh_Listviews();
         }
         /// <summary>
@@ -193,6 +192,59 @@ namespace NHIRD
             }
         }
 
-    
+        #region ICD include & Exclude按鈕功能
+        private void ButtonAddIncl_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ViewModal_Instance.ICDIncludes.Any(x => x == inputIncl.Text))
+                this.ViewModal_Instance.ICDIncludes.Add(inputIncl.Text);
+        }
+        private void ButtonClrIncl_Click(object sender, RoutedEventArgs e)
+        {
+            this.ViewModal_Instance.ICDIncludes.Clear();
+        }
+        private void Button_DelInclClick(object sender, RoutedEventArgs e)
+        {
+            if (lv_Incl.SelectedItem != null)
+            {
+                var index = lv_Incl.SelectedIndex;
+                this.ViewModal_Instance.ICDIncludes.RemoveAt(index);
+            }
+        }
+        private void ButtonEdtIncl_Click(object sender, RoutedEventArgs e)
+        {
+            if (lv_Incl.SelectedItem != null && !ViewModal_Instance.ICDIncludes.Any(x => x == inputIncl.Text))
+            {
+                var index = lv_Incl.SelectedIndex;
+                this.ViewModal_Instance.ICDIncludes.RemoveAt(index);
+                this.ViewModal_Instance.ICDIncludes.Insert(index, inputIncl.Text);
+            }
+        }
+        private void ButtonAddExcl_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ViewModal_Instance.ICDExcludes.Any(x => x == inputExcl.Text))
+                this.ViewModal_Instance.ICDExcludes.Add(inputExcl.Text);
+        }
+        private void ButtonClrExcl_Click(object sender, RoutedEventArgs e)
+        {
+            this.ViewModal_Instance.ICDExcludes.Clear();
+        }
+        private void Button_DelExclClick(object sender, RoutedEventArgs e)
+        {
+            if (lv_Excl.SelectedItem != null)
+            {
+                var Exdex = lv_Excl.SelectedIndex;
+                this.ViewModal_Instance.ICDExcludes.RemoveAt(Exdex);
+            }
+        }
+        private void ButtonEdtExcl_Click(object sender, RoutedEventArgs e)
+        {
+            if (lv_Excl.SelectedItem != null && !ViewModal_Instance.ICDExcludes.Any(x => x == inputExcl.Text))
+            {
+                var Exdex = lv_Excl.SelectedIndex;
+                this.ViewModal_Instance.ICDExcludes.RemoveAt(Exdex);
+                this.ViewModal_Instance.ICDExcludes.Insert(Exdex, inputExcl.Text);
+            }
+        }
+        #endregion
     }
 }

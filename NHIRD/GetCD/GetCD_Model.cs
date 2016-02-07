@@ -49,7 +49,14 @@ namespace NHIRD
         /// 顯示除錯用訊息
         /// </summary>
         public string message { get; set; }
-
+        /// <summary>
+        /// 儲存ICD inclusion criteria
+        /// </summary>
+        public ObservableCollection<string> list_ICDinclude = new ObservableCollection<string>();
+        /// <summary>
+        /// 儲存ICD inclusion criteria
+        /// </summary>
+        public ObservableCollection<string> list_ICDExclude = new ObservableCollection<string>();
         /// <summary>
         /// 更動group或year選取狀態時，更新檔案選取清單
         /// </summary>

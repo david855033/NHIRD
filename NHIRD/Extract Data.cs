@@ -99,6 +99,9 @@ namespace NHIRD
             }
         }
 
+        public delegate bool ICDComparer(IEnumerable<string> ICDExclusions);
+        List<ICDComparer> ICDIncludes, ICDExcludes;
+
         void ReadFile(File currentfile, List<DataRow> dataRowList,
         List<StringDataFormat> queryStringDataFormats,
           List<NumberDataFormat> queryNumberDataFormats)

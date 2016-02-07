@@ -99,12 +99,47 @@
             <Button  Click="SelectOutputDir_Click">Select Output Dir</Button>
             <TextBox x:Name="txtbox_OutputDir" Text="{Binding str_outputDir}"></TextBox>
         </StackPanel>
-        <StackPanel Grid.Column="1">
-            <StackPanel>
-                <TextBlock Margin="0,25,0,25"  x:Name="TextBlockMessage" Height="100" MinWidth="400"
-                   HorizontalAlignment="Center" Background="Azure" Text="{Binding message}"/>
+
+        <StackPanel  Grid.Column="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel Margin="10">
+                    <TextBlock TextAlignment="Center">Inclusion criteria</TextBlock>
+                    <StackPanel Height="120" Orientation="Horizontal" HorizontalAlignment="Center" >
+                        <ListView x:Name="lv_Incl" Width="120" ItemsSource="{Binding ICDIncludes}" SelectionMode="Single" ></ListView>
+                        <StackPanel Width="60">
+                            <TextBlock TextAlignment="Center">ICD</TextBlock>
+                            <TextBox x:Name="inputIncl"/>
+                            <Button Margin="1,1" Click="ButtonAddIncl_Click">新增</Button>
+                            <Button Margin="1,1" Click="ButtonEdtIncl_Click">修改</Button>
+                            <Button Margin="0,1,1,1" HorizontalAlignment="Right" Width="58" Click="Button_DelInclClick">刪除</Button>
+                            <Button Margin="1,1" Click="ButtonClrIncl_Click">全清</Button>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Margin="10">
+                    <TextBlock TextAlignment="Center">Exclusion criteria</TextBlock>
+                    <StackPanel Height="120" Orientation="Horizontal" HorizontalAlignment="Center" >
+                        <ListView x:Name="lv_Excl" Width="120" ItemsSource="{Binding ICDExcludes}" SelectionMode="Single" ></ListView>
+                        <StackPanel Width="60">
+                            <TextBlock TextAlignment="Center">ICD</TextBlock>
+                            <TextBox x:Name="inputExcl"/>
+                            <Button Margin="0,1,1,1" Click="ButtonAddExcl_Click" HorizontalAlignment="Right" Width="58">新增</Button>
+                            <Button Margin="1,1" Click="ButtonEdtExcl_Click">修改</Button>
+                            <Button Margin="0,1,1,1" HorizontalAlignment="Right" Width="58" Click="Button_DelExclClick">刪除</Button>
+                            <Button Margin="1,1" Click="ButtonClrExcl_Click">全清</Button>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
             </StackPanel>
-            <Button Width="400" Margin="0,25" Command="{Binding Do_ExtractData}">Extract</Button>
+
+
+            <StackPanel>
+                <StackPanel>
+                    <TextBlock Margin="0,25,0,25"  x:Name="TextBlockMessage" Height="100" MinWidth="400"
+                   HorizontalAlignment="Center" Background="Azure" Text="{Binding message}"/>
+                </StackPanel>
+                <Button Width="400" Margin="0,25" Command="{Binding Do_ExtractData}">Extract</Button>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

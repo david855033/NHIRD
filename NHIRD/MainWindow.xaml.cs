@@ -23,7 +23,6 @@ namespace NHIRD
         public MainWindow()
         {
             InitializeComponent();
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -38,6 +37,7 @@ namespace NHIRD
             rawDataFormats= new List<RawDataFormat>();
             LoadRawDataFormat(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                 + @"\NHIRD Format.txt", rawDataFormats);
+            
         }
 
         /// <summary>
