@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 namespace NHIRD
 {
     /// <summary>
-    /// 定義讀入檔案清單之欄位
+    /// 定義讀入檔案清單之欄位(Main menu時載入，後面查詢)
     /// </summary>
     public class File
     {
@@ -94,7 +94,7 @@ namespace NHIRD
         public string FileNameCH { get; set; }
         public int start_year { get; set; }
         public int end_year { get; set; }
-        public string ColumnName{ get; set; }
+        public string ColumnName { get; set; }
         public string ColumnNameCH { get; set; }
         public string DataType { get; set; }
         public int Postion { get; set; }
@@ -108,35 +108,4 @@ namespace NHIRD
             Lengths = 0;
         }
     }
-
-    #region Extract Data使用的class
-    public class StringDataFormat
-    {
-        public string name;
-        public int start_year;
-        public int end_year;
-        public int position;
-        public int length;
-    }
-
-    public class NumberDataFormat
-    {
-        public string name;
-        public int start_year;
-        public int end_year;
-        public int position;
-        public int length;
-    }
-
-    public class DataRow
-    {
-        public string[] stringData;
-        public double?[] numberData;
-        public DataRow(int strDataCount, int numDataCount)
-        {
-            stringData = new string[strDataCount];
-            numberData = new double?[numDataCount];
-        }
-    }
-    #endregion
 }

@@ -89,7 +89,9 @@ namespace NHIRD
         /// </summary>
         public void DoExtractData()
         {
-            new ExtractData().Do(parentVM.parentWindow.parentWindow.rawDataFormats, "CD", list_file, str_outputDir);
+            var extractData = new ExtractData();
+            extractData.CriteriaList.Add(new ExtractData.Criteria() { colname = "ICD", criteria = "A34" });
+            extractData.Do(parentVM.parentWindow.parentWindow.rawDataFormats, "CD", list_file, str_outputDir);
         }
 
     }

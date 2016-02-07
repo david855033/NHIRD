@@ -84,7 +84,6 @@ namespace NHIRD
                      (from q in stringDataFormats
                       where CurrentFileYear >= q.start_year && CurrentFileYear <= q.end_year
                       select q).ToList();
-
                 var queryNumberDataFormats =
                   (from q in numberDataFormats
                    where CurrentFileYear >= q.start_year && CurrentFileYear <= q.end_year
@@ -93,14 +92,90 @@ namespace NHIRD
                 var dataRowList = new List<DataRow>();
                 ReadFile(currentfile, dataRowList,
                     queryStringDataFormats, queryNumberDataFormats);
-                //****這邊加入判斷式
+
+                JudgeFile(currentfile, dataRowList,
+                   queryStringDataFormats, queryNumberDataFormats);
+
                 WriteFile(currentfile, dataRowList,
                     queryStringDataFormats, queryNumberDataFormats);
             }
         }
+        public List<Criteria> CriteriaList = new List<Criteria>();
+        public class Criteria
+        {
+            public string colname, criteria;
+            public List<string> StringList;
+            public List<int> indexStrDatalist, indexNumDatalist;
+            public bool DoCheck(DataRow InputDataRow)
+            {
+                if (indexStrDatalist.Count > 0)
+                {
+                    foreach (var index in indexStrDatalist)
+                    {
+                        if (InputDataRow.stringData[index].Substring(0, criteria.Length) == criteria)
+                        {
+                            return true;
+                        }
+                    }
+                }
+                else if (indexNumDatalist.Count > 0)
+                {
+                    foreach (var index in indexNumDatalist)
+                    {
+                        if (InputDataRow.numberData[index] == Convert.ToDouble(criteria))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        }
 
-        public delegate bool ICDComparer(IEnumerable<string> ICDExclusions);
-        List<ICDComparer> ICDIncludes, ICDExcludes;
+        void JudgeFile(File currentfile, List<DataRow> dataRowList,
+        List<StringDataFormat> queryStringDataFormats, List<NumberDataFormat> queryNumberDataFormats)
+        {
+            //逐個criteria
+            foreach (var currentCriteria in CriteriaList)
+            {
+                //重置criteriaList內之indexList(可對應到當前檔案)
+                currentCriteria.indexStrDatalist = new List<int>();
+                currentCriteria.indexNumDatalist = new List<int>();
+                //尋找:符合criteria內指定的colname的index並且更新indexList
+                foreach (var currentColName in
+                    from q in queryStringDataFormats
+                    where q.name.IndexOf(currentCriteria.colname) >= 0
+                    select q.name)
+                {
+                    int r = queryStringDataFormats.FindIndex(x => x.name == currentColName);
+                    if (r >= 0)
+                    {
+                        currentCriteria.indexStrDatalist.Add(r);
+                    }
+                }
+                foreach (var currentColName in
+                    from q in queryNumberDataFormats
+                    where q.name.IndexOf(currentCriteria.colname) >= 0
+                    select q.name)
+                {
+                    int r = queryNumberDataFormats.FindIndex(x => x.name == currentColName);
+                    if (r >= 0)
+                    {
+                        currentCriteria.indexNumDatalist.Add(r + queryStringDataFormats.Count);
+                    }
+                }
+            }
+
+            //逐筆資料比對
+            foreach (var currentDataRow in dataRowList)
+            {
+                foreach (var currentCriteria in CriteriaList)
+                {
+                    currentDataRow.IsMatch = currentCriteria.DoCheck(currentDataRow);
+                }
+            }
+
+        }
 
         void ReadFile(File currentfile, List<DataRow> dataRowList,
         List<StringDataFormat> queryStringDataFormats,
@@ -168,8 +243,9 @@ namespace NHIRD
 
                 foreach (var currentData in dataRowList)
                 {
+                    if (!currentData.IsMatch) continue;
                     string line = "";
-                    foreach (string  s in currentData.stringData)
+                    foreach (string s in currentData.stringData)
                     {
                         line += s + '\t';
                     }
@@ -182,5 +258,40 @@ namespace NHIRD
             }
         }
 
+
+
+
+        #region Extract Data使用的class
+        public class StringDataFormat
+        {
+            public string name;
+            public int start_year;
+            public int end_year;
+            public int position;
+            public int length;
+        }
+
+        public class NumberDataFormat
+        {
+            public string name;
+            public int start_year;
+            public int end_year;
+            public int position;
+            public int length;
+        }
+
+        public class DataRow
+        {
+            public string[] stringData;
+            public double?[] numberData;
+            public bool IsMatch;
+            public DataRow(int strDataCount, int numDataCount)
+            {
+                stringData = new string[strDataCount];
+                numberData = new double?[numDataCount];
+                IsMatch = true;
+            }
+        }
+        #endregion
     }
 }

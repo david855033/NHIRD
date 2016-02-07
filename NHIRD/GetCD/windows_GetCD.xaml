@@ -138,7 +138,7 @@
                     <TextBlock Margin="0,25,0,25"  x:Name="TextBlockMessage" Height="100" MinWidth="400"
                    HorizontalAlignment="Center" Background="Azure" Text="{Binding message}"/>
                 </StackPanel>
-                <Button Width="400" Margin="0,25" Command="{Binding Do_ExtractData}">Extract</Button>
+                <Button Width="400" Margin="0,25" Command="{Binding Do_ExtractData}">_Extract</Button>
             </StackPanel>
         </StackPanel>
     </Grid>
