@@ -90,8 +90,12 @@ namespace NHIRD
         public void DoExtractData()
         {
             var extractData = new ExtractData();
-            extractData.CriteriaList.Add(new ExtractData.Criteria() { colname = "ICD", criteria = "A34" });
-            extractData.Do(parentVM.parentWindow.parentWindow.rawDataFormats, "CD", list_file, str_outputDir);
+            if (list_ICDinclude.Count > 0)
+            {
+                extractData.CriteriaList.Add(new ExtractData.Criteria() { colname = "ICD", StringList = list_ICDinclude.ToList() });
+            }
+            extractData.CriteriaList.Add(new ExtractData.Criteria() { colname = "APPL_AMT", CriteriaNumUpper = 800, CriteriaNumLower = 0 });
+            extractData.Do(parentVM.parentWindow.parentWindow.rawDataFormats, "CD", from f in list_file where f.selected == true select f, str_outputDir);
         }
 
     }

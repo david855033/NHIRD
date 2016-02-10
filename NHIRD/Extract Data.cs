@@ -101,31 +101,52 @@ namespace NHIRD
             }
         }
         public List<Criteria> CriteriaList = new List<Criteria>();
+        /// <summary>
+        /// colname:目標欄位名稱, Criteria: 條件
+        /// </summary>
         public class Criteria
         {
-            public string colname, criteria;
+            public string colname;
             public List<string> StringList;
-            public List<int> indexStrDatalist, indexNumDatalist;
+            public List<int> indexStrDatalist;
+            public double CriteriaNumUpper, CriteriaNumLower;
+            public int indexNumData;
+            public int indexBirthday, indexEventday;
             public bool DoCheck(DataRow InputDataRow)
             {
-                if (indexStrDatalist.Count > 0)
+                if (colname == "AGE")
+                {
+                    DateTime birthday = InputDataRow.stringData[indexBirthday].StringToDate();
+                    DateTime eventday = InputDataRow.stringData[indexEventday].StringToDate();
+                    double age = eventday.Subtract(birthday).TotalDays / 365;
+                    if ((age < CriteriaNumUpper || CriteriaNumUpper == 0) && (age >= CriteriaNumLower || CriteriaNumLower == 0))
+                    {
+
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else if (indexStrDatalist.Count > 0)
                 {
                     foreach (var index in indexStrDatalist)
                     {
-                        if (InputDataRow.stringData[index].Substring(0, criteria.Length) == criteria)
-                        {
-                            return true;
-                        }
+                        foreach (string criteria in StringList)
+                            if (InputDataRow.stringData[index].Substring(0, criteria.Length) == criteria)
+                            {
+                                return true;
+                            }
                     }
+                    return false;
                 }
-                else if (indexNumDatalist.Count > 0)
+                else
                 {
-                    foreach (var index in indexNumDatalist)
+                    if ((InputDataRow.numberData[indexNumData] < CriteriaNumUpper || CriteriaNumUpper == 0) &&
+                        (InputDataRow.numberData[indexNumData] >= CriteriaNumLower || CriteriaNumLower == 0))
                     {
-                        if (InputDataRow.numberData[index] == Convert.ToDouble(criteria))
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
                 return false;
@@ -140,8 +161,18 @@ namespace NHIRD
             {
                 //重置criteriaList內之indexList(可對應到當前檔案)
                 currentCriteria.indexStrDatalist = new List<int>();
-                currentCriteria.indexNumDatalist = new List<int>();
+                currentCriteria.indexNumData = -1;
+
                 //尋找:符合criteria內指定的colname的index並且更新indexList
+                //年齡資料
+                if (currentCriteria.colname == "AGE")
+                {
+                    currentCriteria.indexBirthday = queryStringDataFormats.FindIndex(x => x.name.IndexOf("BIRTHDAY") >= 0);
+                    currentCriteria.indexEventday = queryStringDataFormats.FindIndex(x => x.name == "FUNC_DATE");
+                    if (currentCriteria.indexEventday < 0)
+                        currentCriteria.indexEventday = queryStringDataFormats.FindIndex(x => x.name == "IN_DATE");
+                }
+                //字串資料
                 foreach (var currentColName in
                     from q in queryStringDataFormats
                     where q.name.IndexOf(currentCriteria.colname) >= 0
@@ -153,17 +184,21 @@ namespace NHIRD
                         currentCriteria.indexStrDatalist.Add(r);
                     }
                 }
-                foreach (var currentColName in
-                    from q in queryNumberDataFormats
-                    where q.name.IndexOf(currentCriteria.colname) >= 0
-                    select q.name)
+                if (currentCriteria.indexStrDatalist.Count > 0) continue;
+                //數字資料
+                var qColName =
+                    (from q in queryNumberDataFormats
+                     where q.name.IndexOf(currentCriteria.colname) >= 0
+                     select q.name);
+                if (qColName.Count() > 0)
                 {
-                    int r = queryNumberDataFormats.FindIndex(x => x.name == currentColName);
-                    if (r >= 0)
+                    int R = queryNumberDataFormats.FindIndex(x => x.name == qColName.First());
+                    if (R >= 0)
                     {
-                        currentCriteria.indexNumDatalist.Add(r + queryStringDataFormats.Count);
+                        currentCriteria.indexNumData = R;
                     }
                 }
+
             }
 
             //逐筆資料比對
@@ -171,6 +206,7 @@ namespace NHIRD
             {
                 foreach (var currentCriteria in CriteriaList)
                 {
+                    if (currentDataRow.IsMatch == false) continue;
                     currentDataRow.IsMatch = currentCriteria.DoCheck(currentDataRow);
                 }
             }

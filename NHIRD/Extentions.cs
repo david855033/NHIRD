@@ -13,9 +13,7 @@ namespace NHIRD
             var pathsplit = path.Split('\\');
             return pathsplit.Last();
         }
-
-
-        public static string Round(this double input, int deci=0)
+        public static string Round(this double input, int deci = 0)
         {
             try
             {
@@ -26,8 +24,28 @@ namespace NHIRD
                 return "";
             }
         }
+        public static DateTime StringToDate(this string input)
+        {
+            try
+            {
+                input = input.TrimEnd();
+                if (input.Length == 8)
+                {
+                    return Convert.ToDateTime(input.Substring(0, 4) + "-" + input.Substring(4, 2) + "-" + input.Substring(6, 2));
+                }
+                else if(input.Length == 6)
+                {
+                    return Convert.ToDateTime(input.Substring(0, 4) + "-" + input.Substring(4, 2) + "-01");
+                }
+                return DateTime.MinValue;
+            }
+            catch
+            {
+                return DateTime.MinValue;
+            }
+        }
 
     }
-    
+
 
 }
