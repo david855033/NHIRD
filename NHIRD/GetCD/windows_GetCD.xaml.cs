@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Forms;
 using System.Collections.ObjectModel;
-
+using System.Text.RegularExpressions;
 namespace NHIRD
 {
     /// <summary>
@@ -22,19 +22,20 @@ namespace NHIRD
 
     public partial class GetCD_Window : Window
     {
-        public readonly GetCD_ViewModel ViewModal_Instance;
+        public readonly GetCD_ViewModel ViewModel_Instance;
         public MainWindow parentWindow;
         // -- constructor
         public GetCD_Window(MainWindow parent)
         {
             InitializeComponent();
-            ViewModal_Instance = new GetCD_ViewModel(this);
+            ViewModel_Instance = new GetCD_ViewModel(this);
             parentWindow = parent;
             this.Left = parent.Left + parent.Width;
             this.Top = parent.Top;
-            this.DataContext = ViewModal_Instance;
-            ViewModal_Instance.InputDir = GlobalSetting.inputDir;
-            ViewModal_Instance.str_outputDir = GlobalSetting.outputDir;
+            this.DataContext = ViewModel_Instance;
+            ViewModel_Instance.InputDir = GlobalSetting.inputDir;
+            ViewModel_Instance.str_outputDir = GlobalSetting.outputDir;
+            ViewModel_Instance.IDCriteriaFolderPath = GlobalSetting.IDcriteriaDir;
             refresh_Listviews();
         }
         /// <summary>
@@ -56,7 +57,7 @@ namespace NHIRD
             var FolderSelector = new FolderBrowserDialog();
             if (FolderSelector.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                ViewModal_Instance.InputDir = FolderSelector.SelectedPath;
+                ViewModel_Instance.InputDir = FolderSelector.SelectedPath;
             }
         }
 
@@ -101,7 +102,7 @@ namespace NHIRD
             {
                 item.selected = true;
             }
-            ViewModal_Instance.Model_Instance.checkFileByCriteria();
+            ViewModel_Instance.Model_Instance.checkFileByCriteria();
             refresh_Listviews();
         }
         private void yearsCheckAll_Unchecked(object sender, RoutedEventArgs e)
@@ -111,21 +112,21 @@ namespace NHIRD
             {
                 item.selected = false;
             }
-            ViewModal_Instance.Model_Instance.checkFileByCriteria();
+            ViewModel_Instance.Model_Instance.checkFileByCriteria();
             refresh_Listviews();
         }
         private void yearsCheckOne_Checked(object sender, RoutedEventArgs e)
         {
             System.Windows.Controls.CheckBox checkbox = sender as System.Windows.Controls.CheckBox;
             (checkbox.DataContext as Year).selected = true;
-            ViewModal_Instance.Model_Instance.checkFileByCriteria();
+            ViewModel_Instance.Model_Instance.checkFileByCriteria();
             refresh_Listviews();
         }
         private void yearsCheckOne_UnChecked(object sender, RoutedEventArgs e)
         {
             System.Windows.Controls.CheckBox checkbox = sender as System.Windows.Controls.CheckBox;
             (checkbox.DataContext as Year).selected = false;
-            ViewModal_Instance.Model_Instance.checkFileByCriteria();
+            ViewModel_Instance.Model_Instance.checkFileByCriteria();
             refresh_Listviews();
         }
         #endregion
@@ -138,7 +139,7 @@ namespace NHIRD
             {
                 item.selected = true;
             }
-            ViewModal_Instance.Model_Instance.checkFileByCriteria();
+            ViewModel_Instance.Model_Instance.checkFileByCriteria();
             refresh_Listviews();
         }
         private void groupsCheckAll_Unchecked(object sender, RoutedEventArgs e)
@@ -148,21 +149,21 @@ namespace NHIRD
             {
                 item.selected = false;
             }
-            ViewModal_Instance.Model_Instance.checkFileByCriteria();
+            ViewModel_Instance.Model_Instance.checkFileByCriteria();
             refresh_Listviews();
         }
         private void groupsCheckOne_Checked(object sender, RoutedEventArgs e)
         {
             System.Windows.Controls.CheckBox checkbox = sender as System.Windows.Controls.CheckBox;
             (checkbox.DataContext as Group).selected = true;
-            ViewModal_Instance.Model_Instance.checkFileByCriteria();
+            ViewModel_Instance.Model_Instance.checkFileByCriteria();
             refresh_Listviews();
         }
         private void groupsCheckOne_UnChecked(object sender, RoutedEventArgs e)
         {
             System.Windows.Controls.CheckBox checkbox = sender as System.Windows.Controls.CheckBox;
             (checkbox.DataContext as Group).selected = false;
-            ViewModal_Instance.Model_Instance.checkFileByCriteria();
+            ViewModel_Instance.Model_Instance.checkFileByCriteria();
             refresh_Listviews();
         }
         #endregion
@@ -172,11 +173,11 @@ namespace NHIRD
         /// </summary>
         public void refresh_Listviews()
         {
-            ViewModal_Instance.years = new ObservableCollection<Year>(ViewModal_Instance.years);
-            ViewModal_Instance.files = new ObservableCollection<File>(ViewModal_Instance.files);
-            ViewModal_Instance.groups = new ObservableCollection<Group>(ViewModal_Instance.groups);
-            ViewModal_Instance.FileStatus = "Selected " + ViewModal_Instance.files.Where(x => x.selected == true).Count() +
-                " / " + ViewModal_Instance.files.Count + " files.";
+            ViewModel_Instance.years = new ObservableCollection<Year>(ViewModel_Instance.years);
+            ViewModel_Instance.files = new ObservableCollection<File>(ViewModel_Instance.files);
+            ViewModel_Instance.groups = new ObservableCollection<Group>(ViewModel_Instance.groups);
+            ViewModel_Instance.FileStatus = "Selected " + ViewModel_Instance.files.Where(x => x.selected == true).Count() +
+                " / " + ViewModel_Instance.files.Count + " files.";
         }
         /// <summary>
         /// 選取輸出資料夾
@@ -188,63 +189,81 @@ namespace NHIRD
             var FolderSelector = new FolderBrowserDialog();
             if (FolderSelector.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                ViewModal_Instance.str_outputDir = FolderSelector.SelectedPath;
+                ViewModel_Instance.str_outputDir = FolderSelector.SelectedPath;
             }
         }
 
         #region ICD include & Exclude按鈕功能
         private void ButtonAddIncl_Click(object sender, RoutedEventArgs e)
         {
-            if (!ViewModal_Instance.ICDIncludes.Any(x => x == inputIncl.Text))
-                this.ViewModal_Instance.ICDIncludes.Add(inputIncl.Text);
+            if (!ViewModel_Instance.ICDIncludes.Any(x => x == inputIncl.Text))
+                this.ViewModel_Instance.ICDIncludes.Add(inputIncl.Text);
         }
         private void ButtonClrIncl_Click(object sender, RoutedEventArgs e)
         {
-            this.ViewModal_Instance.ICDIncludes.Clear();
+            this.ViewModel_Instance.ICDIncludes.Clear();
         }
         private void Button_DelInclClick(object sender, RoutedEventArgs e)
         {
             if (lv_Incl.SelectedItem != null)
             {
                 var index = lv_Incl.SelectedIndex;
-                this.ViewModal_Instance.ICDIncludes.RemoveAt(index);
+                this.ViewModel_Instance.ICDIncludes.RemoveAt(index);
             }
         }
         private void ButtonEdtIncl_Click(object sender, RoutedEventArgs e)
         {
-            if (lv_Incl.SelectedItem != null && !ViewModal_Instance.ICDIncludes.Any(x => x == inputIncl.Text))
+            if (lv_Incl.SelectedItem != null && !ViewModel_Instance.ICDIncludes.Any(x => x == inputIncl.Text))
             {
                 var index = lv_Incl.SelectedIndex;
-                this.ViewModal_Instance.ICDIncludes.RemoveAt(index);
-                this.ViewModal_Instance.ICDIncludes.Insert(index, inputIncl.Text);
+                this.ViewModel_Instance.ICDIncludes.RemoveAt(index);
+                this.ViewModel_Instance.ICDIncludes.Insert(index, inputIncl.Text);
             }
         }
         private void ButtonAddExcl_Click(object sender, RoutedEventArgs e)
         {
-            if (!ViewModal_Instance.ICDExcludes.Any(x => x == inputExcl.Text))
-                this.ViewModal_Instance.ICDExcludes.Add(inputExcl.Text);
+            if (!ViewModel_Instance.ICDExcludes.Any(x => x == inputExcl.Text))
+                this.ViewModel_Instance.ICDExcludes.Add(inputExcl.Text);
         }
         private void ButtonClrExcl_Click(object sender, RoutedEventArgs e)
         {
-            this.ViewModal_Instance.ICDExcludes.Clear();
+            this.ViewModel_Instance.ICDExcludes.Clear();
         }
         private void Button_DelExclClick(object sender, RoutedEventArgs e)
         {
             if (lv_Excl.SelectedItem != null)
             {
                 var Exdex = lv_Excl.SelectedIndex;
-                this.ViewModal_Instance.ICDExcludes.RemoveAt(Exdex);
+                this.ViewModel_Instance.ICDExcludes.RemoveAt(Exdex);
             }
         }
         private void ButtonEdtExcl_Click(object sender, RoutedEventArgs e)
         {
-            if (lv_Excl.SelectedItem != null && !ViewModal_Instance.ICDExcludes.Any(x => x == inputExcl.Text))
+            if (lv_Excl.SelectedItem != null && !ViewModel_Instance.ICDExcludes.Any(x => x == inputExcl.Text))
             {
                 var Exdex = lv_Excl.SelectedIndex;
-                this.ViewModal_Instance.ICDExcludes.RemoveAt(Exdex);
-                this.ViewModal_Instance.ICDExcludes.Insert(Exdex, inputExcl.Text);
+                this.ViewModel_Instance.ICDExcludes.RemoveAt(Exdex);
+                this.ViewModel_Instance.ICDExcludes.Insert(Exdex, inputExcl.Text);
             }
         }
+
         #endregion
+        
+        private void Textbox_FloatVerify_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            var s = sender as System.Windows.Controls.TextBox;
+            s.Text = s.Text.RegexFloat();
+            s.Select(s.Text.Length, 0);
+        }
+
+        private void SelectIDCriteria_Click(object sender, RoutedEventArgs e)
+        {
+            var FolderSelector = new FolderBrowserDialog();
+            if (FolderSelector.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                ViewModel_Instance.IDCriteriaFolderPath = FolderSelector.SelectedPath;
+                Cb_ID.IsChecked = true;
+            }
+        }
     }
 }

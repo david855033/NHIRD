@@ -84,8 +84,24 @@ namespace NHIRD
 
         }
 
+        #region Age Criteria Controls
+        public bool IsAgeLCriteriaEnable { get; set; }
+        public bool IsAgeUCriteriaEnable { get; set; }
+        public double db_AgeL { get; set; }
+        public double db_AgeU { get; set; }
+        #endregion
+
+        #region ID criteria controls
+        public string IDCriteriaFolderPath { get; set; }
+        public string IDCriteriaMessage { get; set; }
+        public List<File> IDCriteria_FileList = new List<File>();
+        #endregion
+
+        public bool IsIDCriteriaEnable { get; set; }
+        public bool IsOrderCriteriaEnable { get; set; }
+
         /// <summary>
-        /// 提取檔案
+        /// 匯入條件並且提取檔案
         /// </summary>
         public void DoExtractData()
         {
@@ -94,7 +110,16 @@ namespace NHIRD
             {
                 extractData.CriteriaList.Add(new ExtractData.Criteria() { colname = "ICD", StringList = list_ICDinclude.ToList() });
             }
-            extractData.CriteriaList.Add(new ExtractData.Criteria() { colname = "APPL_AMT", CriteriaNumUpper = 800, CriteriaNumLower = 0 });
+
+            if (IsAgeLCriteriaEnable || IsAgeUCriteriaEnable)
+            {
+                extractData.CriteriaList.Add(new ExtractData.Criteria()
+                {
+                    colname = "AGE",
+                    CriteriaNumUpper = IsAgeUCriteriaEnable ? db_AgeU : 0,
+                    CriteriaNumLower = IsAgeLCriteriaEnable ? db_AgeL : 0
+                });
+            }
             extractData.Do(parentVM.parentWindow.parentWindow.rawDataFormats, "CD", from f in list_file where f.selected == true select f, str_outputDir);
         }
 

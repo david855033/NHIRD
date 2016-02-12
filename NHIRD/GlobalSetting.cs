@@ -79,7 +79,41 @@ namespace NHIRD
                 saveSetting();
             }
         }
-
+        static public string IDcriteriaDir
+        {
+            get
+            {
+                try
+                {
+                    return settings.Find(x => x.name == "IDcriteriaDir").value;
+                }
+                catch
+                {
+                    settings.Add(new setting()
+                    {
+                        name = "IDcriteriaDir",
+                        value = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                    });
+                    return settings.Find(x => x.name == "IDcriteriaDir").value;
+                }
+            }
+            set
+            {
+                try
+                {
+                    settings.Find(x => x.name == "IDcriteriaDir").value = value;
+                }
+                catch
+                {
+                    settings.Add(new setting()
+                    {
+                        name = "IDcriteriaDir",
+                        value = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                    });
+                }
+                saveSetting();
+            }
+        }
         // -- internal saving logic
         static string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\NHIRD_Settings.txt";
         static List<setting> settings = new List<setting>();

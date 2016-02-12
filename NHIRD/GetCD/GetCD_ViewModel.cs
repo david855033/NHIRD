@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Windows.Forms;
-using System.Windows;
 using System.Windows.Input;
+using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace NHIRD
 {
@@ -44,10 +41,10 @@ namespace NHIRD
             set
             {
                 Model_Instance.str_inputDir = GlobalSetting.inputDir = value;
-                string[] paths;
                 // -- 初始化 file / year / group list
                 try
                 {
+                    string[] paths;
                     paths = Directory.EnumerateFiles(value, "*CD*.DAT", SearchOption.AllDirectories).ToArray();
                     Array.Sort(paths);
                     // -- file
@@ -163,9 +160,9 @@ namespace NHIRD
         public string message
         {
             get { return Model_Instance.message; }
-            set { Model_Instance.message = value;  OnPropertyChanged(nameof(message)); }
+            set { Model_Instance.message = value; OnPropertyChanged(nameof(message)); }
         }
-        
+
         /// <summary>
         /// ICD include清單
         /// </summary>
@@ -197,6 +194,103 @@ namespace NHIRD
                 Model_Instance.list_ICDExclude = value;
                 OnPropertyChanged(nameof(ICDExcludes));
             }
+        }
+
+        #region -- Age Criteria Controls
+        public bool IsAgeLCriteriaEnable
+        {
+            get { return Model_Instance.IsAgeLCriteriaEnable; }
+            set { Model_Instance.IsAgeLCriteriaEnable = value; }
+        }
+        public bool IsAgeUCriteriaEnable
+        {
+            get { return Model_Instance.IsAgeUCriteriaEnable; }
+            set { Model_Instance.IsAgeUCriteriaEnable = value; }
+        }
+        public string db_AgeL
+        {
+            get { return Model_Instance.db_AgeL.Round(1); }
+            set
+            {
+                double result = -1;
+                double.TryParse(value, out result);
+                if (result > 100) result = 100;
+                if (result < 0) result = 0;
+                Model_Instance.db_AgeL = result;
+                OnPropertyChanged(nameof(db_AgeL));
+            }
+        }
+        public string db_AgeU
+        {
+            get { return Model_Instance.db_AgeU.Round(1); }
+            set
+            {
+                double result = -1;
+                double.TryParse(value, out result);
+                if (result > 100) result = 100;
+                if (result < 0) result = 0;
+                Model_Instance.db_AgeU = result;
+                OnPropertyChanged(nameof(db_AgeU));
+            }
+        }
+        #endregion
+
+        #region -- ID criteria controls
+        public string IDCriteriaFolderPath
+        {
+            get { return Model_Instance.IDCriteriaFolderPath; }
+            set
+            {
+                Model_Instance.IDCriteriaFolderPath = GlobalSetting.IDcriteriaDir = value;
+                try
+                {
+                    string[] paths;
+                    paths = Directory.EnumerateFiles(value, "*CD*.EXT", SearchOption.AllDirectories).ToArray();
+                    var newfiles = new List<File>();
+                    foreach (string str_filepath in paths)
+                    {
+                        newfiles.Add(new File(str_filepath));
+                    }
+                    IDCriteriaFileList.Clear();
+                    IDCriteriaFileList = newfiles;
+                    var groupCount = (from q in IDCriteriaFileList group q by q.@group into g select g).Count();
+                    IDCriteriaMessage = "Total " + IDCriteriaFileList.Count() + " files was loaded. Group count: " + groupCount;
+                }
+                catch
+                {
+                    IDCriteriaMessage = "Invalid path";
+                }
+                OnPropertyChanged(nameof(IDCriteriaFolderPath));
+            }
+        }
+        public string IDCriteriaMessage
+        {
+            get { return Model_Instance.IDCriteriaMessage; }
+            set
+            {
+                Model_Instance.IDCriteriaMessage = value;
+                OnPropertyChanged(nameof(IDCriteriaMessage));
+            }
+        }
+        public List<File> IDCriteriaFileList
+        {
+            get { return Model_Instance.IDCriteria_FileList; }
+            set
+            {
+                Model_Instance.IDCriteria_FileList = value;
+            }
+        }
+        #endregion
+
+        public bool IsIDCriteriaEnable
+        {
+            get { return Model_Instance.IsIDCriteriaEnable; }
+            set { Model_Instance.IsIDCriteriaEnable = value; }
+        }
+        public bool IsOrderCriteriaEnable
+        {
+            get { return Model_Instance.IsOrderCriteriaEnable; }
+            set { Model_Instance.IsOrderCriteriaEnable = value; }
         }
 
         // -- Actions

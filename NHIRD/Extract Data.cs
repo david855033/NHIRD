@@ -26,7 +26,7 @@ namespace NHIRD
             initializeDataSet();
 
             //逐個檔案執行讀寫
-            ReadWriteFiles();
+            ReadJudgeWriteFiles();
         }
         /// <summary>
         /// 載入指定selectedFileType的格式資料，並且儲存在numberDataFormats及stringDataFormats中
@@ -72,32 +72,39 @@ namespace NHIRD
         /// <summary>
         /// 逐個檔案進行讀寫+判斷
         /// </summary>
-        void ReadWriteFiles()
+        void ReadJudgeWriteFiles()
         {
 
-            // 逐個檔案進行
-            foreach (File currentfile in list_file)
+            //先分析總共有多少組別
+            var groupQuery = (from q in list_file where q.selected == true select q.@group).Distinct();
+            //逐個組別進行(若是有比較型的資料 如ID / SEQ，則先載入比較用的list)
+            foreach (string g in groupQuery)
             {
-                //依照年分挑出正確的Dataformat，傳入Readfile及Writefile
-                int CurrentFileYear = Convert.ToInt32(currentfile.year) - 1911;
-                var queryStringDataFormats =
-                     (from q in stringDataFormats
-                      where CurrentFileYear >= q.start_year && CurrentFileYear <= q.end_year
-                      select q).ToList();
-                var queryNumberDataFormats =
-                  (from q in numberDataFormats
-                   where CurrentFileYear >= q.start_year && CurrentFileYear <= q.end_year
-                   select q).ToList();
-                //建立資料清單，開始讀寫
-                var dataRowList = new List<DataRow>();
-                ReadFile(currentfile, dataRowList,
-                    queryStringDataFormats, queryNumberDataFormats);
+                var current_list_file = from q in list_file where q.@group == g select q;
+                // 逐個檔案進行
+                foreach (File currentfile in current_list_file)
+                {
+                    //依照年分挑出正確的Dataformat，傳入Readfile及Writefile
+                    int CurrentFileYear = Convert.ToInt32(currentfile.year) - 1911;
+                    var queryStringDataFormats =
+                         (from q in stringDataFormats
+                          where CurrentFileYear >= q.start_year && CurrentFileYear <= q.end_year
+                          select q).ToList();
+                    var queryNumberDataFormats =
+                      (from q in numberDataFormats
+                       where CurrentFileYear >= q.start_year && CurrentFileYear <= q.end_year
+                       select q).ToList();
+                    //建立資料清單，開始讀寫
+                    var dataRowList = new List<DataRow>();
+                    ReadFile(currentfile, dataRowList,
+                        queryStringDataFormats, queryNumberDataFormats);
 
-                JudgeFile(currentfile, dataRowList,
-                   queryStringDataFormats, queryNumberDataFormats);
+                    JudgeFile(currentfile, dataRowList,
+                       queryStringDataFormats, queryNumberDataFormats);
 
-                WriteFile(currentfile, dataRowList,
-                    queryStringDataFormats, queryNumberDataFormats);
+                    WriteFile(currentfile, dataRowList,
+                        queryStringDataFormats, queryNumberDataFormats);
+                }
             }
         }
         public List<Criteria> CriteriaList = new List<Criteria>();
@@ -163,7 +170,7 @@ namespace NHIRD
                 currentCriteria.indexStrDatalist = new List<int>();
                 currentCriteria.indexNumData = -1;
 
-                //尋找:符合criteria內指定的colname的index並且更新indexList
+                //將想要判斷的資料之index找出來，丟入criteria的物件中
                 //年齡資料
                 if (currentCriteria.colname == "AGE")
                 {
@@ -172,7 +179,7 @@ namespace NHIRD
                     if (currentCriteria.indexEventday < 0)
                         currentCriteria.indexEventday = queryStringDataFormats.FindIndex(x => x.name == "IN_DATE");
                 }
-                //字串資料
+                //字串資料(同時比較複數欄位)
                 foreach (var currentColName in
                     from q in queryStringDataFormats
                     where q.name.IndexOf(currentCriteria.colname) >= 0
@@ -185,7 +192,7 @@ namespace NHIRD
                     }
                 }
                 if (currentCriteria.indexStrDatalist.Count > 0) continue;
-                //數字資料
+                //數字資料(單一欄位)
                 var qColName =
                     (from q in queryNumberDataFormats
                      where q.name.IndexOf(currentCriteria.colname) >= 0
@@ -201,7 +208,7 @@ namespace NHIRD
 
             }
 
-            //逐筆資料比對
+            //逐筆資料比對(使用criteria.DoCheck)，只要有一項不相符就將該筆DataRow.IsMatch設定為neg，並跳過該筆資料
             foreach (var currentDataRow in dataRowList)
             {
                 foreach (var currentCriteria in CriteriaList)
