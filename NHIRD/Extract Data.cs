@@ -121,7 +121,11 @@ namespace NHIRD
             public int indexBirthday, indexEventday;
             public bool DoCheck(DataRow InputDataRow)
             {
-                if (colname == "AGE")
+                if (colname=="IDLIST")
+                {
+
+                }
+                else  if (colname == "AGE")
                 {
                     DateTime birthday = InputDataRow.stringData[indexBirthday].StringToDate();
                     DateTime eventday = InputDataRow.stringData[indexEventday].StringToDate();
@@ -302,7 +306,11 @@ namespace NHIRD
         }
 
 
-
+        public class IDDataFormat
+        {
+            public string ID;
+            public string Birthday;
+        }
 
         #region Extract Data使用的class
         public class StringDataFormat
