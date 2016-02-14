@@ -24,11 +24,16 @@ namespace NHIRD
                 return "";
             }
         }
+        /// <summary>
+        /// 去除"-"後，轉換成日期(若為年月，日自動為1)
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public static DateTime StringToDate(this string input)
         {
             try
             {
-                input = input.TrimEnd();
+                input = input.TrimEnd(); input = input.Replace("-", "");
                 if (input.Length == 8)
                 {
                     return Convert.ToDateTime(input.Substring(0, 4) + "-" + input.Substring(4, 2) + "-" + input.Substring(6, 2));

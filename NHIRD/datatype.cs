@@ -16,7 +16,14 @@ namespace NHIRD
         public string path { get; set; }
         double size { get; set; }
         public string sizeMB { get { return (size / 1024 / 1024).Round() + "MB"; } }
+        /// <summary>
+        /// 西元年(字串)
+        /// </summary>
         public string year { get; set; }
+        /// <summary>
+        /// 民國年(數值)
+        /// </summary>
+        public int MKyear {get { return Convert.ToInt32(year) - 1911; } }
         public string group { get; set; }
         public bool? selected{ get; set; }
         public File(string filepath)

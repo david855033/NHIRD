@@ -120,6 +120,14 @@ namespace NHIRD
                     CriteriaNumLower = IsAgeLCriteriaEnable ? db_AgeL : 0
                 });
             }
+            if (IsIDCriteriaEnable)
+            {
+                extractData.CriteriaList.Add(new ExtractData.Criteria()
+                {
+                    colname = "IDLIST",
+                    IDCriteriaFileList = IDCriteria_FileList
+                });
+            }
             extractData.Do(parentVM.parentWindow.parentWindow.rawDataFormats, "CD", from f in list_file where f.selected == true select f, str_outputDir);
         }
 
