@@ -21,6 +21,29 @@ namespace NHIRD
         {
             this.parentVM = parentVM;
         }
+        
+        #region -- FileType Select
+        bool _IsCDFileTypeEnabled = true;
+        public bool IsCDFileTypeEnabled { get { return _IsCDFileTypeEnabled; } set { _IsCDFileTypeEnabled = value; renewSelectedFileTypes(); } }
+        bool _IsDDFileTypeEnabled = true;
+        public bool IsDDFileTypeEnabled { get { return _IsDDFileTypeEnabled; } set { _IsDDFileTypeEnabled = value; renewSelectedFileTypes(); } }
+        List<string> _selectedFileTypes = new List<string>();
+        void renewSelectedFileTypes()
+        {
+            _selectedFileTypes.Clear();
+            if (_IsCDFileTypeEnabled) _selectedFileTypes.Add("CD");
+            if (_IsDDFileTypeEnabled) _selectedFileTypes.Add("DD");
+        }
+        /// <summary>
+        /// 被選取的FileType
+        /// </summary>
+        public List<string> selectedFileTypes
+        {
+            get { return _selectedFileTypes; }
+        }
+        
+        #endregion
+
         /// <summary>
         /// 讀取檔案的資料夾路徑
         /// </summary>
@@ -45,18 +68,6 @@ namespace NHIRD
         /// 紀錄選取檔案數量的顯示訊息
         /// </summary>
         public string str_filestatus { get; set; }
-        /// <summary>
-        /// 顯示除錯用訊息
-        /// </summary>
-        public string message { get; set; }
-        /// <summary>
-        /// 儲存ICD inclusion criteria
-        /// </summary>
-        public ObservableCollection<string> list_ICDinclude = new ObservableCollection<string>();
-        /// <summary>
-        /// 儲存ICD inclusion criteria
-        /// </summary>
-        public ObservableCollection<string> list_ICDExclude = new ObservableCollection<string>();
         /// <summary>
         /// 更動group或year選取狀態時，更新檔案選取清單
         /// </summary>
@@ -83,6 +94,22 @@ namespace NHIRD
             }
 
         }
+        /// <summary>
+        /// 顯示除錯用訊息
+        /// </summary>
+        public string message { get; set; }
+        #region ICD criteria control
+        /// <summary>
+        /// 儲存ICD inclusion criteria
+        /// </summary>
+        public ObservableCollection<string> list_ICDinclude = new ObservableCollection<string>();
+        /// <summary>
+        /// 儲存ICD inclusion criteria
+        /// </summary>
+        public ObservableCollection<string> list_ICDExclude = new ObservableCollection<string>();
+        public bool IsICDIncludeEnabled;
+        public bool IsICDExcludeEnabled;
+        #endregion
 
         #region Age Criteria Controls
         public bool IsAgeLCriteriaEnable { get; set; }
@@ -95,9 +122,8 @@ namespace NHIRD
         public string IDCriteriaFolderPath { get; set; }
         public string IDCriteriaMessage { get; set; }
         public List<File> IDCriteria_FileList = new List<File>();
-        #endregion
-
         public bool IsIDCriteriaEnable { get; set; }
+        #endregion
         public bool IsOrderCriteriaEnable { get; set; }
 
         /// <summary>
@@ -105,30 +131,50 @@ namespace NHIRD
         /// </summary>
         public void DoExtractData()
         {
+            //建立執行個體
             var extractData = new ExtractData();
-            if (list_ICDinclude.Count > 0)
+            //判斷是否有ICD 條件
+            if (IsICDIncludeEnabled)
             {
-                extractData.CriteriaList.Add(new ExtractData.Criteria() { colname = "ICD", StringList = list_ICDinclude.ToList() });
+                if (IsICDExcludeEnabled)
+                {
+                    extractData.CriteriaList.Add(new ExtractData.Criteria()
+                    {
+                        key = "ICD9",
+                        StringIncludeList = list_ICDinclude.ToList(),
+                        StringExcludeList = list_ICDExclude.ToList()
+                    });
+                }
+                else
+                {
+                    extractData.CriteriaList.Add(new ExtractData.Criteria()
+                    {
+                        key = "ICD9",
+                        StringIncludeList = list_ICDinclude.ToList()
+                    });
+                }
             }
-
+            //判斷是否有年齡條件
             if (IsAgeLCriteriaEnable || IsAgeUCriteriaEnable)
             {
                 extractData.CriteriaList.Add(new ExtractData.Criteria()
                 {
-                    colname = "AGE",
+                    key = "AGE",
                     CriteriaNumUpper = IsAgeUCriteriaEnable ? db_AgeU : 0,
                     CriteriaNumLower = IsAgeLCriteriaEnable ? db_AgeL : 0
                 });
             }
+            //判斷是否有ID條件
             if (IsIDCriteriaEnable)
             {
                 extractData.CriteriaList.Add(new ExtractData.Criteria()
                 {
-                    colname = "IDLIST",
+                    key = "IDLIST",
                     IDCriteriaFileList = IDCriteria_FileList
                 });
             }
-            extractData.Do(parentVM.parentWindow.parentWindow.rawDataFormats, "CD", from f in list_file where f.selected == true select f, str_outputDir);
+            //執行
+            extractData.Do(parentVM.parentWindow.parentWindow.rawDataFormats, new string[] { "CD" }, from f in list_file where f.selected == true select f, str_outputDir);
         }
 
     }

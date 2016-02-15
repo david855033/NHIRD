@@ -10,16 +10,16 @@ namespace NHIRD
     class ExtractData
     {
         List<RawDataFormat> rawDataFormats;
-        string selectedFileType;
+        string[] selectedFileTypes;
         IEnumerable<File> rawDataFileList;
 
         string outputDir;
         List<StringDataFormat> stringDataFormats = new List<StringDataFormat>();
         List<NumberDataFormat> numberDataFormats = new List<NumberDataFormat>();
-        public void Do(List<RawDataFormat> rawDataFormats, string selectedFileType, IEnumerable<File> list_file, string outputDir)
+        public void Do(List<RawDataFormat> rawDataFormats, string[] selectedFileTypes, IEnumerable<File> list_file, string outputDir)
         {
             ///使用rawDataFormats初始化資料清單(分為數值資料跟字串資料)
-            this.selectedFileType = selectedFileType;
+            this.selectedFileTypes = selectedFileTypes;
             this.rawDataFormats = rawDataFormats;
             this.outputDir = outputDir;
             this.rawDataFileList = list_file;
@@ -36,17 +36,18 @@ namespace NHIRD
         {
             var queryStr =
                 from r in rawDataFormats
-                where r.FileName == selectedFileType && r.DataType == "C"
+                where selectedFileTypes.Any(x => x == r.FileType) && r.DataType == "C"
                 select r;
             foreach (var q in queryStr)
             {
                 var toAdd = new StringDataFormat()
                 {
-                    name = q.ColumnName,
+                    key = q.ColumnName,
                     position = q.Postion,
                     length = q.Lengths,
                     start_year = q.start_year,
-                    end_year = q.end_year
+                    end_year = q.end_year,
+                    FileType = q.FileType
                 };
                 stringDataFormats.Add(toAdd);
             }
@@ -54,17 +55,18 @@ namespace NHIRD
 
             var queryNum =
                from r in rawDataFormats
-               where r.FileName == selectedFileType && r.DataType == "N"
+               where selectedFileTypes.Any(x => x == r.FileType) && r.DataType == "N"
                select r;
             foreach (var q in queryNum)
             {
                 var toAdd = new NumberDataFormat()
                 {
-                    name = q.ColumnName,
+                    key = q.ColumnName,
                     position = q.Postion,
                     length = q.Lengths,
                     start_year = q.start_year,
-                    end_year = q.end_year
+                    end_year = q.end_year,
+                     FileType = q.FileType
                 };
                 numberDataFormats.Add(toAdd);
             }
@@ -81,14 +83,14 @@ namespace NHIRD
             foreach (string g in groupQuery)
             {
                 var current_list_file = from q in rawDataFileList where q.@group == g select q;
-                if (CriteriaList.Any(x => x.colname == "IDLIST") == true)//有使用"IDLIST"的條件，需要載入IDLIST
+                if (CriteriaList.Any(x => x.key == "IDLIST") == true)//有使用"IDLIST"的條件，需要載入IDLIST
                 {
                     var NewIDCriteriaList = new DistinctList<IDData>();
-                    //搜尋同組的File
-                    var FilesOfTheGroup = from q in CriteriaList.Find(x => x.colname == "IDLIST").IDCriteriaFileList
+                    //搜尋同組的Criteria File
+                    var FilesOfTheGroup = from q in CriteriaList.Find(x => x.key == "IDLIST").IDCriteriaFileList
                                           where q.@group == g
                                           select q;
-                    //載入同組File進入IDList，儲存在該筆criteria中
+                    //載入同組File中的ID+Birthday進入IDList，儲存在該筆criteria中
                     foreach (var f in FilesOfTheGroup)
                     {
                         using (var sr = new StreamReader(f.path))
@@ -105,19 +107,19 @@ namespace NHIRD
                             }
                         }
                     }
-                    CriteriaList.Find(x => x.colname == "IDLIST").IDCriteriaList = NewIDCriteriaList;
+                    CriteriaList.Find(x => x.key == "IDLIST").IDCriteriaList = NewIDCriteriaList;
                 }
                 // 逐個檔案進行
                 foreach (File currentfile in current_list_file)
                 {
-                    //依照年分挑出正確的Dataformat，傳入Readfile及Writefile
+                    //依照年分及filetype挑出正確的Dataformat，傳入Readfile及Writefile
                     var queryStringDataFormats =
                          (from q in stringDataFormats
-                          where currentfile.MKyear >= q.start_year && currentfile.MKyear <= q.end_year
+                          where currentfile.MKyear >= q.start_year && currentfile.MKyear <= q.end_year && selectedFileTypes.Any(x => x == q.FileType)
                           select q).ToList();
                     var queryNumberDataFormats =
                       (from q in numberDataFormats
-                       where currentfile.MKyear >= q.start_year && currentfile.MKyear <= q.end_year
+                       where currentfile.MKyear >= q.start_year && currentfile.MKyear <= q.end_year && selectedFileTypes.Any(x => x == q.FileType)
                        select q).ToList();
                     //建立資料清單，開始讀寫
                     var dataRowList = new List<DataRow>();
@@ -131,74 +133,6 @@ namespace NHIRD
                         queryStringDataFormats, queryNumberDataFormats);
                 }
             }
-        }
-
-        void JudgeFile(File currentfile, List<DataRow> dataRowList,
-        List<StringDataFormat> queryStringDataFormats, List<NumberDataFormat> queryNumberDataFormats)
-        {
-            //逐個criteria確定要判斷的欄位index
-            foreach (var currentCriteria in CriteriaList)
-            {
-                //重置criteriaList內之indexList(可對應到當前檔案)
-                currentCriteria.indexStrDatalist = new List<int>();
-                currentCriteria.indexNumData = -1;
-
-                //將想要判斷的資料之index找出來，丟入criteria的物件中
-                //ID list
-                if (currentCriteria.colname == "IDLIST")
-                {
-                    currentCriteria.indexBirthday = queryStringDataFormats.FindIndex(x => x.name.IndexOf("BIRTHDAY") >= 0);
-                    currentCriteria.indexID = queryStringDataFormats.FindIndex(x => x.name == "ID");
-                }
-                //年齡資料
-                else if (currentCriteria.colname == "AGE")
-                {
-                    currentCriteria.indexBirthday = queryStringDataFormats.FindIndex(x => x.name.IndexOf("BIRTHDAY") >= 0);
-                    currentCriteria.indexEventday = queryStringDataFormats.FindIndex(x => x.name == "FUNC_DATE");
-                    if (currentCriteria.indexEventday < 0)
-                        currentCriteria.indexEventday = queryStringDataFormats.FindIndex(x => x.name == "IN_DATE");
-                }
-                else
-                {
-                    //字串資料(同時比較複數欄位)
-                    foreach (var currentColName in
-                        from q in queryStringDataFormats
-                        where q.name.IndexOf(currentCriteria.colname) >= 0
-                        select q.name)
-                    {
-                        int r = queryStringDataFormats.FindIndex(x => x.name == currentColName);
-                        if (r >= 0)
-                        {
-                            currentCriteria.indexStrDatalist.Add(r);
-                        }
-                    }
-                    if (currentCriteria.indexStrDatalist.Count > 0) continue;
-                    //數字資料(單一欄位)
-                    var qColName =
-                        (from q in queryNumberDataFormats
-                         where q.name.IndexOf(currentCriteria.colname) >= 0
-                         select q.name);
-                    if (qColName.Count() > 0)
-                    {
-                        int R = queryNumberDataFormats.FindIndex(x => x.name == qColName.First());
-                        if (R >= 0)
-                        {
-                            currentCriteria.indexNumData = R;
-                        }
-                    }
-                }
-            }
-
-            //逐筆資料比對(使用criteria.DoCheck)，只要有一項不相符就將該筆DataRow.IsMatch設定為neg，並跳過該筆資料
-            foreach (var currentDataRow in dataRowList)
-            {
-                foreach (var currentCriteria in CriteriaList)
-                {
-                    if (currentDataRow.IsMatch == false) continue;
-                    currentDataRow.IsMatch = currentCriteria.DoCheck(currentDataRow);
-                }
-            }
-
         }
 
         void ReadFile(File currentfile, List<DataRow> dataRowList,
@@ -242,6 +176,74 @@ namespace NHIRD
             }
         }
 
+        void JudgeFile(File currentfile, List<DataRow> dataRowList,
+        List<StringDataFormat> queryStringDataFormats, List<NumberDataFormat> queryNumberDataFormats)
+        {
+            //逐個criteria確定要判斷的欄位index
+            foreach (var currentCriteria in CriteriaList)
+            {
+                //重置criteriaList內之indexList(可對應到當前檔案)
+                currentCriteria.indexStrDatalist = new List<int>();
+                currentCriteria.indexNumData = -1;
+
+                //將想要判斷的資料之index找出來，丟入criteria的物件中
+                //ID list
+                if (currentCriteria.key == "IDLIST")
+                {
+                    currentCriteria.indexBirthday = queryStringDataFormats.FindIndex(x => x.key.IndexOf("BIRTHDAY") >= 0);
+                    currentCriteria.indexID = queryStringDataFormats.FindIndex(x => x.key == "ID");
+                }
+                //年齡資料
+                else if (currentCriteria.key == "AGE")
+                {
+                    currentCriteria.indexBirthday = queryStringDataFormats.FindIndex(x => x.key.IndexOf("BIRTHDAY") >= 0);
+                    currentCriteria.indexEventday = queryStringDataFormats.FindIndex(x => x.key == "FUNC_DATE");
+                    if (currentCriteria.indexEventday < 0)
+                        currentCriteria.indexEventday = queryStringDataFormats.FindIndex(x => x.key == "IN_DATE");
+                }
+                else
+                {
+                    //字串資料(同時比較複數欄位)
+                    foreach (var currentKeyName in
+                        from q in queryStringDataFormats
+                        where q.key.IndexOf(currentCriteria.key) >= 0
+                        select q.key)
+                    {
+                        int r = queryStringDataFormats.FindIndex(x => x.key == currentKeyName);
+                        if (r >= 0)
+                        {
+                            currentCriteria.indexStrDatalist.Add(r);
+                        }
+                    }
+                    if (currentCriteria.indexStrDatalist.Count > 0) continue;
+                    //數字資料(單一欄位)
+                    var qKeyName =
+                        (from q in queryNumberDataFormats
+                         where q.key.IndexOf(currentCriteria.key) >= 0
+                         select q.key);
+                    if (qKeyName.Count() > 0)
+                    {
+                        int index = queryNumberDataFormats.FindIndex(x => x.key == qKeyName.First());
+                        if (index >= 0)
+                        {
+                            currentCriteria.indexNumData = index;
+                        }
+                    }
+                }
+            }
+
+            //逐筆資料比對(使用criteria.DoCheck)，只要有一項不相符就將該筆DataRow.IsMatch設定為neg，並跳過該筆資料
+            foreach (var currentDataRow in dataRowList)
+            {
+                foreach (var currentCriteria in CriteriaList)
+                {
+                    if (currentDataRow.IsMatch == false) continue;
+                    currentDataRow.IsMatch = currentCriteria.DoCheck(currentDataRow);
+                }
+            }
+
+        }
+
         void WriteFile(File currentfile, List<DataRow> dataRowList,
         List<StringDataFormat> queryStringDataFormats,
             List<NumberDataFormat> queryNumberDataFormats)
@@ -249,19 +251,18 @@ namespace NHIRD
             //檢查目錄是否存在
             if (!Directory.Exists(outputDir))
                 Directory.CreateDirectory(outputDir);
-
             string outpath = outputDir + "\\" + currentfile.name.Split('.')[0] + ".EXT";
             using (var sw = new StreamWriter(outpath))
             {
                 string title = "";
                 foreach (var q in queryStringDataFormats)
                 {
-                    title += q.name + '\t';
+                    title += q.key + '\t';
                 }
 
                 foreach (var q in queryNumberDataFormats)
                 {
-                    title += q.name + '\t';
+                    title += q.key + '\t';
                 }
                 sw.WriteLine(title.TrimEnd('\t'));
 
@@ -288,8 +289,8 @@ namespace NHIRD
         /// </summary>
         public class Criteria
         {
-            public string colname;
-            public List<string> StringList;
+            public string key;
+            public List<string> StringIncludeList, StringExcludeList;
             public List<int> indexStrDatalist;
             public double CriteriaNumUpper, CriteriaNumLower;
             public int indexNumData;
@@ -299,7 +300,7 @@ namespace NHIRD
             //實際執行判斷的方法
             public bool DoCheck(DataRow InputDataRow)
             {
-                if (colname == "IDLIST")
+                if (key == "IDLIST")
                 {
                     var thisID = new IDData { ID = InputDataRow.stringData[indexID], Birthday = InputDataRow.stringData[indexBirthday] };
                     if (IDCriteriaList.BinarySearch(thisID) >= 0)
@@ -311,7 +312,7 @@ namespace NHIRD
                         return false;
                     }
                 }
-                else if (colname == "AGE")
+                else if (key == "AGE")
                 {
                     DateTime birthday = InputDataRow.stringData[indexBirthday].StringToDate();
                     DateTime eventday = InputDataRow.stringData[indexEventday].StringToDate();
@@ -327,13 +328,25 @@ namespace NHIRD
                 }
                 else if (indexStrDatalist.Count > 0)
                 {
+                    bool include = false, exclude = false;
                     foreach (var index in indexStrDatalist)
                     {
-                        foreach (string criteria in StringList)
+                        foreach (string criteria in StringIncludeList)
+                        {
                             if (InputDataRow.stringData[index].Substring(0, criteria.Length) == criteria)
                             {
-                                return true;
+                                include = true;
                             }
+                        }
+                        foreach (string criteria in StringExcludeList)
+                        {
+                            if (InputDataRow.stringData[index].Substring(0, criteria.Length) == criteria)
+                            {
+                                exclude = true;
+                            }
+                        }
+                        if (include && !exclude)
+                            return true;
                     }
                     return false;
                 }
@@ -352,20 +365,22 @@ namespace NHIRD
         #region Extract Data使用的class
         public class StringDataFormat
         {
-            public string name;
+            public string key;
             public int start_year;
             public int end_year;
             public int position;
             public int length;
+            public string FileType;
         }
 
         public class NumberDataFormat
         {
-            public string name;
+            public string key;
             public int start_year;
             public int end_year;
             public int position;
             public int length;
+            public string FileType;
         }
 
         public class DataRow

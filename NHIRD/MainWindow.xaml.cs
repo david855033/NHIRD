@@ -69,10 +69,10 @@ namespace NHIRD
                 {
                     string[] cols = sr.ReadLine().Split('\t');
                     var FormatToAdd = new RawDataFormat();
-                    FormatToAdd.FileName = cols[Index_FileName];
-                    if (FormatToAdd.FileName == "")
+                    FormatToAdd.FileType = cols[Index_FileName];
+                    if (FormatToAdd.FileType == "")
                         continue;
-                    FormatToAdd.FileNameCH = cols[Index_FileNameCH];
+                    FormatToAdd.FileTypeCH = cols[Index_FileNameCH];
                     if (cols[Index_start_year] == "")
                     {
                         FormatToAdd.start_year = 0;

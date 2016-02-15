@@ -13,6 +13,7 @@ namespace NHIRD
     public class File
     {
         public string name { get; set; }
+        public string FileType { get; set; }
         public string path { get; set; }
         double size { get; set; }
         public string sizeMB { get { return (size / 1024 / 1024).Round() + "MB"; } }
@@ -30,6 +31,8 @@ namespace NHIRD
         {
             path = filepath;
             name = path.PathToFileName();
+            string[] AvailableFileType = new string[] { "CD", "DD" };
+            FileType = AvailableFileType.First(x => name.IndexOf(x) >= 0);
             try
             {
                 size = new FileInfo(path).Length;
@@ -97,8 +100,8 @@ namespace NHIRD
     /// </summary>
     public class RawDataFormat
     {
-        public string FileName { get; set; }
-        public string FileNameCH { get; set; }
+        public string FileType { get; set; }
+        public string FileTypeCH { get; set; }
         public int start_year { get; set; }
         public int end_year { get; set; }
         public string ColumnName { get; set; }

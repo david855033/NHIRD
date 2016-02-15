@@ -27,7 +27,16 @@ namespace NHIRD
             Do_ExtractData = new RelayCommand(ExtractData, (x) => true);
         }
 
-
+        public bool IsCDFileTypeEnabled {
+            get { return Model_Instance.IsCDFileTypeEnabled; }
+            set { Model_Instance.IsCDFileTypeEnabled = value; OnPropertyChanged(nameof(IsCDFileTypeEnabled)); }
+        }
+        public bool IsDDFileTypeEnabled
+        {
+            get { return Model_Instance.IsDDFileTypeEnabled; }
+            set { Model_Instance.IsDDFileTypeEnabled = value; OnPropertyChanged(nameof(IsDDFileTypeEnabled)); }
+        }
+        
         // -- Properties
         /// <summary>
         /// 資料夾的路徑，更動時自動更新fileList
@@ -42,45 +51,52 @@ namespace NHIRD
             {
                 Model_Instance.str_inputDir = GlobalSetting.inputDir = value;
                 // -- 初始化 file / year / group list
-                try
-                {
-                    string[] paths;
-                    paths = Directory.EnumerateFiles(value, "*CD*.DAT", SearchOption.AllDirectories).ToArray();
-                    Array.Sort(paths);
-                    // -- file
-                    var newfiles = new ObservableCollection<File>();
-                    foreach (string str_filepath in paths)
-                    {
-                        newfiles.Add(new File(str_filepath));
-                    }
-                    files.Clear();
-                    files = newfiles;
-                    // -- year
-                    var newyears = new ObservableCollection<Year>();
-                    foreach (string s in files.Select(x => x.year).Distinct())
-                    {
-                        newyears.Add(new Year(s));
-                    }
-                    years.Clear();
-                    years = newyears;
-                    // -- group
-                    var newgroups = new ObservableCollection<Group>();
-                    foreach (string s in files.Select(x => x.group).Distinct())
-                    {
-                        newgroups.Add(new Group(s));
-                    }
-                    groups.Clear();
-                    groups = newgroups;
-                    parentWindow.refresh_Listviews();
-                }
-                catch
-                {
-                    System.Windows.MessageBox.Show("不正確的路徑\r\n提示：不可以使用磁碟機之根目錄");
-                }
-                OnPropertyChanged("");
+                makeFileList(value);
+                OnPropertyChanged(nameof(InputDir));
             }
         }
-
+        /// <summary>
+        /// 更動input dir 或
+        /// </summary>
+        /// <param name="inputPath"></param>
+        void makeFileList(string inputPath)
+        {
+            try
+            {
+                string[] paths;
+                paths = Directory.EnumerateFiles(inputPath, "*CD*.DAT", SearchOption.AllDirectories).ToArray();
+                Array.Sort(paths);
+                // -- file
+                var newfiles = new ObservableCollection<File>();
+                foreach (string str_filepath in paths)
+                {
+                    newfiles.Add(new File(str_filepath));
+                }
+                files.Clear();
+                files = newfiles;
+                // -- year
+                var newyears = new ObservableCollection<Year>();
+                foreach (string s in files.Select(x => x.year).Distinct())
+                {
+                    newyears.Add(new Year(s));
+                }
+                years.Clear();
+                years = newyears;
+                // -- group
+                var newgroups = new ObservableCollection<Group>();
+                foreach (string s in files.Select(x => x.group).Distinct())
+                {
+                    newgroups.Add(new Group(s));
+                }
+                groups.Clear();
+                groups = newgroups;
+                parentWindow.refresh_Listviews();
+            }
+            catch
+            {
+                System.Windows.MessageBox.Show("不正確的路徑\r\n提示：不可以使用磁碟機之根目錄");
+            }
+        }
         /// <summary>
         /// 檔案清單
         /// </summary>
@@ -139,29 +155,7 @@ namespace NHIRD
             }
         }
 
-        /// <summary>
-        /// 輸出資料夾
-        /// </summary>
-        public string str_outputDir
-        {
-            get
-            {
-                return Model_Instance.str_outputDir;
-            }
-            set
-            {
-                Model_Instance.str_outputDir = GlobalSetting.outputDir = value;
-                OnPropertyChanged("");
-            }
-        }
-        /// <summary>
-        /// 顯示訊息(除錯用)
-        /// </summary>
-        public string message
-        {
-            get { return Model_Instance.message; }
-            set { Model_Instance.message = value; OnPropertyChanged(nameof(message)); }
-        }
+       
 
         /// <summary>
         /// ICD include清單
@@ -178,10 +172,8 @@ namespace NHIRD
                 OnPropertyChanged(nameof(ICDIncludes));
             }
         }
-
-
         /// <summary>
-        /// ICD include清單
+        /// ICD Exclude清單
         /// </summary>
         public ObservableCollection<string> ICDExcludes
         {
@@ -193,6 +185,26 @@ namespace NHIRD
             {
                 Model_Instance.list_ICDExclude = value;
                 OnPropertyChanged(nameof(ICDExcludes));
+            }
+        }
+        public bool IsICDIncludeEnabled
+        {
+            get {return Model_Instance.IsICDIncludeEnabled;}
+            set {
+                Model_Instance.IsICDIncludeEnabled = value;
+                if (value == false) IsICDExcludeEnabled = false; //Include被取消時同時取消Exclude
+                OnPropertyChanged(nameof(IsICDIncludeEnabled));
+            }
+        }
+    
+        public bool IsICDExcludeEnabled
+        {
+            get { return Model_Instance.IsICDExcludeEnabled; }
+            set
+            {
+                Model_Instance.IsICDExcludeEnabled = value;
+                if (value == true) IsICDIncludeEnabled = true; //exclude被啟動時同時啟動include
+                OnPropertyChanged(nameof(IsICDExcludeEnabled));
             }
         }
 
@@ -236,6 +248,14 @@ namespace NHIRD
         #endregion
 
         #region -- ID criteria controls
+        /// <summary>
+        /// ID Criteria List 的Folder Path(資料夾內應該要內含CD或DD的EXT檔案), 更動時更新ID Criteria List
+        /// </summary>
+        public bool IsIDCriteriaEnable
+        {
+            get { return Model_Instance.IsIDCriteriaEnable; }
+            set { Model_Instance.IsIDCriteriaEnable = value; }
+        }
         public string IDCriteriaFolderPath
         {
             get { return Model_Instance.IDCriteriaFolderPath; }
@@ -244,8 +264,9 @@ namespace NHIRD
                 Model_Instance.IDCriteriaFolderPath = GlobalSetting.IDcriteriaDir = value;
                 try
                 {
-                    string[] paths;
-                    paths = Directory.EnumerateFiles(value, "*CD*.EXT", SearchOption.AllDirectories).ToArray();
+                    var paths = new List<string>();
+                    paths.AddRange(Directory.EnumerateFiles(value, "*CD*.EXT", SearchOption.AllDirectories).ToArray());
+                    paths.AddRange(Directory.EnumerateFiles(value, "*DD*.EXT", SearchOption.AllDirectories).ToArray());
                     var newfiles = new List<File>();
                     foreach (string str_filepath in paths)
                     {
@@ -253,8 +274,6 @@ namespace NHIRD
                     }
                     IDCriteriaFileList.Clear();
                     IDCriteriaFileList = newfiles;
-                    var groupCount = (from q in IDCriteriaFileList group q by q.@group into g select g).Count();
-                    IDCriteriaMessage = "Total " + IDCriteriaFileList.Count() + " files was loaded. Group count: " + groupCount;
                 }
                 catch
                 {
@@ -272,25 +291,49 @@ namespace NHIRD
                 OnPropertyChanged(nameof(IDCriteriaMessage));
             }
         }
+        /// <summary>
+        /// 實際儲存檔案資料的位置，更動時更新message
+        /// </summary>
         public List<File> IDCriteriaFileList
         {
             get { return Model_Instance.IDCriteria_FileList; }
             set
             {
                 Model_Instance.IDCriteria_FileList = value;
+                var groupCount = (from q in IDCriteriaFileList group q by q.@group into g select g).Count();
+                IDCriteriaMessage = "Total " + IDCriteriaFileList.Count() + " files was loaded. Group count: " + groupCount;
             }
         }
         #endregion
 
-        public bool IsIDCriteriaEnable
-        {
-            get { return Model_Instance.IsIDCriteriaEnable; }
-            set { Model_Instance.IsIDCriteriaEnable = value; }
-        }
         public bool IsOrderCriteriaEnable
         {
             get { return Model_Instance.IsOrderCriteriaEnable; }
             set { Model_Instance.IsOrderCriteriaEnable = value; }
+        }
+
+        /// <summary>
+        /// 輸出資料夾
+        /// </summary>
+        public string str_outputDir
+        {
+            get
+            {
+                return Model_Instance.str_outputDir;
+            }
+            set
+            {
+                Model_Instance.str_outputDir = GlobalSetting.outputDir = value;
+                OnPropertyChanged("");
+            }
+        }
+        /// <summary>
+        /// 顯示訊息(除錯用)
+        /// </summary>
+        public string message
+        {
+            get { return Model_Instance.message; }
+            set { Model_Instance.message = value; OnPropertyChanged(nameof(message)); }
         }
 
         // -- Actions

@@ -192,23 +192,14 @@ namespace NHIRD
                 ViewModel_Instance.str_outputDir = FolderSelector.SelectedPath;
             }
         }
-
         #region ICD include & Exclude按鈕功能
         private void ButtonAddIncl_Click(object sender, RoutedEventArgs e)
         {
-            if (!ViewModel_Instance.ICDIncludes.Any(x => x == inputIncl.Text))
-                this.ViewModel_Instance.ICDIncludes.Add(inputIncl.Text);
-        }
-        private void ButtonClrIncl_Click(object sender, RoutedEventArgs e)
-        {
-            this.ViewModel_Instance.ICDIncludes.Clear();
-        }
-        private void Button_DelInclClick(object sender, RoutedEventArgs e)
-        {
-            if (lv_Incl.SelectedItem != null)
+            if (!ViewModel_Instance.ICDIncludes.Any(x => x == inputIncl.Text) && inputIncl.Text != "")
             {
-                var index = lv_Incl.SelectedIndex;
-                this.ViewModel_Instance.ICDIncludes.RemoveAt(index);
+                this.ViewModel_Instance.ICDIncludes.Add(inputIncl.Text);
+                inputIncl.Text = "";
+                Cb_ICDinclude.IsChecked = true;
             }
         }
         private void ButtonEdtIncl_Click(object sender, RoutedEventArgs e)
@@ -220,21 +211,30 @@ namespace NHIRD
                 this.ViewModel_Instance.ICDIncludes.Insert(index, inputIncl.Text);
             }
         }
+        private void Button_DelInclClick(object sender, RoutedEventArgs e)
+        {
+            if (lv_Incl.SelectedItem != null)
+            {
+                var index = lv_Incl.SelectedIndex;
+                this.ViewModel_Instance.ICDIncludes.RemoveAt(index);
+                if (this.ViewModel_Instance.ICDIncludes.Count() == 0)
+                {
+                    Cb_ICDinclude.IsChecked = false;
+                }
+            }
+        }
+        private void ButtonClrIncl_Click(object sender, RoutedEventArgs e)
+        {
+            this.ViewModel_Instance.ICDIncludes.Clear();
+            Cb_ICDinclude.IsChecked = false;
+        }
         private void ButtonAddExcl_Click(object sender, RoutedEventArgs e)
         {
-            if (!ViewModel_Instance.ICDExcludes.Any(x => x == inputExcl.Text))
-                this.ViewModel_Instance.ICDExcludes.Add(inputExcl.Text);
-        }
-        private void ButtonClrExcl_Click(object sender, RoutedEventArgs e)
-        {
-            this.ViewModel_Instance.ICDExcludes.Clear();
-        }
-        private void Button_DelExclClick(object sender, RoutedEventArgs e)
-        {
-            if (lv_Excl.SelectedItem != null)
+            if (!ViewModel_Instance.ICDExcludes.Any(x => x == inputExcl.Text) && inputExcl.Text != "")
             {
-                var Exdex = lv_Excl.SelectedIndex;
-                this.ViewModel_Instance.ICDExcludes.RemoveAt(Exdex);
+                this.ViewModel_Instance.ICDExcludes.Add(inputExcl.Text);
+                inputExcl.Text = "";
+                Cb_ICDexclude.IsChecked = true;
             }
         }
         private void ButtonEdtExcl_Click(object sender, RoutedEventArgs e)
@@ -246,16 +246,41 @@ namespace NHIRD
                 this.ViewModel_Instance.ICDExcludes.Insert(Exdex, inputExcl.Text);
             }
         }
-
+        private void Button_DelExclClick(object sender, RoutedEventArgs e)
+        {
+            if (lv_Excl.SelectedItem != null)
+            {
+                var Exdex = lv_Excl.SelectedIndex;
+                this.ViewModel_Instance.ICDExcludes.RemoveAt(Exdex);
+                if (this.ViewModel_Instance.ICDExcludes.Count() == 0)
+                {
+                    Cb_ICDexclude.IsChecked = false;
+                }
+            }
+        }
+      
+        private void ButtonClrExcl_Click(object sender, RoutedEventArgs e)
+        {
+            this.ViewModel_Instance.ICDExcludes.Clear();
+            Cb_ICDexclude.IsChecked = false;
+        }
         #endregion
-        
+        /// <summary>
+        /// 限制Text Box只能輸入float
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Textbox_FloatVerify_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             var s = sender as System.Windows.Controls.TextBox;
             s.Text = s.Text.RegexFloat();
             s.Select(s.Text.Length, 0);
         }
-
+        /// <summary>
+        /// 選取ID Criteriea list 資料夾
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SelectIDCriteria_Click(object sender, RoutedEventArgs e)
         {
             var FolderSelector = new FolderBrowserDialog();

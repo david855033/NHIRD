@@ -8,6 +8,11 @@ namespace NHIRD
 {
     static class Extentions
     {
+        /// <summary>
+        /// 取出檔名(含附檔名)
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static string PathToFileName(this string path)
         {
             var pathsplit = path.Split('\\');
