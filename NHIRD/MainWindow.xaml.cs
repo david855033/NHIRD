@@ -28,9 +28,16 @@ namespace NHIRD
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.Hide();
-            var GetCD_instance = new GetCD_Window(this);
+            var GetCD_instance = new Window_GetCD(this);
             GetCD_instance.Show();
         }
+        private void ButtonGetOrder_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+            var GetOrder_instance = new Window_GetOrder(this);
+            GetOrder_instance.Show();
+        }
+
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -99,5 +106,7 @@ namespace NHIRD
                 }
             }
         }
+
+       
     }
 }

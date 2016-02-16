@@ -1,4 +1,4 @@
-﻿<Window x:Name="WindowGetCD" x:Class="NHIRD.GetCD_Window"
+﻿<Window x:Name="WindowGetCD" x:Class="NHIRD.Window_GetCD"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -105,22 +105,22 @@
             <TextBlock x:Name="TextBlock_FileStatus" Margin="5" Text="{Binding FileStatus}"/>
         </StackPanel>
 
-        <StackPanel  Grid.Column="1" Margin="0,20" HorizontalAlignment="Center">
+        <StackPanel x:Name="criteriaStackPanel" Grid.Column="1" Margin="0,20" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <StackPanel Margin="10">
                     <CheckBox x:Name="Cb_ICDinclude" HorizontalAlignment="Center" IsChecked="{Binding IsICDIncludeEnabled, Mode=TwoWay}">Inclusion criteria</CheckBox>
                     <StackPanel Height="80" Orientation="Horizontal" HorizontalAlignment="Center" >
-                        <ListView x:Name="lv_Incl" Width="80" ItemsSource="{Binding ICDIncludes}" SelectionMode="Single" ></ListView>
+                        <ListView x:Name="lv_ICDIncl" Width="80" ItemsSource="{Binding ICDIncludes}" SelectionMode="Single" ></ListView>
                         <StackPanel Width="60">
                             <TextBlock TextAlignment="Center">ICD</TextBlock>
-                            <TextBox x:Name="inputIncl"/>
+                            <TextBox x:Name="inputICDIncl"/>
                             <StackPanel Orientation="Horizontal">
-                                <Button Margin="1,1" Click="ButtonAddIncl_Click">新增</Button>
-                                <Button Margin="1,1" Click="ButtonEdtIncl_Click">修改</Button>
+                                <Button Margin="1,1" Click="ButtonAddICDIncl_Click">新增</Button>
+                                <Button Margin="1,1" Click="ButtonEdtICDIncl_Click">修改</Button>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Button Margin="1,1" Click="Button_DelInclClick">刪除</Button>
-                                <Button Margin="1,1" Click="ButtonClrIncl_Click">全清</Button>
+                                <Button Margin="1,1" Click="Button_DelICDInclClick">刪除</Button>
+                                <Button Margin="1,1" Click="ButtonClrICDIncl_Click">全清</Button>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
@@ -128,17 +128,55 @@
                 <StackPanel Margin="10">
                     <CheckBox x:Name="Cb_ICDexclude" HorizontalAlignment="Center" IsChecked="{Binding IsICDExcludeEnabled, Mode=TwoWay}">Exclusion criteria</CheckBox>
                     <StackPanel Height="80" Orientation="Horizontal" HorizontalAlignment="Center" >
-                        <ListView x:Name="lv_Excl" Width="80" ItemsSource="{Binding ICDExcludes}" SelectionMode="Single" ></ListView>
+                        <ListView x:Name="lv_ICDExcl" Width="80" ItemsSource="{Binding ICDExcludes}" SelectionMode="Single" ></ListView>
                         <StackPanel Width="60">
                             <TextBlock TextAlignment="Center">ICD</TextBlock>
-                            <TextBox x:Name="inputExcl"/>
+                            <TextBox x:Name="inputICDExcl"/>
                             <StackPanel Orientation="Horizontal">
-                                <Button Margin="1,1" Click="ButtonAddExcl_Click" >新增</Button>
-                                <Button Margin="1,1" Click="ButtonEdtExcl_Click">修改</Button>
+                                <Button Margin="1,1" Click="ButtonAddICDExcl_Click" >新增</Button>
+                                <Button Margin="1,1" Click="ButtonEdtICDExcl_Click">修改</Button>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Button Margin="1,1" Click="Button_DelExclClick">刪除</Button>
-                                <Button Margin="1,1" Click="ButtonClrExcl_Click">全清</Button>
+                                <Button Margin="1,1" Click="Button_DelICDExclClick">刪除</Button>
+                                <Button Margin="1,1" Click="ButtonClrICDExcl_Click">全清</Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel Margin="10">
+                    <CheckBox x:Name="Cb_PROCinclude" HorizontalAlignment="Center" IsChecked="{Binding IsPROCIncludeEnabled, Mode=TwoWay}">Inclusion criteria</CheckBox>
+                    <StackPanel Height="80" Orientation="Horizontal" HorizontalAlignment="Center" >
+                        <ListView x:Name="lv_PROCIncl" Width="80" ItemsSource="{Binding PROCIncludes}" SelectionMode="Single" ></ListView>
+                        <StackPanel Width="60">
+                            <TextBlock TextAlignment="Center">ICD OP</TextBlock>
+                            <TextBox x:Name="inputPROCIncl"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Margin="1,1" Click="ButtonAddPROCIncl_Click">新增</Button>
+                                <Button Margin="1,1" Click="ButtonEdtPROCIncl_Click">修改</Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Margin="1,1" Click="Button_DelPROCInclClick">刪除</Button>
+                                <Button Margin="1,1" Click="ButtonClrPROCIncl_Click">全清</Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Margin="10">
+                    <CheckBox x:Name="Cb_PROCexclude" HorizontalAlignment="Center" IsChecked="{Binding IsPROCExcludeEnabled, Mode=TwoWay}">Exclusion criteria</CheckBox>
+                    <StackPanel Height="80" Orientation="Horizontal" HorizontalAlignment="Center" >
+                        <ListView x:Name="lv_PROCExcl" Width="80" ItemsSource="{Binding PROCExcludes}" SelectionMode="Single" ></ListView>
+                        <StackPanel Width="60">
+                            <TextBlock TextAlignment="Center">ICD OP</TextBlock>
+                            <TextBox x:Name="inputPROCExcl"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Margin="1,1" Click="ButtonAddPROCExcl_Click" >新增</Button>
+                                <Button Margin="1,1" Click="ButtonEdtPROCExcl_Click">修改</Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Margin="1,1" Click="Button_DelPROCExclClick">刪除</Button>
+                                <Button Margin="1,1" Click="ButtonClrPROCExcl_Click">全清</Button>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
@@ -150,11 +188,11 @@
                     <StackPanel Margin="10,0">
                         <StackPanel Orientation="Horizontal">
                             <CheckBox x:Name="Cb_AgeL" Width="80" IsChecked="{Binding IsAgeLCriteriaEnable, Mode=TwoWay}">Lower Limit</CheckBox>
-                            <TextBox x:Name="Tx_AgeL" Margin="10,0" Width="50" Text="{Binding db_AgeL}" KeyDown="Textbox_FloatVerify_KeyDown"></TextBox>
+                            <TextBox x:Name="Tx_AgeL" Margin="10,0" Width="50" Text="{Binding str_AgeL}" KeyDown="Textbox_FloatVerify_KeyDown"></TextBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <CheckBox x:Name="Cb_AgeU" Width="80" IsChecked="{Binding IsAgeUCriteriaEnable, Mode=TwoWay}">Upper Limit</CheckBox>
-                            <TextBox  x:Name="Tx_AgeU" Margin="10,0" Width="50" Text="{Binding db_AgeU}" KeyDown="Textbox_FloatVerify_KeyDown"></TextBox>
+                            <TextBox  x:Name="Tx_AgeU" Margin="10,0" Width="50" Text="{Binding str_AgeU}" KeyDown="Textbox_FloatVerify_KeyDown"></TextBox>
                         </StackPanel>
                     </StackPanel>
                     <TextBlock VerticalAlignment="Center">Year Old</TextBlock>
@@ -179,7 +217,8 @@
                 </StackPanel>
                 <TextBlock HorizontalAlignment="Center">Total n Group identified</TextBlock>
             </StackPanel>
-            <DockPanel  Margin="5" LastChildFill="True" HorizontalAlignment="Stretch">
+            <Button Width="100" Click="ResetAll_Click">Reset All</Button>
+            <DockPanel  Margin="5,50,5,0" LastChildFill="True" HorizontalAlignment="Stretch">
                 <TextBlock Margin="5,0">Output Dir:</TextBlock>
                 <Button  Click="SelectOutputDir_Click" Margin="5,0" DockPanel.Dock="Right">Select Folder</Button>
                 <TextBox x:Name="txtbox_OutputDir" Text="{Binding str_outputDir}"/>

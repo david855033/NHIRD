@@ -18,9 +18,9 @@ namespace NHIRD
         /// <summary>
         /// 實作此VM之上級視窗
         /// </summary>
-        public GetCD_Window parentWindow;
+        public Window_GetCD parentWindow;
         // -- Consturctor, 需實作所有ICommand
-        public GetCD_ViewModel(GetCD_Window parent)
+        public GetCD_ViewModel(Window_GetCD parent)
         {
             parentWindow = parent;
             Model_Instance = new GetCD_Model(this);
@@ -170,7 +170,7 @@ namespace NHIRD
         }
 
 
-
+        #region -- ICD criteira Contorls
         /// <summary>
         /// ICD include清單
         /// </summary>
@@ -211,7 +211,6 @@ namespace NHIRD
                 OnPropertyChanged(nameof(IsICDIncludeEnabled));
             }
         }
-
         public bool IsICDExcludeEnabled
         {
             get { return Model_Instance.IsICDExcludeEnabled; }
@@ -222,6 +221,60 @@ namespace NHIRD
                 OnPropertyChanged(nameof(IsICDExcludeEnabled));
             }
         }
+        #endregion
+
+        #region -- PROC criteira Contorls
+        /// <summary>
+        /// ICD include清單
+        /// </summary>
+        public ObservableCollection<string> PROCIncludes
+        {
+            get
+            {
+                return Model_Instance.list_PROCinclude;
+            }
+            set
+            {
+                Model_Instance.list_PROCinclude = value;
+                OnPropertyChanged(nameof(PROCIncludes));
+            }
+        }
+        /// <summary>
+        /// ICD Exclude清單
+        /// </summary>
+        public ObservableCollection<string> PROCExcludes
+        {
+            get
+            {
+                return Model_Instance.list_PROCExclude;
+            }
+            set
+            {
+                Model_Instance.list_PROCExclude = value;
+                OnPropertyChanged(nameof(PROCExcludes));
+            }
+        }
+        public bool IsPROCIncludeEnabled
+        {
+            get { return Model_Instance.IsPROCIncludeEnabled; }
+            set
+            {
+                Model_Instance.IsPROCIncludeEnabled = value;
+                if (value == false) IsPROCExcludeEnabled = false; //Include被取消時同時取消Exclude
+                OnPropertyChanged(nameof(IsPROCIncludeEnabled));
+            }
+        }
+        public bool IsPROCExcludeEnabled
+        {
+            get { return Model_Instance.IsPROCExcludeEnabled; }
+            set
+            {
+                Model_Instance.IsPROCExcludeEnabled = value;
+                if (value == true) IsPROCIncludeEnabled = true; //exclude被啟動時同時啟動include
+                OnPropertyChanged(nameof(IsPROCExcludeEnabled));
+            }
+        }
+        #endregion
 
         #region -- Age Criteria Controls
         public bool IsAgeLCriteriaEnable
@@ -234,7 +287,7 @@ namespace NHIRD
             get { return Model_Instance.IsAgeUCriteriaEnable; }
             set { Model_Instance.IsAgeUCriteriaEnable = value; }
         }
-        public string db_AgeL
+        public string str_AgeL
         {
             get { return Model_Instance.db_AgeL.Round(1); }
             set
@@ -244,10 +297,10 @@ namespace NHIRD
                 if (result > 100) result = 100;
                 if (result < 0) result = 0;
                 Model_Instance.db_AgeL = result;
-                OnPropertyChanged(nameof(db_AgeL));
+                OnPropertyChanged(nameof(str_AgeL));
             }
         }
-        public string db_AgeU
+        public string str_AgeU
         {
             get { return Model_Instance.db_AgeU.Round(1); }
             set
@@ -257,7 +310,7 @@ namespace NHIRD
                 if (result > 100) result = 100;
                 if (result < 0) result = 0;
                 Model_Instance.db_AgeU = result;
-                OnPropertyChanged(nameof(db_AgeU));
+                OnPropertyChanged(nameof(str_AgeU));
             }
         }
         #endregion
@@ -269,7 +322,30 @@ namespace NHIRD
         public bool IsIDCriteriaEnable
         {
             get { return Model_Instance.IsIDCriteriaEnable; }
-            set { Model_Instance.IsIDCriteriaEnable = value; }
+            set {
+                Model_Instance.IsIDCriteriaEnable = value;
+                renewIDCriteriaList(IDCriteriaFolderPath);
+            }
+        } 
+        void renewIDCriteriaList(string path)
+        {
+            try
+            {
+                var paths = new List<string>();
+                paths.AddRange(Directory.EnumerateFiles(path, "*CD*.EXT", SearchOption.AllDirectories).ToArray());
+                paths.AddRange(Directory.EnumerateFiles(path, "*DD*.EXT", SearchOption.AllDirectories).ToArray());
+                var newfiles = new List<File>();
+                foreach (string str_filepath in paths)
+                {
+                    newfiles.Add(new File(str_filepath));
+                }
+                IDCriteriaFileList.Clear();
+                IDCriteriaFileList = newfiles;
+            }
+            catch
+            {
+                IDCriteriaMessage = "Invalid path";
+            }
         }
         public string IDCriteriaFolderPath
         {
@@ -277,23 +353,7 @@ namespace NHIRD
             set
             {
                 Model_Instance.IDCriteriaFolderPath = GlobalSetting.IDcriteriaDir = value;
-                try
-                {
-                    var paths = new List<string>();
-                    paths.AddRange(Directory.EnumerateFiles(value, "*CD*.EXT", SearchOption.AllDirectories).ToArray());
-                    paths.AddRange(Directory.EnumerateFiles(value, "*DD*.EXT", SearchOption.AllDirectories).ToArray());
-                    var newfiles = new List<File>();
-                    foreach (string str_filepath in paths)
-                    {
-                        newfiles.Add(new File(str_filepath));
-                    }
-                    IDCriteriaFileList.Clear();
-                    IDCriteriaFileList = newfiles;
-                }
-                catch
-                {
-                    IDCriteriaMessage = "Invalid path";
-                }
+                renewIDCriteriaList(value);
                 OnPropertyChanged(nameof(IDCriteriaFolderPath));
             }
         }
@@ -321,11 +381,13 @@ namespace NHIRD
         }
         #endregion
 
+
         public bool IsOrderCriteriaEnable
         {
             get { return Model_Instance.IsOrderCriteriaEnable; }
             set { Model_Instance.IsOrderCriteriaEnable = value; }
         }
+
 
         /// <summary>
         /// 輸出資料夾

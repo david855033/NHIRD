@@ -20,18 +20,18 @@ namespace NHIRD
     /// Window1.xaml 的互動邏輯
     /// </summary>
 
-    public partial class GetCD_Window : Window
+    public partial class Window_GetCD : Window
     {
         public readonly GetCD_ViewModel ViewModel_Instance;
         public MainWindow parentWindow;
         // -- constructor
-        public GetCD_Window(MainWindow parent)
+        public Window_GetCD(MainWindow parent)
         {
             InitializeComponent();
-            ViewModel_Instance = new GetCD_ViewModel(this);
             parentWindow = parent;
             this.Left = parent.Left + parent.Width;
             this.Top = parent.Top;
+            ViewModel_Instance = new GetCD_ViewModel(this);
             this.DataContext = ViewModel_Instance;
             ViewModel_Instance.InputDir = GlobalSetting.inputDir;
             ViewModel_Instance.str_outputDir = GlobalSetting.outputDir;
@@ -193,29 +193,29 @@ namespace NHIRD
             }
         }
         #region ICD include & Exclude按鈕功能
-        private void ButtonAddIncl_Click(object sender, RoutedEventArgs e)
+        private void ButtonAddICDIncl_Click(object sender, RoutedEventArgs e)
         {
-            if (!ViewModel_Instance.ICDIncludes.Any(x => x == inputIncl.Text) && inputIncl.Text != "")
+            if (!ViewModel_Instance.ICDIncludes.Any(x => x == inputICDIncl.Text) && inputICDIncl.Text != "")
             {
-                this.ViewModel_Instance.ICDIncludes.Add(inputIncl.Text);
-                inputIncl.Text = "";
+                this.ViewModel_Instance.ICDIncludes.Add(inputICDIncl.Text);
+                inputICDIncl.Text = "";
                 Cb_ICDinclude.IsChecked = true;
             }
         }
-        private void ButtonEdtIncl_Click(object sender, RoutedEventArgs e)
+        private void ButtonEdtICDIncl_Click(object sender, RoutedEventArgs e)
         {
-            if (lv_Incl.SelectedItem != null && !ViewModel_Instance.ICDIncludes.Any(x => x == inputIncl.Text))
+            if (lv_ICDIncl.SelectedItem != null && !ViewModel_Instance.ICDIncludes.Any(x => x == inputICDIncl.Text))
             {
-                var index = lv_Incl.SelectedIndex;
+                var index = lv_ICDIncl.SelectedIndex;
                 this.ViewModel_Instance.ICDIncludes.RemoveAt(index);
-                this.ViewModel_Instance.ICDIncludes.Insert(index, inputIncl.Text);
+                this.ViewModel_Instance.ICDIncludes.Insert(index, inputICDIncl.Text);
             }
         }
-        private void Button_DelInclClick(object sender, RoutedEventArgs e)
+        private void Button_DelICDInclClick(object sender, RoutedEventArgs e)
         {
-            if (lv_Incl.SelectedItem != null)
+            if (lv_ICDIncl.SelectedItem != null)
             {
-                var index = lv_Incl.SelectedIndex;
+                var index = lv_ICDIncl.SelectedIndex;
                 this.ViewModel_Instance.ICDIncludes.RemoveAt(index);
                 if (this.ViewModel_Instance.ICDIncludes.Count() == 0)
                 {
@@ -223,34 +223,34 @@ namespace NHIRD
                 }
             }
         }
-        private void ButtonClrIncl_Click(object sender, RoutedEventArgs e)
+        private void ButtonClrICDIncl_Click(object sender, RoutedEventArgs e)
         {
             this.ViewModel_Instance.ICDIncludes.Clear();
             Cb_ICDinclude.IsChecked = false;
         }
-        private void ButtonAddExcl_Click(object sender, RoutedEventArgs e)
+        private void ButtonAddICDExcl_Click(object sender, RoutedEventArgs e)
         {
-            if (!ViewModel_Instance.ICDExcludes.Any(x => x == inputExcl.Text) && inputExcl.Text != "")
+            if (!ViewModel_Instance.ICDExcludes.Any(x => x == inputICDExcl.Text) && inputICDExcl.Text != "")
             {
-                this.ViewModel_Instance.ICDExcludes.Add(inputExcl.Text);
-                inputExcl.Text = "";
+                this.ViewModel_Instance.ICDExcludes.Add(inputICDExcl.Text);
+                inputICDExcl.Text = "";
                 Cb_ICDexclude.IsChecked = true;
             }
         }
-        private void ButtonEdtExcl_Click(object sender, RoutedEventArgs e)
+        private void ButtonEdtICDExcl_Click(object sender, RoutedEventArgs e)
         {
-            if (lv_Excl.SelectedItem != null && !ViewModel_Instance.ICDExcludes.Any(x => x == inputExcl.Text))
+            if (lv_ICDExcl.SelectedItem != null && !ViewModel_Instance.ICDExcludes.Any(x => x == inputICDExcl.Text))
             {
-                var Exdex = lv_Excl.SelectedIndex;
+                var Exdex = lv_ICDExcl.SelectedIndex;
                 this.ViewModel_Instance.ICDExcludes.RemoveAt(Exdex);
-                this.ViewModel_Instance.ICDExcludes.Insert(Exdex, inputExcl.Text);
+                this.ViewModel_Instance.ICDExcludes.Insert(Exdex, inputICDExcl.Text);
             }
         }
-        private void Button_DelExclClick(object sender, RoutedEventArgs e)
+        private void Button_DelICDExclClick(object sender, RoutedEventArgs e)
         {
-            if (lv_Excl.SelectedItem != null)
+            if (lv_ICDExcl.SelectedItem != null)
             {
-                var Exdex = lv_Excl.SelectedIndex;
+                var Exdex = lv_ICDExcl.SelectedIndex;
                 this.ViewModel_Instance.ICDExcludes.RemoveAt(Exdex);
                 if (this.ViewModel_Instance.ICDExcludes.Count() == 0)
                 {
@@ -258,24 +258,86 @@ namespace NHIRD
                 }
             }
         }
-      
-        private void ButtonClrExcl_Click(object sender, RoutedEventArgs e)
+        private void ButtonClrICDExcl_Click(object sender, RoutedEventArgs e)
         {
             this.ViewModel_Instance.ICDExcludes.Clear();
             Cb_ICDexclude.IsChecked = false;
         }
         #endregion
-        /// <summary>
-        /// 限制Text Box只能輸入float
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Textbox_FloatVerify_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+
+        #region PROC include & Exclude按鈕功能
+        private void ButtonAddPROCIncl_Click(object sender, RoutedEventArgs e)
         {
-            var s = sender as System.Windows.Controls.TextBox;
-            s.Text = s.Text.RegexFloat();
-            s.Select(s.Text.Length, 0);
+            if (!ViewModel_Instance.PROCIncludes.Any(x => x == inputPROCIncl.Text) && inputPROCIncl.Text != "")
+            {
+                this.ViewModel_Instance.PROCIncludes.Add(inputPROCIncl.Text);
+                inputPROCIncl.Text = "";
+                Cb_PROCinclude.IsChecked = true;
+            }
         }
+        private void ButtonEdtPROCIncl_Click(object sender, RoutedEventArgs e)
+        {
+            if (lv_PROCIncl.SelectedItem != null && !ViewModel_Instance.PROCIncludes.Any(x => x == inputPROCIncl.Text))
+            {
+                var index = lv_PROCIncl.SelectedIndex;
+                this.ViewModel_Instance.PROCIncludes.RemoveAt(index);
+                this.ViewModel_Instance.PROCIncludes.Insert(index, inputPROCIncl.Text);
+            }
+        }
+        private void Button_DelPROCInclClick(object sender, RoutedEventArgs e)
+        {
+            if (lv_PROCIncl.SelectedItem != null)
+            {
+                var index = lv_PROCIncl.SelectedIndex;
+                this.ViewModel_Instance.PROCIncludes.RemoveAt(index);
+                if (this.ViewModel_Instance.PROCIncludes.Count() == 0)
+                {
+                    Cb_PROCinclude.IsChecked = false;
+                }
+            }
+        }
+        private void ButtonClrPROCIncl_Click(object sender, RoutedEventArgs e)
+        {
+            this.ViewModel_Instance.PROCIncludes.Clear();
+            Cb_PROCinclude.IsChecked = false;
+        }
+        private void ButtonAddPROCExcl_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ViewModel_Instance.PROCExcludes.Any(x => x == inputPROCExcl.Text) && inputPROCExcl.Text != "")
+            {
+                this.ViewModel_Instance.PROCExcludes.Add(inputPROCExcl.Text);
+                inputPROCExcl.Text = "";
+                Cb_PROCexclude.IsChecked = true;
+            }
+        }
+        private void ButtonEdtPROCExcl_Click(object sender, RoutedEventArgs e)
+        {
+            if (lv_PROCExcl.SelectedItem != null && !ViewModel_Instance.PROCExcludes.Any(x => x == inputPROCExcl.Text))
+            {
+                var Exdex = lv_PROCExcl.SelectedIndex;
+                this.ViewModel_Instance.PROCExcludes.RemoveAt(Exdex);
+                this.ViewModel_Instance.PROCExcludes.Insert(Exdex, inputPROCExcl.Text);
+            }
+        }
+        private void Button_DelPROCExclClick(object sender, RoutedEventArgs e)
+        {
+            if (lv_PROCExcl.SelectedItem != null)
+            {
+                var Exdex = lv_PROCExcl.SelectedIndex;
+                this.ViewModel_Instance.PROCExcludes.RemoveAt(Exdex);
+                if (this.ViewModel_Instance.PROCExcludes.Count() == 0)
+                {
+                    Cb_PROCexclude.IsChecked = false;
+                }
+            }
+        }
+        private void ButtonClrPROCExcl_Click(object sender, RoutedEventArgs e)
+        {
+            this.ViewModel_Instance.PROCExcludes.Clear();
+            Cb_PROCexclude.IsChecked = false;
+        }
+        #endregion
+
         /// <summary>
         /// 選取ID Criteriea list 資料夾
         /// </summary>
@@ -289,6 +351,32 @@ namespace NHIRD
                 ViewModel_Instance.IDCriteriaFolderPath = FolderSelector.SelectedPath;
                 Cb_ID.IsChecked = true;
             }
+        }
+
+        private void ResetAll_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClrICDIncl_Click(sender, e);
+            ButtonClrICDExcl_Click(sender, e);
+            ButtonClrPROCIncl_Click(sender, e);
+            ButtonClrPROCExcl_Click(sender, e);
+            foreach (var obj in Extentions.FindVisualChildren<System.Windows.Controls.CheckBox>(criteriaStackPanel))
+            {
+                obj.IsChecked = false;
+            }
+
+        }
+
+
+        /// <summary>
+        /// 限制Text Box只能輸入float
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Textbox_FloatVerify_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            var s = sender as System.Windows.Controls.TextBox;
+            s.Text = s.Text.RegexFloat();
+            s.Select(s.Text.Length, 0);
         }
     }
 }

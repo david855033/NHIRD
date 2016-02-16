@@ -42,9 +42,8 @@ namespace NHIRD
         {
             get { return _selectedFileTypes; }
         }
-
         #endregion
-
+        #region -- Input file control
         /// <summary>
         /// 讀取檔案的資料夾路徑
         /// </summary>
@@ -95,6 +94,8 @@ namespace NHIRD
             }
 
         }
+        #endregion
+
         /// <summary>
         /// 顯示除錯用訊息
         /// </summary>
@@ -110,6 +111,19 @@ namespace NHIRD
         public ObservableCollection<string> list_ICDExclude = new ObservableCollection<string>();
         public bool IsICDIncludeEnabled;
         public bool IsICDExcludeEnabled;
+        #endregion
+
+        #region PROCcriteria control
+        /// <summary>
+        /// 儲存PROC inclusion criteria
+        /// </summary>
+        public ObservableCollection<string> list_PROCinclude = new ObservableCollection<string>();
+        /// <summary>
+        /// 儲存ICD inclusion criteria
+        /// </summary>
+        public ObservableCollection<string> list_PROCExclude = new ObservableCollection<string>();
+        public bool IsPROCIncludeEnabled;
+        public bool IsPROCExcludeEnabled;
         #endregion
 
         #region Age Criteria Controls
@@ -135,7 +149,7 @@ namespace NHIRD
 
             //建立執行個體
             var extractData = new ExtractData();
-            //判斷是否有ICD 條件
+            //判斷是否啟動ICD 條件
             if (IsICDIncludeEnabled)
             {
                 if (IsICDExcludeEnabled)
@@ -156,7 +170,28 @@ namespace NHIRD
                     });
                 }
             }
-            //判斷是否有年齡條件
+            //判斷是否啟動PROC 條件
+            if (IsPROCIncludeEnabled)
+            {
+                if (IsPROCExcludeEnabled)
+                {
+                    extractData.CriteriaList.Add(new ExtractData.Criteria()
+                    {
+                        key = "ICD_OP",
+                        StringIncludeList = list_PROCinclude.ToList(),
+                        StringExcludeList = list_PROCExclude.ToList()
+                    });
+                }
+                else
+                {
+                    extractData.CriteriaList.Add(new ExtractData.Criteria()
+                    {
+                        key = "ICD_OP",
+                        StringIncludeList = list_PROCinclude.ToList()
+                    });
+                }
+            }
+            //判斷是否啟動年齡條件
             if (IsAgeLCriteriaEnable || IsAgeUCriteriaEnable)
             {
                 extractData.CriteriaList.Add(new ExtractData.Criteria()
@@ -166,7 +201,7 @@ namespace NHIRD
                     CriteriaNumLower = IsAgeLCriteriaEnable ? db_AgeL : 0
                 });
             }
-            //判斷是否有ID條件
+            //判斷是否啟動ID條件
             if (IsIDCriteriaEnable)
             {
                 extractData.CriteriaList.Add(new ExtractData.Criteria()
@@ -175,6 +210,8 @@ namespace NHIRD
                     IDCriteriaFileList = IDCriteria_FileList
                 });
             }
+
+
             //執行
             extractData.Do(parentVM.parentWindow.parentWindow.rawDataFormats, selectedFileTypes.ToArray(), from f in list_file where f.selected == true select f, str_outputDir);
         }

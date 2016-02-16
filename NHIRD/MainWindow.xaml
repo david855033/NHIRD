@@ -5,8 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NHIRD"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="165.833" Loaded="Window_Loaded">
+        Title="MainWindow" Height="350" Width="165.833" Loaded="Window_Loaded" ResizeMode="NoResize">
     <Grid>
-        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_Click">Get _CD</Button>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_Click">Get _CD</Button>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" Click="ButtonGetOrder_Click">Get _Order</Button>
+        </StackPanel>
     </Grid>
 </Window>
