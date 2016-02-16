@@ -20,8 +20,9 @@ namespace NHIRD
         public GetCD_Model(GetCD_ViewModel parentVM)
         {
             this.parentVM = parentVM;
+            renewSelectedFileTypes();
         }
-        
+
         #region -- FileType Select
         bool _IsCDFileTypeEnabled = true;
         public bool IsCDFileTypeEnabled { get { return _IsCDFileTypeEnabled; } set { _IsCDFileTypeEnabled = value; renewSelectedFileTypes(); } }
@@ -41,7 +42,7 @@ namespace NHIRD
         {
             get { return _selectedFileTypes; }
         }
-        
+
         #endregion
 
         /// <summary>
@@ -131,6 +132,7 @@ namespace NHIRD
         /// </summary>
         public void DoExtractData()
         {
+
             //建立執行個體
             var extractData = new ExtractData();
             //判斷是否有ICD 條件
@@ -174,7 +176,7 @@ namespace NHIRD
                 });
             }
             //執行
-            extractData.Do(parentVM.parentWindow.parentWindow.rawDataFormats, new string[] { "CD" }, from f in list_file where f.selected == true select f, str_outputDir);
+            extractData.Do(parentVM.parentWindow.parentWindow.rawDataFormats, selectedFileTypes.ToArray(), from f in list_file where f.selected == true select f, str_outputDir);
         }
 
     }

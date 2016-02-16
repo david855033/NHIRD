@@ -27,16 +27,27 @@ namespace NHIRD
             Do_ExtractData = new RelayCommand(ExtractData, (x) => true);
         }
 
-        public bool IsCDFileTypeEnabled {
+        public bool IsCDFileTypeEnabled
+        {
             get { return Model_Instance.IsCDFileTypeEnabled; }
-            set { Model_Instance.IsCDFileTypeEnabled = value; OnPropertyChanged(nameof(IsCDFileTypeEnabled)); }
+            set
+            {
+                Model_Instance.IsCDFileTypeEnabled = value;
+                makeFileList(InputDir);
+                OnPropertyChanged(nameof(IsCDFileTypeEnabled));
+            }
         }
         public bool IsDDFileTypeEnabled
         {
             get { return Model_Instance.IsDDFileTypeEnabled; }
-            set { Model_Instance.IsDDFileTypeEnabled = value; OnPropertyChanged(nameof(IsDDFileTypeEnabled)); }
+            set
+            {
+                Model_Instance.IsDDFileTypeEnabled = value;
+                makeFileList(InputDir);
+                OnPropertyChanged(nameof(IsDDFileTypeEnabled));
+            }
         }
-        
+
         // -- Properties
         /// <summary>
         /// 資料夾的路徑，更動時自動更新fileList
@@ -63,9 +74,12 @@ namespace NHIRD
         {
             try
             {
-                string[] paths;
-                paths = Directory.EnumerateFiles(inputPath, "*CD*.DAT", SearchOption.AllDirectories).ToArray();
-                Array.Sort(paths);
+                List<string> paths = new List<string>();
+                foreach (var currentFileType in Model_Instance.selectedFileTypes)
+                {
+                    paths.AddRange(Directory.EnumerateFiles(inputPath, "*" + currentFileType + "*.DAT", SearchOption.AllDirectories));
+                }
+                paths.Sort();
                 // -- file
                 var newfiles = new ObservableCollection<File>();
                 foreach (string str_filepath in paths)
@@ -155,7 +169,7 @@ namespace NHIRD
             }
         }
 
-       
+
 
         /// <summary>
         /// ICD include清單
@@ -189,14 +203,15 @@ namespace NHIRD
         }
         public bool IsICDIncludeEnabled
         {
-            get {return Model_Instance.IsICDIncludeEnabled;}
-            set {
+            get { return Model_Instance.IsICDIncludeEnabled; }
+            set
+            {
                 Model_Instance.IsICDIncludeEnabled = value;
                 if (value == false) IsICDExcludeEnabled = false; //Include被取消時同時取消Exclude
                 OnPropertyChanged(nameof(IsICDIncludeEnabled));
             }
         }
-    
+
         public bool IsICDExcludeEnabled
         {
             get { return Model_Instance.IsICDExcludeEnabled; }

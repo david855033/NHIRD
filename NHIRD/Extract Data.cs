@@ -66,7 +66,7 @@ namespace NHIRD
                     length = q.Lengths,
                     start_year = q.start_year,
                     end_year = q.end_year,
-                     FileType = q.FileType
+                    FileType = q.FileType
                 };
                 numberDataFormats.Add(toAdd);
             }
@@ -115,11 +115,11 @@ namespace NHIRD
                     //依照年分及filetype挑出正確的Dataformat，傳入Readfile及Writefile
                     var queryStringDataFormats =
                          (from q in stringDataFormats
-                          where currentfile.MKyear >= q.start_year && currentfile.MKyear <= q.end_year && selectedFileTypes.Any(x => x == q.FileType)
+                          where currentfile.MKyear >= q.start_year && currentfile.MKyear <= q.end_year && q.FileType == currentfile.FileType
                           select q).ToList();
                     var queryNumberDataFormats =
                       (from q in numberDataFormats
-                       where currentfile.MKyear >= q.start_year && currentfile.MKyear <= q.end_year && selectedFileTypes.Any(x => x == q.FileType)
+                       where currentfile.MKyear >= q.start_year && currentfile.MKyear <= q.end_year && q.FileType == currentfile.FileType
                        select q).ToList();
                     //建立資料清單，開始讀寫
                     var dataRowList = new List<DataRow>();
