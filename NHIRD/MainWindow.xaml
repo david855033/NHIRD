@@ -8,8 +8,8 @@
         Title="MainWindow" Height="350" Width="165.833" Loaded="Window_Loaded" ResizeMode="NoResize">
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_Click">Get _CD</Button>
-            <Button HorizontalAlignment="Center" VerticalAlignment="Center" Click="ButtonGetOrder_Click">Get _Order</Button>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_Click" Margin="0,10" Width="75">Get _CD</Button>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" Click="ButtonGetOrder_Click" Margin="0,10" Width="75">Get _Order</Button>
         </StackPanel>
     </Grid>
 </Window>

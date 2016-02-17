@@ -31,7 +31,7 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel  VerticalAlignment="Top" >
                     <TextBlock>File List</TextBlock>
-                    <ListView x:Name="listview_files" Height="500" Width="400" ItemsSource="{Binding files}">
+                    <ListView x:Name="listview_files" Height="500" Width="400" ItemsSource="{Binding inputFileList}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="30">
@@ -56,7 +56,7 @@
                 </StackPanel>
                 <StackPanel VerticalAlignment="Top" Margin="2,0" Grid.Column="1">
                     <TextBlock>Available Year</TextBlock>
-                    <ListView x:Name="listview_years" Height="500"  ItemsSource="{Binding years}">
+                    <ListView x:Name="listview_years" Height="500"  ItemsSource="{Binding inputYearList}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="30">
@@ -80,7 +80,7 @@
                 </StackPanel>
                 <StackPanel Margin="2,0" Grid.Column="2"  VerticalAlignment="Top" >
                     <TextBlock>Available Group</TextBlock>
-                    <ListView x:Name="listview_groups" Height="500"  ItemsSource="{Binding groups}">
+                    <ListView x:Name="listview_groups" Height="500"  ItemsSource="{Binding inputGroupList}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="30">

@@ -60,7 +60,8 @@ namespace NHIRD
             }
             set
             {
-                Model_Instance.str_inputDir = GlobalSetting.inputDir = value;
+                Model_Instance.str_inputDir = value;
+                GlobalSetting.set("CD_InputDir", value);
                 // -- 初始化 file / year / group list
                 makeFileList(value);
                 OnPropertyChanged(nameof(InputDir));
@@ -86,24 +87,24 @@ namespace NHIRD
                 {
                     newfiles.Add(new File(str_filepath));
                 }
-                files.Clear();
-                files = newfiles;
+                inputFileList.Clear();
+                inputFileList = newfiles;
                 // -- year
                 var newyears = new ObservableCollection<Year>();
-                foreach (string s in files.Select(x => x.year).Distinct())
+                foreach (string s in inputFileList.Select(x => x.year).Distinct())
                 {
                     newyears.Add(new Year(s));
                 }
-                years.Clear();
-                years = newyears;
+                inputYearList.Clear();
+                inputYearList = newyears;
                 // -- group
                 var newgroups = new ObservableCollection<Group>();
-                foreach (string s in files.Select(x => x.group).Distinct())
+                foreach (string s in inputFileList.Select(x => x.group).Distinct())
                 {
                     newgroups.Add(new Group(s));
                 }
-                groups.Clear();
-                groups = newgroups;
+                inputGroupList.Clear();
+                inputGroupList = newgroups;
                 parentWindow.refresh_Listviews();
             }
             catch
@@ -114,45 +115,45 @@ namespace NHIRD
         /// <summary>
         /// 檔案清單
         /// </summary>
-        public ObservableCollection<File> files
+        public ObservableCollection<File> inputFileList
         {
             get
             {
-                return Model_Instance.list_file;
+                return Model_Instance.inputFileList;
             }
             set
             {
-                Model_Instance.list_file = value;
+                Model_Instance.inputFileList = value;
                 OnPropertyChanged("");
             }
         }
         /// <summary>
         /// 年份清單(於載入檔案清單時建立)
         /// </summary>
-        public ObservableCollection<Year> years
+        public ObservableCollection<Year> inputYearList
         {
             get
             {
-                return Model_Instance.list_year;
+                return Model_Instance.inputYearList;
             }
             set
             {
-                Model_Instance.list_year = value;
+                Model_Instance.inputYearList = value;
                 OnPropertyChanged("");
             }
         }
         /// <summary>
         /// 組別清單(於載入檔案清單時建立)
         /// </summary>
-        public ObservableCollection<Group> groups
+        public ObservableCollection<Group> inputGroupList
         {
             get
             {
-                return Model_Instance.list_group;
+                return Model_Instance.inputGroupList;
             }
             set
             {
-                Model_Instance.list_group = value;
+                Model_Instance.inputGroupList = value;
                 OnPropertyChanged("");
             }
         }
@@ -225,7 +226,7 @@ namespace NHIRD
 
         #region -- PROC criteira Contorls
         /// <summary>
-        /// ICD include清單
+        /// PROC include清單
         /// </summary>
         public ObservableCollection<string> PROCIncludes
         {
@@ -240,7 +241,7 @@ namespace NHIRD
             }
         }
         /// <summary>
-        /// ICD Exclude清單
+        /// PROC Exclude清單
         /// </summary>
         public ObservableCollection<string> PROCExcludes
         {
@@ -352,8 +353,9 @@ namespace NHIRD
             get { return Model_Instance.IDCriteriaFolderPath; }
             set
             {
-                Model_Instance.IDCriteriaFolderPath = GlobalSetting.IDcriteriaDir = value;
-                renewIDCriteriaList(value);
+                Model_Instance.IDCriteriaFolderPath =value;
+                GlobalSetting.set("CD_IDCriteriaDir", value);
+               renewIDCriteriaList(value);
                 OnPropertyChanged(nameof(IDCriteriaFolderPath));
             }
         }
@@ -400,7 +402,8 @@ namespace NHIRD
             }
             set
             {
-                Model_Instance.str_outputDir = GlobalSetting.outputDir = value;
+                Model_Instance.str_outputDir = value;
+                GlobalSetting.set("CD_OutputDir", value);
                 OnPropertyChanged("");
             }
         }

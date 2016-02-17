@@ -33,9 +33,9 @@ namespace NHIRD
             this.Top = parent.Top;
             ViewModel_Instance = new GetCD_ViewModel(this);
             this.DataContext = ViewModel_Instance;
-            ViewModel_Instance.InputDir = GlobalSetting.inputDir;
-            ViewModel_Instance.str_outputDir = GlobalSetting.outputDir;
-            ViewModel_Instance.IDCriteriaFolderPath = GlobalSetting.IDcriteriaDir;
+            ViewModel_Instance.InputDir = GlobalSetting.get("CD_InputDir");
+            ViewModel_Instance.str_outputDir = GlobalSetting.get("CD_OutputDir");
+            ViewModel_Instance.IDCriteriaFolderPath = GlobalSetting.get("CD_IDCriteriaDir");
             refresh_Listviews();
         }
         /// <summary>
@@ -173,11 +173,11 @@ namespace NHIRD
         /// </summary>
         public void refresh_Listviews()
         {
-            ViewModel_Instance.years = new ObservableCollection<Year>(ViewModel_Instance.years);
-            ViewModel_Instance.files = new ObservableCollection<File>(ViewModel_Instance.files);
-            ViewModel_Instance.groups = new ObservableCollection<Group>(ViewModel_Instance.groups);
-            ViewModel_Instance.FileStatus = "Selected " + ViewModel_Instance.files.Where(x => x.selected == true).Count() +
-                " / " + ViewModel_Instance.files.Count + " files.";
+            ViewModel_Instance.inputYearList = new ObservableCollection<Year>(ViewModel_Instance.inputYearList);
+            ViewModel_Instance.inputFileList = new ObservableCollection<File>(ViewModel_Instance.inputFileList);
+            ViewModel_Instance.inputGroupList = new ObservableCollection<Group>(ViewModel_Instance.inputGroupList);
+            ViewModel_Instance.FileStatus = "Selected " + ViewModel_Instance.inputFileList.Where(x => x.selected == true).Count() +
+                " / " + ViewModel_Instance.inputFileList.Count + " files.";
         }
         /// <summary>
         /// 選取輸出資料夾

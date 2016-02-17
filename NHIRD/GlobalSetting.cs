@@ -8,113 +8,39 @@ namespace NHIRD
 {
     static class GlobalSetting
     {
-        // -- public setting Property
-        static public string inputDir
+        static public string get(string key)
         {
-            get
+            try
             {
-                try
-                {
-                    return settings.Find(x => x.name == "Input Dir").value;
-                }
-                catch
-                {
-                    settings.Add(new setting()
-                    {
-                        name = "Input Dir",
-                        value = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-                    });
-                    return settings.Find(x => x.name == "Input Dir").value;
-                }
+                return settings.Find(x => x.name == key).value;
             }
-            set
+            catch
             {
-                try
+                settings.Add(new setting()
                 {
-                    settings.Find(x => x.name == "Input Dir").value = value;
-                }
-                catch
-                {
-                    settings.Add(new setting()
-                    {
-                        name = "Input Dir",
-                        value = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-                    });
-                }
-                saveSetting();
+                    name = key,
+                    value = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                });
+                return settings.Find(x => x.name == key).value;
             }
         }
-        static public string outputDir
+        static public void set(string key, string input)
         {
-            get
+            try
             {
-                try
-                {
-                    return settings.Find(x => x.name == "Output Dir").value;
-                }
-                catch
-                {
-                    settings.Add(new setting()
-                    {
-                        name = "Output Dir",
-                        value = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-                    });
-                    return settings.Find(x => x.name == "Output Dir").value;
-                }
+                settings.Find(x => x.name == key).value = input;
             }
-            set
+            catch
             {
-                try
+                settings.Add(new setting()
                 {
-                    settings.Find(x => x.name == "Output Dir").value = value;
-                }
-                catch
-                {
-                    settings.Add(new setting()
-                    {
-                        name = "Output Dir",
-                        value = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-                    });
-                }
-                saveSetting();
+                    name = key,
+                    value = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                });
             }
+            saveSetting();
         }
-        static public string IDcriteriaDir
-        {
-            get
-            {
-                try
-                {
-                    return settings.Find(x => x.name == "IDcriteriaDir").value;
-                }
-                catch
-                {
-                    settings.Add(new setting()
-                    {
-                        name = "IDcriteriaDir",
-                        value = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-                    });
-                    return settings.Find(x => x.name == "IDcriteriaDir").value;
-                }
-            }
-            set
-            {
-                try
-                {
-                    settings.Find(x => x.name == "IDcriteriaDir").value = value;
-                }
-                catch
-                {
-                    settings.Add(new setting()
-                    {
-                        name = "IDcriteriaDir",
-                        value = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-                    });
-                }
-                saveSetting();
-            }
-        }
-        // -- internal saving logic
+        // -- internal sasving logic
         static string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\NHIRD_Settings.txt";
         static List<setting> settings = new List<setting>();
 
@@ -122,7 +48,6 @@ namespace NHIRD
         {
             loadSetting();
         }
-
         static void saveSetting()
         {
             using (var sw = new StreamWriter(path, false))
@@ -133,7 +58,6 @@ namespace NHIRD
                 }
             }
         }
-
         static void loadSetting()
         {
             if (System.IO.File.Exists(path))

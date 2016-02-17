@@ -55,15 +55,15 @@ namespace NHIRD
         /// <summary>
         /// 儲存檔案清單
         /// </summary>
-        public ObservableCollection<File> list_file = new ObservableCollection<File>();
+        public ObservableCollection<File> inputFileList = new ObservableCollection<File>();
         /// <summary>
         /// 儲存年份清單
         /// </summary>
-        public ObservableCollection<Year> list_year = new ObservableCollection<Year>();
+        public ObservableCollection<Year> inputYearList = new ObservableCollection<Year>();
         /// <summary>
         /// 儲存R group清單
         /// </summary>
-        public ObservableCollection<Group> list_group = new ObservableCollection<Group>();
+        public ObservableCollection<Group> inputGroupList = new ObservableCollection<Group>();
         /// <summary>
         /// 紀錄選取檔案數量的顯示訊息
         /// </summary>
@@ -73,16 +73,16 @@ namespace NHIRD
         /// </summary>
         public void checkFileByCriteria()
         {
-            foreach (File f in list_file)
+            foreach (File f in inputFileList)
             {
                 f.selected = false;
             }
             var query = (
-                            from p in list_file
-                            where list_year.Where(x => x.selected == true)
+                            from p in inputFileList
+                            where inputYearList.Where(x => x.selected == true)
                             .Select(x => x.str_year)
                             .Contains(p.year) &&
-                            list_group.Where(x => x.selected == true)
+                            inputGroupList.Where(x => x.selected == true)
                             .Select(x => x.str_group)
                             .Contains(p.@group)
                             select p
@@ -213,7 +213,7 @@ namespace NHIRD
 
 
             //執行
-            extractData.Do(parentVM.parentWindow.parentWindow.rawDataFormats, selectedFileTypes.ToArray(), from f in list_file where f.selected == true select f, str_outputDir);
+            extractData.Do(parentVM.parentWindow.parentWindow.rawDataFormats, selectedFileTypes.ToArray(), from f in inputFileList where f.selected == true select f, str_outputDir);
         }
 
     }
