@@ -99,9 +99,41 @@
                         </ListView.View>
                     </ListView>
                 </StackPanel>
-
+                
             </Grid>
             <TextBlock x:Name="TextBlock_FileStatus" Margin="5" Text="{Binding FileStatus}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1">
+            <StackPanel Margin="10">
+                <CheckBox x:Name="Cb_Orderinclude" HorizontalAlignment="Center" IsChecked="{Binding IsOrderIncludeEnabled, Mode=TwoWay}">Include Order List</CheckBox>
+                <StackPanel Height="120" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <ListView x:Name="lv_OrderIncl" Width="90" ItemsSource="{Binding OrderIncludes}" SelectionMode="Single" ></ListView>
+                    <StackPanel Width="60">
+                        <TextBlock TextAlignment="Center">Input</TextBlock>
+                        <TextBox x:Name="inputOrderIncl"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Margin="1,1" Click="ButtonAddOrderIncl_Click">新增</Button>
+                            <Button Margin="1,1" Click="ButtonEdtOrderIncl_Click">修改</Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Margin="1,1" Click="Button_DelOrderInclClick">刪除</Button>
+                            <Button Margin="1,1" Click="ButtonClrOrderIncl_Click">全清</Button>
+                        </StackPanel>
+                        <Button Margin="1,1" Click="ButtonLoadOrderIncl_Click">載入清單...</Button>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+            <DockPanel  Margin="5,50,5,0" LastChildFill="True" HorizontalAlignment="Stretch">
+                <TextBlock Margin="5,0">Output Dir:</TextBlock>
+                <Button  Click="SelectOutputDir_Click" Margin="5,0" DockPanel.Dock="Right">Select Folder</Button>
+                <TextBox x:Name="txtbox_OutputDir" Text="{Binding str_outputDir}"/>
+            </DockPanel>
+            <Button Height="50" Margin="0,25" Command="{Binding Do_ExtractData}">Do _Extract</Button>
+            <StackPanel>
+                <TextBlock Margin="0,25,0,25"  x:Name="TextBlockMessage" Height="100" MinWidth="400"
+                   HorizontalAlignment="Center" Background="Azure" Text="{Binding message}"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

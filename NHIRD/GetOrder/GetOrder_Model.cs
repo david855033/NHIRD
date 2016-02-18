@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NHIRD
 {
-    class GetOrder_Model
+    public class GetOrder_Model
     {
         /// <summary>
         /// 上層之VM
@@ -22,11 +22,32 @@ namespace NHIRD
 
         #region -- FileType Select
         bool _IsOOFileTypeEnabled = true;
-        public bool IsOOFileTypeEnabled { get { return _IsOOFileTypeEnabled; } set { _IsOOFileTypeEnabled = value; renewSelectedFileTypes(); } }
+        public bool IsOOFileTypeEnabled
+        {
+            get { return _IsOOFileTypeEnabled; }
+            set
+            {
+                _IsOOFileTypeEnabled = value; renewSelectedFileTypes();
+            }
+        }
         bool _IsDOFileTypeEnabled = true;
-        public bool IsDOFileTypeEnabled { get { return _IsDOFileTypeEnabled; } set { _IsDOFileTypeEnabled = value; renewSelectedFileTypes(); } }
+        public bool IsDOFileTypeEnabled
+        {
+            get { return _IsDOFileTypeEnabled; }
+            set
+            {
+                _IsDOFileTypeEnabled = value; renewSelectedFileTypes();
+            }
+        }
         bool _IsGOFileTypeEnabled = true;
-        public bool IsGOFileTypeEnabled { get { return _IsGOFileTypeEnabled; } set { _IsGOFileTypeEnabled = value; renewSelectedFileTypes(); } }
+        public bool IsGOFileTypeEnabled
+        {
+            get { return _IsGOFileTypeEnabled; }
+            set
+            {
+                _IsGOFileTypeEnabled = value; renewSelectedFileTypes();
+            }
+        }
         List<string> _selectedFileTypes = new List<string>();
         /// <summary>
         /// 被選取的FileType
@@ -95,11 +116,19 @@ namespace NHIRD
         }
         #endregion
 
+        #region -- Order criteria control
+        /// <summary>
+        /// Order inclusion criteria
+        /// </summary>
+        public ObservableCollection<string> list_Orderinclude = new ObservableCollection<string>();
+        public bool IsOrderIncludeEnabled;
+        #endregion
+
         /// <summary>
         /// 顯示除錯用訊息
         /// </summary>
         public string message { get; set; }
-       
+
         /// <summary>
         /// 匯入條件並且提取檔案
         /// </summary>
@@ -108,10 +137,23 @@ namespace NHIRD
 
             //建立執行個體
             var extractData = new ExtractData();
+            //使用ORDER代碼
+            if (IsOrderIncludeEnabled)
+            {
+                extractData.CriteriaList.Add(new ExtractData.Criteria()
+                {
+                    key = "DRUG_NO",
+                    StringIncludeList = list_Orderinclude.ToList()
+                });
+                extractData.CriteriaList.Add(new ExtractData.Criteria()
+                {
+                    key = "ORDER_CODE",
+                    StringIncludeList = list_Orderinclude.ToList()
+                });
+            }
            
-
             //執行
-            extractData.Do(parentVM.parentWindow.parentWindow.rawDataFormats, selectedFileTypes.ToArray(), 
+            extractData.Do(parentVM.parentWindow.parentWindow.rawDataFormats, selectedFileTypes.ToArray(),
                 from f in inputFileList where f.selected == true select f, str_outputDir);
         }
 

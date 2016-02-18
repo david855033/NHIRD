@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows.Input;
+using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace NHIRD
 {
-    class GetOrder_ViewModel
+    public class GetOrder_ViewModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 實作Model
@@ -136,7 +135,7 @@ namespace NHIRD
             set
             {
                 Model_Instance.inputFileList = value;
-                OnPropertyChanged("");
+                OnPropertyChanged(nameof(inputFileList));
             }
         }
         /// <summary>
@@ -151,7 +150,7 @@ namespace NHIRD
             set
             {
                 Model_Instance.inputYearList = value;
-                OnPropertyChanged("");
+                OnPropertyChanged(nameof(inputYearList));
             }
         }
         /// <summary>
@@ -166,7 +165,7 @@ namespace NHIRD
             set
             {
                 Model_Instance.inputGroupList = value;
-                OnPropertyChanged("");
+                OnPropertyChanged(nameof(inputGroupList));
             }
         }
         /// <summary>
@@ -182,10 +181,32 @@ namespace NHIRD
             }
         }
 
-
-    
-
-
+        #region -- Order Criteria Controls
+        /// <summary>
+        /// ICD include清單
+        /// </summary>
+        public ObservableCollection<string> OrderIncludes
+        {
+            get
+            {
+                return Model_Instance.list_Orderinclude;
+            }
+            set
+            {
+                Model_Instance.list_Orderinclude = value;
+                OnPropertyChanged(nameof(OrderIncludes));
+            }
+        }
+        public bool IsOrderIncludeEnabled
+        {
+            get { return Model_Instance.IsOrderIncludeEnabled; }
+            set
+            {
+                Model_Instance.IsOrderIncludeEnabled = value;
+                OnPropertyChanged(nameof(IsOrderIncludeEnabled));
+            }
+        }
+        #endregion
 
         /// <summary>
         /// 輸出資料夾
