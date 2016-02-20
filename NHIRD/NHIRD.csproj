@@ -57,6 +57,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -90,6 +91,9 @@
     <Compile Include="GetOrder\window_GetOrder.xaml.cs">
       <DependentUpon>window_GetOrder.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StringList.xaml.cs">
+      <DependentUpon>StringList.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -109,6 +113,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GetOrder\window_GetOrder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StringList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

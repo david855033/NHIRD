@@ -139,7 +139,7 @@ namespace NHIRD
         List<StringDataFormat> queryStringDataFormats,
           List<NumberDataFormat> queryNumberDataFormats)
         {
-            using (var sr = new StreamReader(currentfile.path))
+            using (var sr = new StreamReader(currentfile.path, System.Text.Encoding.Default))
             {
 
                 while (!sr.EndOfStream)
@@ -252,7 +252,7 @@ namespace NHIRD
             if (!Directory.Exists(outputDir))
                 Directory.CreateDirectory(outputDir);
             string outpath = outputDir + "\\" + currentfile.name.Split('.')[0] + ".EXT";
-            using (var sw = new StreamWriter(outpath))
+            using (var sw = new StreamWriter(outpath, false, System.Text.Encoding.Default))
             {
                 string title = "";
                 foreach (var q in queryStringDataFormats)
@@ -302,6 +302,7 @@ namespace NHIRD
             {
                 if (key == "IDLIST")
                 {
+                    if (indexID == -1 || indexBirthday == -1) return true;
                     var thisID = new IDData { ID = InputDataRow.stringData[indexID], Birthday = InputDataRow.stringData[indexBirthday] };
                     if (IDCriteriaList.BinarySearch(thisID) >= 0)
                     {
@@ -314,6 +315,7 @@ namespace NHIRD
                 }
                 else if (key == "AGE")
                 {
+                    if (indexBirthday == -1 || indexEventday == -1) return true;
                     DateTime birthday = InputDataRow.stringData[indexBirthday].StringToDate();
                     DateTime eventday = InputDataRow.stringData[indexEventday].StringToDate();
                     double age = eventday.Subtract(birthday).TotalDays / 365;
@@ -338,11 +340,14 @@ namespace NHIRD
                                 include = true;
                             }
                         }
-                        foreach (string criteria in StringExcludeList)
+                        if (StringExcludeList != null && StringExcludeList.Count > 0)
                         {
-                            if (InputDataRow.stringData[index].Substring(0, criteria.Length) == criteria)
+                            foreach (string criteria in StringExcludeList)
                             {
-                                exclude = true;
+                                if (InputDataRow.stringData[index].Substring(0, criteria.Length) == criteria)
+                                {
+                                    exclude = true;
+                                }
                             }
                         }
                         if (include && !exclude)
@@ -350,13 +355,17 @@ namespace NHIRD
                     }
                     return false;
                 }
-                else
+                else if (indexNumData >= 0)
                 {
                     if ((InputDataRow.numberData[indexNumData] < CriteriaNumUpper || CriteriaNumUpper == 0) &&
                         (InputDataRow.numberData[indexNumData] >= CriteriaNumLower || CriteriaNumLower == 0))
                     {
                         return true;
                     }
+                }
+                else  //此條件沒有找到index => 跳過
+                {
+                    return true;
                 }
                 return false;
             }
