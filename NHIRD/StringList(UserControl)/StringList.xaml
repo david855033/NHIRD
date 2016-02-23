@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="NHIRD.StringList"
+﻿<UserControl x:Class="NHIRD.StringListControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,7 +10,7 @@
         <StackPanel>
             <CheckBox x:Name="Cb_EnabaleCriteria" Margin="0,5"  HorizontalAlignment="Center">Include Order List</CheckBox>
             <StackPanel Height="120" Orientation="Horizontal" HorizontalAlignment="Center">
-                <ListView x:Name="Lv_StringList" Width="120" SelectionMode="Single" ></ListView>
+                <ListView x:Name="Lv_StringList" Width="120" SelectionMode="Single"></ListView>
                 <StackPanel Width="60">
                     <TextBlock TextAlignment="Center">Input</TextBlock>
                     <TextBox x:Name="Tx_input"/>

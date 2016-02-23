@@ -25,6 +25,7 @@ namespace NHIRD
             parentWindow = parent;
             Model_Instance = new GetOrder_Model(this);
             Do_ExtractData = new RelayCommand(ExtractData, (x) => true);
+            
         }
 
         public bool IsOOFileTypeEnabled
@@ -219,7 +220,7 @@ namespace NHIRD
             }
             set
             {
-                Model_Instance.str_outputDir =value;
+                Model_Instance.str_outputDir = value;
                 GlobalSetting.set("Order_OutputDir", value);
                 OnPropertyChanged("");
             }

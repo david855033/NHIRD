@@ -190,49 +190,12 @@ namespace NHIRD
         }
 
 
-        #region Order include按鈕功能
-        private void ButtonAddOrderIncl_Click(object sender, RoutedEventArgs e)
-        {
-            if (!ViewModel_Instance.OrderIncludes.Any(x => x == inputOrderIncl.Text) && inputOrderIncl.Text != "")
-            {
-                this.ViewModel_Instance.OrderIncludes.Add(inputOrderIncl.Text);
-                inputOrderIncl.Text = "";
-                Cb_Orderinclude.IsChecked = true;
-            }
-        }
-        private void ButtonEdtOrderIncl_Click(object sender, RoutedEventArgs e)
-        {
-            if (lv_OrderIncl.SelectedItem != null && !ViewModel_Instance.OrderIncludes.Any(x => x == inputOrderIncl.Text))
-            {
-                var index = lv_OrderIncl.SelectedIndex;
-                this.ViewModel_Instance.OrderIncludes.RemoveAt(index);
-                this.ViewModel_Instance.OrderIncludes.Insert(index, inputOrderIncl.Text);
-            }
-        }
-        private void Button_DelOrderInclClick(object sender, RoutedEventArgs e)
-        {
-            if (lv_OrderIncl.SelectedItem != null)
-            {
-                var index = lv_OrderIncl.SelectedIndex;
-                this.ViewModel_Instance.OrderIncludes.RemoveAt(index);
-                if (this.ViewModel_Instance.OrderIncludes.Count() == 0)
-                {
-                    Cb_Orderinclude.IsChecked = false;
-                }
-            }
-        }
-        private void ButtonClrOrderIncl_Click(object sender, RoutedEventArgs e)
-        {
-            this.ViewModel_Instance.OrderIncludes.Clear();
-            Cb_Orderinclude.IsChecked = false;
-        }
-        #endregion
+      
 
         private void ButtonLoadOrderIncl_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-   
     }
 }

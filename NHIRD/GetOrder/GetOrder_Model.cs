@@ -116,6 +116,7 @@ namespace NHIRD
         }
         #endregion
 
+
         #region -- Order criteria control
         /// <summary>
         /// Order inclusion criteria

@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-D:\文件\Github\NHIRD\NHIRD\obj\Debug\
+D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\
 NHIRD
 none
 false
 DEBUG;TRACE
-D:\文件\Github\NHIRD\NHIRD\App.xaml
-4-1595352863
+D:\文件\GitHub\NHIRD\NHIRD\App.xaml
+41372753485
 
-22694894245
+23802618463
 15767094614
-MainWindow.xaml;GetCD\window_GetCD.xaml;GetOrder\window_GetOrder.xaml;StringList.xaml;
+MainWindow.xaml;GetCD\window_GetCD.xaml;GetOrder\window_GetOrder.xaml;StringList(UserControl)\StringList.xaml;
 
 True
 

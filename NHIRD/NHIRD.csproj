@@ -91,9 +91,10 @@
     <Compile Include="GetOrder\window_GetOrder.xaml.cs">
       <DependentUpon>window_GetOrder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StringList.xaml.cs">
+    <Compile Include="StringList%28UserControl%29\StringList.xaml.cs">
       <DependentUpon>StringList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StringList%28UserControl%29\StringListModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -116,7 +117,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="StringList.xaml">
+    <Page Include="StringList%28UserControl%29\StringList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -148,30 +148,35 @@ namespace NHIRD
 
                     var newDataRow = new DataRow(queryStringDataFormats.Count(),
                         queryNumberDataFormats.Count());
-
-                    for (int i = 0; i < queryStringDataFormats.Count(); i++)
+                    try
                     {
-                        newDataRow.stringData[i] =
-                            line.Substring(queryStringDataFormats[i].position,
-                            queryStringDataFormats[i].length);
-                    }
+                        for (int i = 0; i < queryStringDataFormats.Count(); i++)
+                        {
+                            newDataRow.stringData[i] =
+                                line.Substring(queryStringDataFormats[i].position,
+                                queryStringDataFormats[i].length);
+                        }
 
-                    for (int i = 0; i < queryNumberDataFormats.Count(); i++)
+                        for (int i = 0; i < queryNumberDataFormats.Count(); i++)
+                        {
+                            var data =
+                                line.Substring(queryNumberDataFormats[i].position,
+                                queryNumberDataFormats[i].length);
+                            if (data == "")
+                            {
+                                newDataRow.numberData[i] = null;
+                            }
+                            else
+                            {
+                                newDataRow.numberData[i] = Convert.ToDouble(data);
+                            }
+                        }
+                        dataRowList.Add(newDataRow);
+                    }
+                    catch
                     {
-                        var data =
-                            line.Substring(queryNumberDataFormats[i].position,
-                            queryNumberDataFormats[i].length);
-                        if (data == "")
-                        {
-                            newDataRow.numberData[i] = null;
-                        }
-                        else
-                        {
-                            newDataRow.numberData[i] = Convert.ToDouble(data);
-                        }
+                        //* read error
                     }
-
-                    dataRowList.Add(newDataRow);
                 }
             }
         }

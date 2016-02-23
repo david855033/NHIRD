@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,31 +21,31 @@ namespace NHIRD
     /// <summary>
     /// StringList.xaml 的互動邏輯
     /// </summary>
-    public partial class StringList : UserControl
+    public partial class StringListControl : UserControl
     {
-        public StringList()
+        public StringListControl()
         {
-            InitializeComponent();
-        }
-        public static readonly DependencyProperty ListProperty =
-        DependencyProperty.Register("_currentList", typeof(ObservableCollection<string>),
-        typeof(StringList), new PropertyMetadata(""));
-
-        public List<string> currentList
-        {
-            get { return (List<string>)GetValue(ListProperty); }
-            set { SetValue(ListProperty, value); }
+            this.InitializeComponent();
         }
 
-        public event Propert
 
-        ObservableCollection<string> _currentList = new ObservableCollection<string>();
+        public static readonly DependencyProperty CurrentListProperty =
+        DependencyProperty.Register("CurrentList", typeof(ObservableCollection<string>), typeof(StringListControl), 
+            new PropertyMetadata(new ObservableCollection<string>()));
+
+        public ObservableCollection<string> CurrentList
+        {
+            get { return (ObservableCollection<string>)GetValue(CurrentListProperty); }
+            set {
+                SetValue(CurrentListProperty, value);
+            }
+        }
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
             var stringtoAdd = Tx_input.Text.Replace("_", " ");
-            if (stringtoAdd.Length > 0 && !_currentList.Any(x => x == stringtoAdd))
+            if (stringtoAdd.Length > 0 && !CurrentList.Any(x => x == stringtoAdd))
             {
-                _currentList.Add(stringtoAdd);
+                CurrentList.Add(stringtoAdd);
                 Tx_input.Text = "";
                 refresh();
             }
@@ -51,10 +53,10 @@ namespace NHIRD
         private void ButtonEdt_Click(object sender, RoutedEventArgs e)
         {
             var stringtoAdd = Tx_input.Text.Replace("_", " ");
-            if (stringtoAdd.Length > 0 && Lv_StringList.SelectedItem != null && !_currentList.Any(x => x == stringtoAdd))
+            if (stringtoAdd.Length > 0 && Lv_StringList.SelectedItem != null && !CurrentList.Any(x => x == stringtoAdd))
             {
-                _currentList.RemoveAt(Lv_StringList.SelectedIndex);
-                _currentList.Insert(Lv_StringList.SelectedIndex, stringtoAdd);
+                CurrentList.RemoveAt(Lv_StringList.SelectedIndex);
+                CurrentList.Insert(Lv_StringList.SelectedIndex, stringtoAdd);
                 refresh();
             }
         }
@@ -64,14 +66,14 @@ namespace NHIRD
         {
             if (Lv_StringList.SelectedItem != null)
             {
-                _currentList.RemoveAt(Lv_StringList.SelectedIndex);
+                CurrentList.RemoveAt(Lv_StringList.SelectedIndex);
                 refresh();
             }
         }
 
         private void ButtonClr_Click(object sender, RoutedEventArgs e)
         {
-            _currentList.Clear();
+            CurrentList.Clear();
             refresh();
         }
 
@@ -89,9 +91,9 @@ namespace NHIRD
                     while (!sr.EndOfStream)
                     {
                         var stringtoAdd = sr.ReadLine().Replace("_", " ");
-                        if (stringtoAdd.Length > 0 && stringtoAdd.Length <= 12 && !_currentList.Any(x => x == stringtoAdd))
+                        if (stringtoAdd.Length > 0 && stringtoAdd.Length <= 12 && !CurrentList.Any(x => x == stringtoAdd))
                         {
-                            _currentList.Add(stringtoAdd);
+                            CurrentList.Add(stringtoAdd);
                             refresh();
                         }
                     }
@@ -102,12 +104,11 @@ namespace NHIRD
         void refresh()
         {
             Lv_StringList.Items.Clear();
-            foreach (var s in _currentList)
+            foreach (var s in CurrentList)
             {
                 Lv_StringList.Items.Add(s.Replace(" ", "_"));
             }
-
-            Cb_EnabaleCriteria.IsChecked = _currentList.Count > 0 ? true : false;
+            Cb_EnabaleCriteria.IsChecked = CurrentList.Count > 0 ? true : false;
         }
     }
 }
