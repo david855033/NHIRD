@@ -189,13 +189,7 @@ namespace NHIRD
                 " / " + ViewModel_Instance.inputFileList.Count + " files.";
         }
 
-
-      
-
-        private void ButtonLoadOrderIncl_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
 
     }
 }

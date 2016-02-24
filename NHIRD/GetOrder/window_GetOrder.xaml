@@ -106,7 +106,7 @@
 
         <StackPanel Grid.Column="1">
 
-            <local:StringListControl x:Name="OrderCriteria"  Margin="10" CurrentList="{Binding OrderIncludes}"/>
+            <local:StringListControl x:Name="OrderCriteria"  Margin="10" CurrentList="{Binding OrderIncludes}" IsCriteriaEnabled="{Binding IsOrderIncludeEnabled, Mode=TwoWay}"/>
             <DockPanel  Margin="5,50,5,0" LastChildFill="True" HorizontalAlignment="Stretch">
                 <TextBlock Margin="5,0">Output Dir:</TextBlock>
                 <Button  Click="SelectOutputDir_Click" Margin="5,0" DockPanel.Dock="Right">Select Folder</Button>

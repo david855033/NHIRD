@@ -115,74 +115,62 @@ namespace NHIRD
                     //依照年分及filetype挑出正確的Dataformat，傳入Readfile及Writefile
                     var queryStringDataFormats =
                          (from q in stringDataFormats
-                          where currentfile.MKyear >= q.start_year && currentfile.MKyear <= q.end_year && q.FileType == currentfile.FileType
+                          where (currentfile.MKyear >= q.start_year || q.start_year == 0) && 
+                                (currentfile.MKyear <= q.end_year || q.end_year == 0) &&
+                                 q.FileType == currentfile.FileType
                           select q).ToList();
                     var queryNumberDataFormats =
                       (from q in numberDataFormats
-                       where currentfile.MKyear >= q.start_year && currentfile.MKyear <= q.end_year && q.FileType == currentfile.FileType
+                       where (currentfile.MKyear >= q.start_year || q.start_year == 0) &&
+                             (currentfile.MKyear <= q.end_year || q.end_year == 0) && 
+                              q.FileType == currentfile.FileType
                        select q).ToList();
-                    //建立資料清單，開始讀寫
-                    var dataRowList = new List<DataRow>();
-                    ReadFile(currentfile, dataRowList,
-                        queryStringDataFormats, queryNumberDataFormats);
 
-                    JudgeFile(currentfile, dataRowList,
-                       queryStringDataFormats, queryNumberDataFormats);
+                    //檢查目錄是否存在並且產生輸出檔名
+                    if (!Directory.Exists(outputDir))
+                        Directory.CreateDirectory(outputDir);
+                    string outpath = outputDir + "\\" + currentfile.name.Split('.')[0] + ".EXT";
 
-                    WriteFile(currentfile, dataRowList,
-                        queryStringDataFormats, queryNumberDataFormats);
-                }
-            }
-        }
+                    //產生屬於該筆檔案criteria對應的index, 並且儲存到criteriaList中
+                    initiateCriteriaIndex(currentfile, queryStringDataFormats, queryNumberDataFormats);
 
-        void ReadFile(File currentfile, List<DataRow> dataRowList,
-        List<StringDataFormat> queryStringDataFormats,
-          List<NumberDataFormat> queryNumberDataFormats)
-        {
-            using (var sr = new StreamReader(currentfile.path, System.Text.Encoding.Default))
-            {
-
-                while (!sr.EndOfStream)
-                {
-                    string line = sr.ReadLine();
-
-                    var newDataRow = new DataRow(queryStringDataFormats.Count(),
-                        queryNumberDataFormats.Count());
-                    try
+                    //使用sr及sw依序讀入、判斷、寫入
+                    using (var sr = new StreamReader(currentfile.path, System.Text.Encoding.Default))
+                    using (var sw = new StreamWriter(outpath, false, System.Text.Encoding.Default))
                     {
-                        for (int i = 0; i < queryStringDataFormats.Count(); i++)
+                        // --產生title
+                        string title = "";
+                        foreach (var q in queryStringDataFormats)
                         {
-                            newDataRow.stringData[i] =
-                                line.Substring(queryStringDataFormats[i].position,
-                                queryStringDataFormats[i].length);
+                            title += q.key + '\t';
                         }
-
-                        for (int i = 0; i < queryNumberDataFormats.Count(); i++)
+                        foreach (var q in queryNumberDataFormats)
                         {
-                            var data =
-                                line.Substring(queryNumberDataFormats[i].position,
-                                queryNumberDataFormats[i].length);
-                            if (data == "")
+                            title += q.key + '\t';
+                        }
+                        sw.WriteLine(title.TrimEnd('\t'));
+                        // --產生內容
+                        while (!sr.EndOfStream)
+                        {
+                            DataRow dataRow = new DataRow(queryStringDataFormats.Count(), queryNumberDataFormats.Count());
+
+                            try
                             {
-                                newDataRow.numberData[i] = null;
+                                ReadRow(sr, dataRow, queryStringDataFormats, queryNumberDataFormats);
+                                JudgeRow(dataRow);
+                                WriteRow(sw, dataRow, queryStringDataFormats, queryNumberDataFormats);
                             }
-                            else
+                            catch
                             {
-                                newDataRow.numberData[i] = Convert.ToDouble(data);
+                                //* bad data error
                             }
                         }
-                        dataRowList.Add(newDataRow);
-                    }
-                    catch
-                    {
-                        //* read error
                     }
                 }
             }
         }
 
-        void JudgeFile(File currentfile, List<DataRow> dataRowList,
-        List<StringDataFormat> queryStringDataFormats, List<NumberDataFormat> queryNumberDataFormats)
+        void initiateCriteriaIndex(File currentfile, List<StringDataFormat> queryStringDataFormats, List<NumberDataFormat> queryNumberDataFormats)
         {
             //逐個criteria確定要判斷的欄位index
             foreach (var currentCriteria in CriteriaList)
@@ -236,56 +224,56 @@ namespace NHIRD
                     }
                 }
             }
-
-            //逐筆資料比對(使用criteria.DoCheck)，只要有一項不相符就將該筆DataRow.IsMatch設定為neg，並跳過該筆資料
-            foreach (var currentDataRow in dataRowList)
-            {
-                foreach (var currentCriteria in CriteriaList)
-                {
-                    if (currentDataRow.IsMatch == false) continue;
-                    currentDataRow.IsMatch = currentCriteria.DoCheck(currentDataRow);
-                }
-            }
-
         }
 
-        void WriteFile(File currentfile, List<DataRow> dataRowList,
-        List<StringDataFormat> queryStringDataFormats,
-            List<NumberDataFormat> queryNumberDataFormats)
+        void ReadRow(StreamReader sr, DataRow dataRow, List<StringDataFormat> queryStringDataFormats, List<NumberDataFormat> queryNumberDataFormats)
         {
-            //檢查目錄是否存在
-            if (!Directory.Exists(outputDir))
-                Directory.CreateDirectory(outputDir);
-            string outpath = outputDir + "\\" + currentfile.name.Split('.')[0] + ".EXT";
-            using (var sw = new StreamWriter(outpath, false, System.Text.Encoding.Default))
+            string line = sr.ReadLine();
+            for (int i = 0; i < queryStringDataFormats.Count(); i++)
             {
-                string title = "";
-                foreach (var q in queryStringDataFormats)
+                dataRow.stringData[i] =
+                    line.Substring(queryStringDataFormats[i].position,
+                    queryStringDataFormats[i].length);
+            }
+            for (int i = 0; i < queryNumberDataFormats.Count(); i++)
+            {
+                var data =
+                    line.Substring(queryNumberDataFormats[i].position,
+                    queryNumberDataFormats[i].length);
+                if (data == "")
                 {
-                    title += q.key + '\t';
+                    dataRow.numberData[i] = null;
                 }
-
-                foreach (var q in queryNumberDataFormats)
+                else
                 {
-                    title += q.key + '\t';
-                }
-                sw.WriteLine(title.TrimEnd('\t'));
-
-                foreach (var currentData in dataRowList)
-                {
-                    if (!currentData.IsMatch) continue;
-                    string line = "";
-                    foreach (string s in currentData.stringData)
-                    {
-                        line += s + '\t';
-                    }
-                    foreach (double? db in currentData.numberData)
-                    {
-                        line += db.ToString() + '\t';
-                    }
-                    sw.WriteLine(line.TrimEnd('\t'));
+                    dataRow.numberData[i] = Convert.ToDouble(data);
                 }
             }
+        }
+
+        void JudgeRow(DataRow dataRow)
+        {
+            //比對(使用criteria.DoCheck)，只要有一項不相符就將該筆DataRow.IsMatch設定為false(預設值為true)，並跳過該筆資料
+            foreach (var currentCriteria in CriteriaList)
+            {
+                if (dataRow.IsMatch == false) continue;
+                dataRow.IsMatch = currentCriteria.DoCheck(dataRow);
+            }
+        }
+
+        void WriteRow(StreamWriter sw, DataRow dataRow, List<StringDataFormat> queryStringDataFormats, List<NumberDataFormat> queryNumberDataFormats)
+        {
+            if (!dataRow.IsMatch) return;
+            string line = "";
+            foreach (string s in dataRow.stringData)
+            {
+                line += s + '\t';
+            }
+            foreach (double? db in dataRow.numberData)
+            {
+                line += db.ToString() + '\t';
+            }
+            sw.WriteLine(line.TrimEnd('\t'));
         }
 
         public List<Criteria> CriteriaList = new List<Criteria>();
@@ -294,14 +282,14 @@ namespace NHIRD
         /// </summary>
         public class Criteria
         {
-            public string key;
+            public string key;                        //此criteria比較的目標
             public List<string> StringIncludeList, StringExcludeList;
-            public List<int> indexStrDatalist;
             public double CriteriaNumUpper, CriteriaNumLower;
-            public int indexNumData;
-            public int indexBirthday, indexEventday, indexID;
-            public IEnumerable<File> IDCriteriaFileList;
-            public List<IDData> IDCriteriaList;
+            public List<int> indexStrDatalist;                   //對應字串用
+            public int indexNumData;                             //對應數字用
+            public int indexBirthday, indexEventday, indexID;   //對應ID用
+            public IEnumerable<File> IDCriteriaFileList;      //暫時儲存該組(Rgroup)對應的檔案
+            public List<IDData> IDCriteriaList;               //將上述檔案內容提取入IDList
             //實際執行判斷的方法
             public bool DoCheck(DataRow InputDataRow)
             {

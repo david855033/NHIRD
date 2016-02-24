@@ -102,7 +102,13 @@ namespace NHIRD
     {
         public string FileType { get; set; }
         public string FileTypeCH { get; set; }
+        /// <summary>
+        /// 若原始資料空白則為0
+        /// </summary>
         public int start_year { get; set; }
+        /// <summary>
+        /// 若原始資料空白則為0
+        /// </summary>
         public int end_year { get; set; }
         public string ColumnName { get; set; }
         public string ColumnNameCH { get; set; }

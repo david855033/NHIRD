@@ -26,20 +26,35 @@ namespace NHIRD
         public StringListControl()
         {
             this.InitializeComponent();
+            (this.Content as FrameworkElement).DataContext = this;
         }
 
 
         public static readonly DependencyProperty CurrentListProperty =
-        DependencyProperty.Register("CurrentList", typeof(ObservableCollection<string>), typeof(StringListControl), 
+        DependencyProperty.Register("CurrentList", typeof(ObservableCollection<string>), typeof(StringListControl),
             new PropertyMetadata(new ObservableCollection<string>()));
 
         public ObservableCollection<string> CurrentList
         {
             get { return (ObservableCollection<string>)GetValue(CurrentListProperty); }
-            set {
+            set
+            {
                 SetValue(CurrentListProperty, value);
             }
         }
+
+        public static readonly DependencyProperty IsCriteriaEnabledProperty =
+        DependencyProperty.Register("IsCriteriaEnabled", typeof(bool), typeof(StringListControl));
+
+        public bool IsCriteriaEnabled
+        {
+            get { return (bool)GetValue(IsCriteriaEnabledProperty); }
+            set
+            {
+                SetValue(IsCriteriaEnabledProperty, value);
+            }
+        }
+
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
             var stringtoAdd = Tx_input.Text.Replace("_", " ");
@@ -108,7 +123,7 @@ namespace NHIRD
             {
                 Lv_StringList.Items.Add(s.Replace(" ", "_"));
             }
-            Cb_EnabaleCriteria.IsChecked = CurrentList.Count > 0 ? true : false;
+            IsCriteriaEnabled = CurrentList.Count > 0 ? true : false;
         }
     }
 }

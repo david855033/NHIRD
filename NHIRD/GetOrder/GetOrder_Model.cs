@@ -152,7 +152,7 @@ namespace NHIRD
                     StringIncludeList = list_Orderinclude.ToList()
                 });
             }
-           
+            
             //執行
             extractData.Do(parentVM.parentWindow.parentWindow.rawDataFormats, selectedFileTypes.ToArray(),
                 from f in inputFileList where f.selected == true select f, str_outputDir);
