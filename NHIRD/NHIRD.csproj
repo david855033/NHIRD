@@ -80,6 +80,9 @@
     <Compile Include="datatype.cs" />
     <Compile Include="Extentions.cs" />
     <Compile Include="Extract Data.cs" />
+    <Compile Include="EXT_FolderSelector.xaml.cs">
+      <DependentUpon>EXT_FolderSelector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GetCD\Command.cs" />
     <Compile Include="GetCD\GetCD_Model.cs" />
     <Compile Include="GetCD\GetCD_ViewModel.cs" />
@@ -91,10 +94,13 @@
     <Compile Include="GetOrder\window_GetOrder.xaml.cs">
       <DependentUpon>window_GetOrder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StringList%28UserControl%29\StringList.xaml.cs">
+    <Compile Include="%28UserControl%29StringList\StringList.xaml.cs">
       <DependentUpon>StringList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StringList%28UserControl%29\StringListModel.cs" />
+    <Page Include="EXT_FolderSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -117,7 +123,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="StringList%28UserControl%29\StringList.xaml">
+    <Page Include="%28UserControl%29StringList\StringList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -32,7 +32,7 @@ namespace NHIRD
             return (this.ID + this.Birthday).CompareTo(that.ID + that.Birthday);
         }
     }
-
+    //accept object with Icomparable, use Binary search to do Sorted list
     public class DistinctList<T> : List<T>
     {
         public void AddDistinct(T obj)

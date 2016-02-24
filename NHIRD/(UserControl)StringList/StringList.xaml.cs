@@ -29,11 +29,10 @@ namespace NHIRD
             (this.Content as FrameworkElement).DataContext = this;
         }
 
-
+        // -- Property for CurrentList
         public static readonly DependencyProperty CurrentListProperty =
         DependencyProperty.Register("CurrentList", typeof(ObservableCollection<string>), typeof(StringListControl),
             new PropertyMetadata(new ObservableCollection<string>()));
-
         public ObservableCollection<string> CurrentList
         {
             get { return (ObservableCollection<string>)GetValue(CurrentListProperty); }
@@ -43,15 +42,27 @@ namespace NHIRD
             }
         }
 
+        // -- Property for IsCriteriaEnabled
         public static readonly DependencyProperty IsCriteriaEnabledProperty =
         DependencyProperty.Register("IsCriteriaEnabled", typeof(bool), typeof(StringListControl));
-
         public bool IsCriteriaEnabled
         {
             get { return (bool)GetValue(IsCriteriaEnabledProperty); }
             set
             {
                 SetValue(IsCriteriaEnabledProperty, value);
+            }
+        }
+
+        // -- Property for Title
+        public static readonly DependencyProperty TitleProperty =
+        DependencyProperty.Register("Title", typeof(string), typeof(StringListControl));
+        public string Title
+        {
+            get { return (string)GetValue(TitleProperty); }
+            set
+            {
+                SetValue(TitleProperty, value);
             }
         }
 

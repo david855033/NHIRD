@@ -115,14 +115,14 @@ namespace NHIRD
                     //依照年分及filetype挑出正確的Dataformat，傳入Readfile及Writefile
                     var queryStringDataFormats =
                          (from q in stringDataFormats
-                          where (currentfile.MKyear >= q.start_year || q.start_year == 0) && 
+                          where (currentfile.MKyear >= q.start_year || q.start_year == 0) &&
                                 (currentfile.MKyear <= q.end_year || q.end_year == 0) &&
                                  q.FileType == currentfile.FileType
                           select q).ToList();
                     var queryNumberDataFormats =
                       (from q in numberDataFormats
                        where (currentfile.MKyear >= q.start_year || q.start_year == 0) &&
-                             (currentfile.MKyear <= q.end_year || q.end_year == 0) && 
+                             (currentfile.MKyear <= q.end_year || q.end_year == 0) &&
                               q.FileType == currentfile.FileType
                        select q).ToList();
 
