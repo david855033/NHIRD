@@ -26,7 +26,7 @@ namespace NHIRD
         {
             InitializeComponent();
             (this.Content as FrameworkElement).DataContext = this;
-            if (Title == null) Title = "Defult Title";
+            if (Title == null) Title = "Default Title";
         }
 
         // -- Property for Title
@@ -62,6 +62,7 @@ namespace NHIRD
             set
             {
                 SetValue(FolderPathProperty, value);
+                renewFileList();
             }
         }
 
@@ -90,13 +91,17 @@ namespace NHIRD
             }
         }
 
+        public string FileType { get; set; }
+
         void renewFileList()
         {
             try
             {
                 var paths = new List<string>();
-                paths.AddRange(Directory.EnumerateFiles(FolderPath, "*CD*.EXT", SearchOption.AllDirectories).ToArray());
-                paths.AddRange(Directory.EnumerateFiles(FolderPath, "*DD*.EXT", SearchOption.AllDirectories).ToArray());
+                foreach (var F in FileType.Split(','))
+                {
+                    paths.AddRange(Directory.EnumerateFiles(FolderPath, "*"+F+"*.EXT", SearchOption.AllDirectories).ToArray());
+                }
                 var newfiles = new List<File>();
                 foreach (string str_filepath in paths)
                 {
@@ -104,6 +109,10 @@ namespace NHIRD
                 }
                 FileList.Clear();
                 FileList = newfiles;
+
+                var groupCount = (from q in FileList group q by q.@group into g select g).Count();
+                Message = "Total " + FileList.Count() + " files was loaded. Group count: " + groupCount;
+
             }
             catch
             {

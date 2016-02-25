@@ -136,17 +136,22 @@ namespace NHIRD
         #region ID criteria controls
         public string IDCriteriaFolderPath { get; set; }
         public string IDCriteriaMessage { get; set; }
-        public List<File> IDCriteria_FileList = new List<File>();
+        public List<File> IDCriteriaFileList = new List<File>();
         public bool IsIDCriteriaEnable { get; set; }
         #endregion
+
+        #region Order Criteria Controls
+        public string OrderCriteriaFolderPath { get; set; }
+        public string OrderCriteriaMessage { get; set; }
+        public List<File> OrderCriteriaFileList = new List<File>();
         public bool IsOrderCriteriaEnable { get; set; }
+        #endregion
 
         /// <summary>
         /// 匯入條件並且提取檔案
         /// </summary>
         public void DoExtractData()
         {
-
             //建立執行個體
             var extractData = new ExtractData();
             //判斷是否啟動ICD 條件
@@ -207,7 +212,7 @@ namespace NHIRD
                 extractData.CriteriaList.Add(new ExtractData.Criteria()
                 {
                     key = "IDLIST",
-                    IDCriteriaFileList = IDCriteria_FileList
+                    IDCriteriaFileList = IDCriteriaFileList
                 });
             }
 

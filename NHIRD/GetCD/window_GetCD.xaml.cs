@@ -35,7 +35,10 @@ namespace NHIRD
             this.DataContext = ViewModel_Instance;
             ViewModel_Instance.InputDir = GlobalSetting.get("CD_InputDir");
             ViewModel_Instance.str_outputDir = GlobalSetting.get("CD_OutputDir");
-            ViewModel_Instance.IDCriteriaFolderPath = GlobalSetting.get("CD_IDCriteriaDir");
+            ViewModel_Instance.IDCriteriaFolderPath = IDCrieteria_FolderSelect.FolderPath =
+                GlobalSetting.get("CD_IDCriteriaDir");
+            ViewModel_Instance.OrderCriteriaFolderPath = OrderCrieteria_FolderSelect.FolderPath =
+                GlobalSetting.get("CD_OrderCriteriaDir");
             refresh_Listviews();
         }
         /// <summary>
@@ -192,8 +195,8 @@ namespace NHIRD
                 ViewModel_Instance.str_outputDir = FolderSelector.SelectedPath;
             }
         }
-     
-     
+
+
         private void ResetAll_Click(object sender, RoutedEventArgs e)
         {
             foreach (var obj in Extentions.FindVisualChildren<System.Windows.Controls.CheckBox>(criteriaStackPanel))

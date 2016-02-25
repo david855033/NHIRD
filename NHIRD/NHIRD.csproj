@@ -77,10 +77,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="datatype.cs" />
+    <Compile Include="Datatype.cs" />
     <Compile Include="Extentions.cs" />
     <Compile Include="Extract Data.cs" />
-    <Compile Include="EXT_FolderSelector.xaml.cs">
+    <Compile Include="%28UserControl%29EXT_FolderSelector\EXT_FolderSelector.xaml.cs">
       <DependentUpon>EXT_FolderSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="GetCD\Command.cs" />
@@ -97,7 +97,7 @@
     <Compile Include="%28UserControl%29StringList\StringList.xaml.cs">
       <DependentUpon>StringList.xaml</DependentUpon>
     </Compile>
-    <Page Include="EXT_FolderSelector.xaml">
+    <Page Include="%28UserControl%29EXT_FolderSelector\EXT_FolderSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

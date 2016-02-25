@@ -325,29 +325,8 @@ namespace NHIRD
             get { return Model_Instance.IsIDCriteriaEnable; }
             set {
                 Model_Instance.IsIDCriteriaEnable = value;
-                renewIDCriteriaList(IDCriteriaFolderPath);
             }
         } 
-        void renewIDCriteriaList(string path)
-        {
-            try
-            {
-                var paths = new List<string>();
-                paths.AddRange(Directory.EnumerateFiles(path, "*CD*.EXT", SearchOption.AllDirectories).ToArray());
-                paths.AddRange(Directory.EnumerateFiles(path, "*DD*.EXT", SearchOption.AllDirectories).ToArray());
-                var newfiles = new List<File>();
-                foreach (string str_filepath in paths)
-                {
-                    newfiles.Add(new File(str_filepath));
-                }
-                IDCriteriaFileList.Clear();
-                IDCriteriaFileList = newfiles;
-            }
-            catch
-            {
-                IDCriteriaMessage = "Invalid path";
-            }
-        }
         public string IDCriteriaFolderPath
         {
             get { return Model_Instance.IDCriteriaFolderPath; }
@@ -355,9 +334,13 @@ namespace NHIRD
             {
                 Model_Instance.IDCriteriaFolderPath =value;
                 GlobalSetting.set("CD_IDCriteriaDir", value);
-               renewIDCriteriaList(value);
                 OnPropertyChanged(nameof(IDCriteriaFolderPath));
             }
+        }
+        public List<File> IDCriteriaFileList
+        {
+            get { return Model_Instance.IDCriteriaFileList; }
+            set { Model_Instance.IDCriteriaFileList = value; }
         }
         public string IDCriteriaMessage
         {
@@ -368,27 +351,45 @@ namespace NHIRD
                 OnPropertyChanged(nameof(IDCriteriaMessage));
             }
         }
-        /// <summary>
-        /// 實際儲存檔案資料的位置，更動時更新message
-        /// </summary>
-        public List<File> IDCriteriaFileList
-        {
-            get { return Model_Instance.IDCriteria_FileList; }
-            set
-            {
-                Model_Instance.IDCriteria_FileList = value;
-                var groupCount = (from q in IDCriteriaFileList group q by q.@group into g select g).Count();
-                IDCriteriaMessage = "Total " + IDCriteriaFileList.Count() + " files was loaded. Group count: " + groupCount;
-            }
-        }
         #endregion
 
-
+        #region -- Order criteria controls
+        /// <summary>
+        /// ID Criteria List 的Folder Path(資料夾內應該要內含CD或DD的EXT檔案), 更動時更新ID Criteria List
+        /// </summary>
         public bool IsOrderCriteriaEnable
         {
             get { return Model_Instance.IsOrderCriteriaEnable; }
-            set { Model_Instance.IsOrderCriteriaEnable = value; }
+            set
+            {
+                Model_Instance.IsOrderCriteriaEnable = value;
+            }
         }
+        public string OrderCriteriaFolderPath
+        {
+            get { return Model_Instance.OrderCriteriaFolderPath; }
+            set
+            {
+                Model_Instance.OrderCriteriaFolderPath = value;
+                GlobalSetting.set("CD_OrderCriteriaDir", value);
+                OnPropertyChanged(nameof(OrderCriteriaFolderPath));
+            }
+        }
+        public List<File> OrderCriteriaFileList
+        {
+            get { return Model_Instance.OrderCriteriaFileList; }
+            set { Model_Instance.OrderCriteriaFileList = value; }
+        }
+        public string OrderCriteriaMessage
+        {
+            get { return Model_Instance.OrderCriteriaMessage; }
+            set
+            {
+                Model_Instance.OrderCriteriaMessage = value;
+                OnPropertyChanged(nameof(OrderCriteriaMessage));
+            }
+        }
+        #endregion
 
 
         /// <summary>
