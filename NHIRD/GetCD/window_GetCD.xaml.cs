@@ -33,12 +33,6 @@ namespace NHIRD
             this.Top = parent.Top;
             ViewModel_Instance = new GetCD_ViewModel(this);
             this.DataContext = ViewModel_Instance;
-            ViewModel_Instance.InputDir = GlobalSetting.get("CD_InputDir");
-            ViewModel_Instance.str_outputDir = GlobalSetting.get("CD_OutputDir");
-            ViewModel_Instance.IDCriteriaFolderPath = IDCrieteria_FolderSelect.FolderPath =
-                GlobalSetting.get("CD_IDCriteriaDir");
-            ViewModel_Instance.OrderCriteriaFolderPath = OrderCrieteria_FolderSelect.FolderPath =
-                GlobalSetting.get("CD_OrderCriteriaDir");
             refresh_Listviews();
         }
         /// <summary>
@@ -216,6 +210,16 @@ namespace NHIRD
             var s = sender as System.Windows.Controls.TextBox;
             s.Text = s.Text.RegexFloat();
             s.Select(s.Text.Length, 0);
+        }
+
+        private void WindowGetCD_Loaded(object sender, RoutedEventArgs e)
+        {
+            ViewModel_Instance.InputDir = GlobalSetting.get("CD_InputDir");
+            ViewModel_Instance.str_outputDir = GlobalSetting.get("CD_OutputDir");
+            IDCrieteria_FolderSelect.FolderPath =
+                GlobalSetting.get("CD_IDCriteriaDir");
+            OrderCrieteria_FolderSelect.FolderPath =
+                GlobalSetting.get("CD_OrderCriteriaDir");
         }
     }
 }

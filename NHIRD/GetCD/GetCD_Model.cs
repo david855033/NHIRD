@@ -136,14 +136,14 @@ namespace NHIRD
         #region ID criteria controls
         public string IDCriteriaFolderPath { get; set; }
         public string IDCriteriaMessage { get; set; }
-        public List<File> IDCriteriaFileList = new List<File>();
+        public ObservableCollection<File> IDCriteriaFileList = new ObservableCollection<File>();
         public bool IsIDCriteriaEnable { get; set; }
         #endregion
 
         #region Order Criteria Controls
         public string OrderCriteriaFolderPath { get; set; }
         public string OrderCriteriaMessage { get; set; }
-        public List<File> OrderCriteriaFileList = new List<File>();
+        public ObservableCollection<File> OrderCriteriaFileList = new ObservableCollection<File>();
         public bool IsOrderCriteriaEnable { get; set; }
         #endregion
 
@@ -213,6 +213,15 @@ namespace NHIRD
                 {
                     key = "IDLIST",
                     IDCriteriaFileList = IDCriteriaFileList
+                });
+            }
+            //判斷是否啟動Order(ActionList)條件
+            if (IsOrderCriteriaEnable)
+            {
+                extractData.CriteriaList.Add(new ExtractData.Criteria()
+                {
+                    key = "ACTIONLIST",
+                    ActionCriteriaFileList = OrderCriteriaFileList
                 });
             }
 

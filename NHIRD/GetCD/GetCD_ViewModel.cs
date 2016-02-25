@@ -337,7 +337,7 @@ namespace NHIRD
                 OnPropertyChanged(nameof(IDCriteriaFolderPath));
             }
         }
-        public List<File> IDCriteriaFileList
+        public ObservableCollection<File> IDCriteriaFileList
         {
             get { return Model_Instance.IDCriteriaFileList; }
             set { Model_Instance.IDCriteriaFileList = value; }
@@ -375,7 +375,7 @@ namespace NHIRD
                 OnPropertyChanged(nameof(OrderCriteriaFolderPath));
             }
         }
-        public List<File> OrderCriteriaFileList
+        public ObservableCollection<File> OrderCriteriaFileList
         {
             get { return Model_Instance.OrderCriteriaFileList; }
             set { Model_Instance.OrderCriteriaFileList = value; }

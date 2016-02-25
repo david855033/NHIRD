@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 
 namespace NHIRD
 {
@@ -80,11 +82,12 @@ namespace NHIRD
 
         // -- Property for FileList
         public static readonly DependencyProperty FileListProperty =
-         DependencyProperty.Register(nameof(FileList), typeof(List<File>), typeof(EXT_FolderSelector),
-             new PropertyMetadata(new List<File>()));
-        public List<File> FileList
+         DependencyProperty.Register(nameof(FileList), typeof(ObservableCollection<File>), typeof(EXT_FolderSelector),
+             new PropertyMetadata(new ObservableCollection<File>()));
+
+        public ObservableCollection<File> FileList
         {
-            get { return (List<File>)GetValue(FileListProperty); }
+            get { return (ObservableCollection<File>)GetValue(FileListProperty); }
             set
             {
                 SetValue(FileListProperty, value);
@@ -102,7 +105,7 @@ namespace NHIRD
                 {
                     paths.AddRange(Directory.EnumerateFiles(FolderPath, "*"+F+"*.EXT", SearchOption.AllDirectories).ToArray());
                 }
-                var newfiles = new List<File>();
+                var newfiles = new ObservableCollection<File>();
                 foreach (string str_filepath in paths)
                 {
                     newfiles.Add(new File(str_filepath));

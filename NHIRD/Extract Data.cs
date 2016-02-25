@@ -16,6 +16,7 @@ namespace NHIRD
         string outputDir;
         List<StringDataFormat> stringDataFormats = new List<StringDataFormat>();
         List<NumberDataFormat> numberDataFormats = new List<NumberDataFormat>();
+
         public void Do(List<RawDataFormat> rawDataFormats, string[] selectedFileTypes, IEnumerable<File> list_file, string outputDir)
         {
             ///使用rawDataFormats初始化資料清單(分為數值資料跟字串資料)
@@ -23,16 +24,15 @@ namespace NHIRD
             this.rawDataFormats = rawDataFormats;
             this.outputDir = outputDir;
             this.rawDataFileList = list_file;
-            initializeDataSet();
+
+            initializeDataFormats();
 
             //逐個檔案執行讀寫
             ReadJudgeWriteFiles();
         }
-        /// <summary>
-        /// 載入指定selectedFileType的格式資料，並且儲存在numberDataFormats及stringDataFormats中
-        /// </summary>
-        /// <param name="rawDataFormats"></param>
-        void initializeDataSet()
+
+        // step 1
+        void initializeDataFormats()
         {
             var queryStr =
                 from r in rawDataFormats
@@ -71,9 +71,8 @@ namespace NHIRD
                 numberDataFormats.Add(toAdd);
             }
         }
-        /// <summary>
-        /// 逐個檔案進行讀寫+判斷
-        /// </summary>
+
+        // step 2 依序質性下面五個function
         void ReadJudgeWriteFiles()
         {
 
@@ -84,34 +83,12 @@ namespace NHIRD
             {
                 var current_list_file = from q in rawDataFileList where q.@group == g select q;
                 if (CriteriaList.Any(x => x.key == "IDLIST") == true)//有使用"IDLIST"的條件，需要載入IDLIST
-                {
-                    var NewIDCriteriaList = new DistinctList<IDData>();
-                    //搜尋同組的Criteria File
-                    var FilesOfTheGroup = from q in CriteriaList.Find(x => x.key == "IDLIST").IDCriteriaFileList
-                                          where q.@group == g
-                                          select q;
-                    //載入同組File中的ID+Birthday進入IDList，儲存在該筆criteria中
-                    foreach (var f in FilesOfTheGroup)
-                    {
-                        using (var sr = new StreamReader(f.path))
-                        {
-                            string[] titles = sr.ReadLine().Split('\t');
-                            var indexBirthday = Array.FindIndex(titles, x => x.IndexOf("BIRTHDAY") >= 0);
-                            var indexID = Array.FindIndex(titles, x => x == "ID");
-                            while (!sr.EndOfStream)
-                            {
-                                string[] linesplit = sr.ReadLine().Split('\t');
-                                string Birthday = linesplit[indexBirthday];
-                                string ID = linesplit[indexID];
-                                NewIDCriteriaList.AddDistinct(new IDData { ID = ID, Birthday = Birthday });
-                            }
-                        }
-                    }
-                    CriteriaList.Find(x => x.key == "IDLIST").IDCriteriaList = NewIDCriteriaList;
-                }
+                    initializeIDCriteria(g);
                 // 逐個檔案進行
                 foreach (File currentfile in current_list_file)
                 {
+                    if (CriteriaList.Any(x => x.key == "ACTIONLIST") == true)
+                        initializeActionCriteria(currentfile);
                     //依照年分及filetype挑出正確的Dataformat，傳入Readfile及Writefile
                     var queryStringDataFormats =
                          (from q in stringDataFormats
@@ -170,6 +147,72 @@ namespace NHIRD
             }
         }
 
+        // step 2.1 - 2.6
+        void initializeIDCriteria(string CurrentGroup)
+        {
+            var NewIDCriteriaList = new DistinctList<IDData>();
+            //搜尋同組的Criteria File
+            var FilesOfTheGroup = from q in CriteriaList.Find(x => x.key == "IDLIST").IDCriteriaFileList
+                                  where q.@group == CurrentGroup
+                                  select q;
+            //載入同組File中的ID+Birthday進入IDList，儲存在該筆criteria中
+            foreach (var f in FilesOfTheGroup)
+            {
+                using (var sr = new StreamReader(f.path))
+                {
+                    string[] titles = sr.ReadLine().Split('\t');
+                    var indexBirthday = Array.FindIndex(titles, x => x.IndexOf("BIRTHDAY") >= 0);
+                    var indexID = Array.FindIndex(titles, x => x == "ID");
+                    while (!sr.EndOfStream)
+                    {
+                        string[] linesplit = sr.ReadLine().Split('\t');
+                        NewIDCriteriaList.AddDistinct(new IDData
+                        {
+                            ID = linesplit[indexID],
+                            Birthday = linesplit[indexBirthday]
+                        });
+                    }
+                }
+            }
+            CriteriaList.Find(x => x.key == "IDLIST").IDCriteriaList = NewIDCriteriaList;
+        }
+        void initializeActionCriteria(File CurrentFile)
+        {
+            var NewActionCriteriaList = new DistinctList<ActionData>();
+            //搜尋同組的Criteria File
+            var FilesOfTheGroup = from q in CriteriaList.Find(x => x.key == "ACTIONLIST").ActionCriteriaFileList
+                                  where q.@group == CurrentFile.@group && q.year == CurrentFile.year
+                                  select q;
+            //載入同組File中的ID+Birthday進入IDList，儲存在該筆criteria中
+            foreach (var f in FilesOfTheGroup)
+            {
+                using (var sr = new StreamReader(f.path))
+                {
+                    string[] titles = sr.ReadLine().Split('\t');
+                    var indexFEE_YM = Array.FindIndex(titles, x => x == "FEE_YM");
+                    var indexAPPL_TYPE = Array.FindIndex(titles, x => x == "APPL_TYPE");
+                    var indexHOSP_ID = Array.FindIndex(titles, x => x == "HOSP_ID");
+                    var indexAPPL_DATE = Array.FindIndex(titles, x => x == "APPL_DATE");
+                    var indexCASE_TYPE = Array.FindIndex(titles, x => x == "CASE_TYPE");
+                    var indexSEQ_NO = Array.FindIndex(titles, x => x == "SEQ_NO");
+                    while (!sr.EndOfStream)
+                    {
+                        string[] linesplit = sr.ReadLine().Split('\t');
+                        NewActionCriteriaList.AddDistinct(new ActionData
+                        {
+                            FEE_YM = linesplit[indexFEE_YM],
+                            APPL_TYPE = linesplit[indexAPPL_TYPE],
+                            HOSP_ID = linesplit[indexHOSP_ID],
+                            APPL_DATE = linesplit[indexAPPL_DATE],
+                            CASE_TYPE = linesplit[indexCASE_TYPE],
+                            SEQ_NO = linesplit[indexSEQ_NO]
+                        }
+                        );
+                    }
+                }
+            }
+            CriteriaList.Find(x => x.key == "ACTIONLIST").ActionCriteriaList = NewActionCriteriaList;
+        }
         void initiateCriteriaIndex(File currentfile, List<StringDataFormat> queryStringDataFormats, List<NumberDataFormat> queryNumberDataFormats)
         {
             //逐個criteria確定要判斷的欄位index
@@ -187,6 +230,15 @@ namespace NHIRD
                     currentCriteria.indexID = queryStringDataFormats.FindIndex(x => x.key == "ID");
                 }
                 //年齡資料
+                else if (currentCriteria.key == "ACTIONLIST")
+                {
+                    currentCriteria.indexFEE_YM = queryStringDataFormats.FindIndex(x => x.key == "FEE_YM");
+                    currentCriteria.indexAPPL_DATE = queryStringDataFormats.FindIndex(x => x.key == "APPL_DATE");
+                    currentCriteria.indexAPPL_TYPE = queryStringDataFormats.FindIndex(x => x.key == "APPL_TYPE");
+                    currentCriteria.indexHOSP_ID = queryStringDataFormats.FindIndex(x => x.key == "HOSP_ID");
+                    currentCriteria.indexSEQ_NO = queryNumberDataFormats.FindIndex(x => x.key == "SEQ_NO");
+                    currentCriteria.indexCASE_TYPE = queryStringDataFormats.FindIndex(x => x.key == "CASE_TYPE");
+                }
                 else if (currentCriteria.key == "AGE")
                 {
                     currentCriteria.indexBirthday = queryStringDataFormats.FindIndex(x => x.key.IndexOf("BIRTHDAY") >= 0);
@@ -225,7 +277,6 @@ namespace NHIRD
                 }
             }
         }
-
         void ReadRow(StreamReader sr, DataRow dataRow, List<StringDataFormat> queryStringDataFormats, List<NumberDataFormat> queryNumberDataFormats)
         {
             string line = sr.ReadLine();
@@ -250,7 +301,6 @@ namespace NHIRD
                 }
             }
         }
-
         void JudgeRow(DataRow dataRow)
         {
             //比對(使用criteria.DoCheck)，只要有一項不相符就將該筆DataRow.IsMatch設定為false(預設值為true)，並跳過該筆資料
@@ -260,7 +310,6 @@ namespace NHIRD
                 dataRow.IsMatch = currentCriteria.DoCheck(dataRow);
             }
         }
-
         void WriteRow(StreamWriter sw, DataRow dataRow, List<StringDataFormat> queryStringDataFormats, List<NumberDataFormat> queryNumberDataFormats)
         {
             if (!dataRow.IsMatch) return;
@@ -276,6 +325,7 @@ namespace NHIRD
             sw.WriteLine(line.TrimEnd('\t'));
         }
 
+
         public List<Criteria> CriteriaList = new List<Criteria>();
         /// <summary>
         /// colname:目標欄位名稱, Criteria: 條件
@@ -290,6 +340,10 @@ namespace NHIRD
             public int indexBirthday, indexEventday, indexID;   //對應ID用
             public IEnumerable<File> IDCriteriaFileList;      //暫時儲存該組(Rgroup)對應的檔案
             public List<IDData> IDCriteriaList;               //將上述檔案內容提取入IDList
+            public int indexFEE_YM, indexHOSP_ID, indexAPPL_TYPE, indexAPPL_DATE, indexCASE_TYPE, indexSEQ_NO; //對應 Action用
+            public IEnumerable<File> ActionCriteriaFileList;   //暫時儲存該組(Rgroup)對應的檔案
+            public List<ActionData> ActionCriteriaList;  //將上述檔案內容提取入ActionList
+
             //實際執行判斷的方法
             public bool DoCheck(DataRow InputDataRow)
             {
@@ -298,6 +352,29 @@ namespace NHIRD
                     if (indexID == -1 || indexBirthday == -1) return true;
                     var thisID = new IDData { ID = InputDataRow.stringData[indexID], Birthday = InputDataRow.stringData[indexBirthday] };
                     if (IDCriteriaList.BinarySearch(thisID) >= 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else if (key == "ACTIONLIST")
+                {
+                    if (indexHOSP_ID == -1 || indexAPPL_DATE == -1 || indexAPPL_TYPE == -1
+                        || indexCASE_TYPE == -1 || indexSEQ_NO == -1 || indexFEE_YM == -1)
+                        return true;
+                    var thisAction = new ActionData
+                    {
+                        FEE_YM = InputDataRow.stringData[indexFEE_YM],
+                        APPL_DATE = InputDataRow.stringData[indexAPPL_DATE],
+                        APPL_TYPE = InputDataRow.stringData[indexAPPL_TYPE],
+                        CASE_TYPE = InputDataRow.stringData[indexCASE_TYPE],
+                        HOSP_ID = InputDataRow.stringData[indexHOSP_ID],
+                        SEQ_NO = InputDataRow.numberData[indexSEQ_NO].ToString()
+                    };
+                    if (ActionCriteriaList.BinarySearch(thisAction) >= 0)
                     {
                         return true;
                     }
