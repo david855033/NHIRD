@@ -35,6 +35,22 @@ namespace NHIRD
             this.DataContext = ViewModel_Instance;
         }
         /// <summary>
+        /// 從global setting載入預設值
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void WindowGetCD_Loaded(object sender, RoutedEventArgs e)
+        {
+            inputFolderSelect.FolderPath =
+                GlobalSetting.get("CD_InputDir");
+            ouputFolderSelect.FolderPath =
+                GlobalSetting.get("CD_OutputDir");
+            IDCrieteria_FolderSelect.FolderPath =
+                GlobalSetting.get("CD_IDCriteriaDir");
+            OrderCrieteria_FolderSelect.FolderPath =
+                GlobalSetting.get("CD_OrderCriteriaDir");
+        }
+        /// <summary>
         /// 切回menu
         /// </summary>
         /// <param name="sender"></param>
@@ -43,33 +59,7 @@ namespace NHIRD
         {
             parentWindow.Show();
         }
-        /// <summary>
-        /// 選取讀入資料夾
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SelectInputDir_Click(object sender, RoutedEventArgs e)
-        {
-            var FolderSelector = new FolderBrowserDialog();
-            if (FolderSelector.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                ViewModel_Instance.InputDir = FolderSelector.SelectedPath;
-            }
-        }
-        /// <summary>
-        /// 選取輸出資料夾
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SelectOutputDir_Click(object sender, RoutedEventArgs e)
-        {
-            var FolderSelector = new FolderBrowserDialog();
-            if (FolderSelector.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                ViewModel_Instance.str_outputDir = FolderSelector.SelectedPath;
-            }
-        }
-
+       
         private void ResetAll_Click(object sender, RoutedEventArgs e)
         {
             foreach (var obj in Extentions.FindVisualChildren<System.Windows.Controls.CheckBox>(criteriaStackPanel))
@@ -79,7 +69,7 @@ namespace NHIRD
         }
 
         /// <summary>
-        /// 限制Text Box只能輸入float
+        /// 限制Text Box只能輸入float for Age criteria
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -89,23 +79,16 @@ namespace NHIRD
             s.Text = s.Text.RegexFloat();
             s.Select(s.Text.Length, 0);
         }
-
-        private void WindowGetCD_Loaded(object sender, RoutedEventArgs e)
-        {
-            inputFolderSelect.FolderPath = 
-                GlobalSetting.get("CD_InputDir");
-            ViewModel_Instance.str_outputDir = 
-                GlobalSetting.get("CD_OutputDir");
-            IDCrieteria_FolderSelect.FolderPath =
-                GlobalSetting.get("CD_IDCriteriaDir");
-            OrderCrieteria_FolderSelect.FolderPath =
-                GlobalSetting.get("CD_OrderCriteriaDir");
-        }
-
- 
+        
+        
         private void inputFolderSelect_OnFolderChanged()
         {
             ViewModel_Instance.InputDir = inputFolderSelect.FolderPath;
+        }
+
+        private void OuputFolderSelect_OnFolderChanged()
+        {
+            ViewModel_Instance.str_outputDir = ouputFolderSelect.FolderPath;
         }
     }
 }

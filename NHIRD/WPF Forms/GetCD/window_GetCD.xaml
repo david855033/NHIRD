@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NHIRD"
         mc:Ignorable="d"
-        Title="Window1" Height="700" Width="1200" Unloaded="WindowGetCD_Unloaded" Loaded="WindowGetCD_Loaded">
+        Title="Window1" Height="700" Width="1400" Unloaded="WindowGetCD_Unloaded" Loaded="WindowGetCD_Loaded">
 
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="640"/>
+            <ColumnDefinition Width="700"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <StackPanel HorizontalAlignment="Center" Grid.Column="0" Margin="0,20">
@@ -22,97 +22,25 @@
                 <CheckBox Margin="15,0" IsChecked="{Binding IsCDFileTypeEnabled}">CD</CheckBox>
                 <CheckBox Margin="15,0"  IsChecked="{Binding IsDDFileTypeEnabled}">DD</CheckBox>
             </StackPanel>
-            <local:FileListControl x:Name="fileListControl"/>
-
-            <!--<Grid Margin="5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="400"/>
-                    <ColumnDefinition Width="120"/>
-                    <ColumnDefinition Width="120"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel  VerticalAlignment="Top" >
-                    <TextBlock>File List</TextBlock>
-                    <ListView x:Name="listview_files" Height="500" Width="400" ItemsSource="{Binding inputFileList}">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Width="30">
-                                    <GridViewColumn.Header>
-                                        <CheckBox Name="chkWspSelectAll" IsChecked="True" 
-                                                  Checked="FilesCheckAll_Checked" 
-                                                  Unchecked="FilesCheckAll_Unchecked"/>
-                                    </GridViewColumn.Header>
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding selected}" Checked="FilesCheckOne_Checked" Unchecked="FilesCheckOne_UnChecked"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="FileName" Width="150" DisplayMemberBinding="{Binding name}"/>
-                                <GridViewColumn Header="Size" Width="100"  DisplayMemberBinding="{Binding sizeMB}"/>
-                                <GridViewColumn Header="Year" Width="40"  DisplayMemberBinding="{Binding year}"/>
-                                <GridViewColumn Header="Group" Width="40"  DisplayMemberBinding="{Binding group}"/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </StackPanel>
-                <StackPanel VerticalAlignment="Top" Margin="2,0" Grid.Column="1">
-                    <TextBlock>Available Year</TextBlock>
-                    <ListView x:Name="listview_years" Height="500"  ItemsSource="{Binding inputYearList}">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Width="30">
-                                    <GridViewColumn.Header>
-                                        <CheckBox IsChecked="True" 
-                                                   Command="{Binding Command_checkFileByCriteria}"
-                                                  Checked="yearsCheckAll_Checked" Unchecked="yearsCheckAll_Unchecked"/>
-                                    </GridViewColumn.Header>
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding selected}" 
-                                                       Command="{Binding Command_checkFileByCriteria}"
-                                                      Checked="yearsCheckOne_Checked" Unchecked="yearsCheckOne_UnChecked"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Year" Width ="50" DisplayMemberBinding="{Binding str_year}"/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </StackPanel>
-                <StackPanel Margin="2,0" Grid.Column="2"  VerticalAlignment="Top" >
-                    <TextBlock>Available Group</TextBlock>
-                    <ListView x:Name="listview_groups" Height="500"  ItemsSource="{Binding inputGroupList}">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Width="30">
-                                    <GridViewColumn.Header>
-                                        <CheckBox IsChecked="True" 
-                                                  Checked="groupsCheckAll_Checked" Unchecked="groupsCheckAll_Unchecked"                                                   />
-                                    </GridViewColumn.Header>
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding selected}"  
-                                                      Checked="groupsCheckOne_Checked" Unchecked="groupsCheckOne_UnChecked"                                                      />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Group" Width ="50" DisplayMemberBinding="{Binding str_group}" />
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </StackPanel>
-
-            </Grid>
-            <TextBlock x:Name="TextBlock_FileStatus" Margin="5" Text="{Binding FileStatus}"/>-->
+            <local:FileListControl x:Name="fileListControl"
+                                   inputFileList="{Binding inputFileList}"/>
         </StackPanel>
         <StackPanel x:Name="criteriaStackPanel" Grid.Column="1" Margin="0,20" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <local:StringListControl CurrentList="{Binding ICDIncludes}" Title="ICD Inclusion" IsCriteriaEnabled="{Binding IsICDIncludeEnabled, Mode=TwoWay}"/>
-                <local:StringListControl CurrentList="{Binding ICDExcludes}" Title="ICD Exclusion" IsCriteriaEnabled="{Binding IsICDExcludeEnabled, Mode=TwoWay}"/>
+                <local:StringListControl CurrentList="{Binding ICDIncludes}" 
+                                         Title="ICD Inclusion" 
+                                         IsCriteriaEnabled="{Binding IsICDIncludeEnabled, Mode=TwoWay}"/>
+                <local:StringListControl CurrentList="{Binding ICDExcludes}"
+                                         Title="ICD Exclusion" 
+                                         IsCriteriaEnabled="{Binding IsICDExcludeEnabled, Mode=TwoWay}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <local:StringListControl CurrentList="{Binding PROCIncludes}" Title="Procedure Inclusion" IsCriteriaEnabled="{Binding IsPROCIncludeEnabled, Mode=TwoWay}"/>
-                <local:StringListControl CurrentList="{Binding IsPROCExcludeEnabled}" Title="Procedure Exclusion" IsCriteriaEnabled="{Binding IsPROCExcludeEnabled, Mode=TwoWay}"/>
+                <local:StringListControl CurrentList="{Binding PROCIncludes}"
+                                         Title="Procedure Inclusion" 
+                                         IsCriteriaEnabled="{Binding IsPROCIncludeEnabled, Mode=TwoWay}"/>
+                <local:StringListControl CurrentList="{Binding IsPROCExcludeEnabled}" 
+                                         Title="Procedure Exclusion" 
+                                         IsCriteriaEnabled="{Binding IsPROCExcludeEnabled, Mode=TwoWay}"/>
             </StackPanel>
             <StackPanel HorizontalAlignment="Center" Margin="0, 10">
                 <StackPanel  HorizontalAlignment="Center"  Orientation="Horizontal">
@@ -143,11 +71,11 @@
                                       FileType="OO,DO,GO"/>
 
             <Button Width="100" Click="ResetAll_Click">Reset All</Button>
-            <DockPanel  Margin="5,50,5,0" LastChildFill="True" HorizontalAlignment="Stretch">
-                <TextBlock Margin="5,0">Output Dir:</TextBlock>
-                <Button  Click="SelectOutputDir_Click" Margin="5,0" DockPanel.Dock="Right">Select Folder</Button>
-                <TextBox x:Name="txtbox_OutputDir" Text="{Binding str_outputDir}"/>
-            </DockPanel>
+            <local:IOFolderSelector x:Name="ouputFolderSelect" 
+                                    Title="Ouput Dir:"  
+                                    FolderPath="{Binding str_outputDir, Mode=TwoWay}"
+                                    OnFolderChanged="OuputFolderSelect_OnFolderChanged"/>
+           
             <Button Height="50" Margin="0,25" Command="{Binding Do_ExtractData}">Do _Extract</Button>
             <StackPanel>
                 <TextBlock Margin="0,25,0,25"  x:Name="TextBlockMessage" Height="100" MinWidth="400"

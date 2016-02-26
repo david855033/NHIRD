@@ -48,6 +48,7 @@ namespace NHIRD
                 parentWindow.fileListControl.Renew(InputDir, selectedFileTypes);
             }
         }
+        
         // -- 選擇檔案類型, 選擇完後更新selectedFileTypes(List<string>)再來 觸發fileListcontrol的renew功能(重繪listview))
         bool _IsCDFileTypeEnabled = true;
         public bool IsCDFileTypeEnabled
@@ -69,6 +70,14 @@ namespace NHIRD
             parentWindow.fileListControl.Renew(InputDir, selectedFileTypes);
         }
         List<string> selectedFileTypes = new List<string>();
+
+        public ObservableCollection<File> inputFileList
+        {
+            get { return Model_Instance.inputFileList; }
+            set { Model_Instance.inputFileList = value;
+                OnPropertyChanged(nameof(inputFileList));
+            }
+        }
         #endregion
 
         #region -- ICD criteira Contorls
@@ -323,7 +332,7 @@ namespace NHIRD
         /// </summary>
         public ICommand Do_ExtractData { get; }
         /// <summary>
-        /// 呼叫Model開始運算(在此正式將inputFileList傳入model)
+        /// 呼叫Model開始運算(在此正式將所有FileList傳入model)
         /// </summary>
         /// <param name="obj"></param>
         public void ExtractData(object obj)

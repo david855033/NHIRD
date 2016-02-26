@@ -23,15 +23,16 @@ namespace NHIRD
         }
  
         #region -- file control
+   
+        /// <summary>
+        /// 儲存檔案清單
+        /// </summary>
+        public ObservableCollection<File> inputFileList = new ObservableCollection<File>();
+
         /// <summary>
         /// 輸出檔案的資料夾路徑
         /// </summary>
         public string str_outputDir { get; set; }
-        /// <summary>
-        /// 儲存檔案清單(在執行前直接設定，不使用binding)
-        /// </summary>
-        public List<File> inputFileList = new List<File>();
-        
         #endregion
 
         /// <summary>
@@ -165,8 +166,10 @@ namespace NHIRD
 
 
             //執行
-            extractData.Do(parentVM.parentWindow.parentWindow.rawDataFormats, (from f in inputFileList where f.selected == true select f.@group).Distinct()
-                                                                              , from f in inputFileList where f.selected == true select f, str_outputDir);
+            extractData.Do(parentVM.parentWindow.parentWindow.rawDataFormats,
+                (from f in inputFileList where f.selected == true select f.FileType).Distinct()
+                , from f in inputFileList where f.selected == true select f, 
+                str_outputDir);
         }
 
     }

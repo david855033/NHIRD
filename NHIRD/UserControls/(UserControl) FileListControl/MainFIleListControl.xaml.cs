@@ -88,7 +88,7 @@ namespace NHIRD
                     newfiles.Add(new File(str_filepath));
                 }
                 inputFileList.Clear();
-                inputFileList = newfiles;
+                inputFileList = new ObservableCollection<File>(newfiles);
                 // -- year
                 var newyears = new List<Year>();
                 foreach (string s in inputFileList.Select(x => x.year).Distinct())
@@ -142,7 +142,7 @@ namespace NHIRD
         /// </summary>
         void RefreshFileStatus()
         {
-            inputFileList = inputFileList.ToList();
+            inputFileList = new ObservableCollection<File>(inputFileList);
             inputYearList = inputYearList.ToList();
             inputGroupList = inputGroupList.ToList();
             FileStatus = inputFileList.Count(x => x.selected == true) + " / " + inputFileList.Count() + " file(s) selected.";
@@ -256,10 +256,11 @@ namespace NHIRD
         #endregion
         
         public static readonly DependencyProperty inputFileListProperty =
-        DependencyProperty.Register(nameof(inputFileList), typeof(List<File>), typeof(FileListControl),new PropertyMetadata(new List<File>()));
-        public List<File> inputFileList
+        DependencyProperty.Register(nameof(inputFileList), typeof(ObservableCollection<File>), typeof(FileListControl),
+            new PropertyMetadata(new ObservableCollection<File>()));
+        public ObservableCollection<File> inputFileList
         {
-            get { return (List<File>)GetValue(inputFileListProperty); }
+            get { return (ObservableCollection<File>)GetValue(inputFileListProperty); }
             set
             {
                 SetValue(inputFileListProperty, value);

@@ -84,7 +84,6 @@ namespace NHIRD
         public static readonly DependencyProperty FileListProperty =
          DependencyProperty.Register(nameof(FileList), typeof(ObservableCollection<File>), typeof(EXT_FolderSelector),
              new PropertyMetadata(new ObservableCollection<File>()));
-
         public ObservableCollection<File> FileList
         {
             get { return (ObservableCollection<File>)GetValue(FileListProperty); }
@@ -103,7 +102,7 @@ namespace NHIRD
                 var paths = new List<string>();
                 foreach (var F in FileType.Split(','))
                 {
-                    paths.AddRange(Directory.EnumerateFiles(FolderPath, "*"+F+"*.EXT", SearchOption.AllDirectories).ToArray());
+                    paths.AddRange(Directory.EnumerateFiles(FolderPath, "*" + F + "*.EXT", SearchOption.AllDirectories).ToArray());
                 }
                 var newfiles = new ObservableCollection<File>();
                 foreach (string str_filepath in paths)
@@ -112,10 +111,8 @@ namespace NHIRD
                 }
                 FileList.Clear();
                 FileList = newfiles;
-
                 var groupCount = (from q in FileList group q by q.@group into g select g).Count();
                 Message = "Total " + FileList.Count() + " files was loaded. Group count: " + groupCount;
-
             }
             catch
             {
@@ -132,6 +129,6 @@ namespace NHIRD
                 IsCriteriaChecked = true;
             }
         }
-        
+
     }
 }

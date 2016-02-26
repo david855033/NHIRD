@@ -10,7 +10,7 @@
         <DockPanel Margin="5" Width="550" LastChildFill="True" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Margin="5,0" Text="{Binding Title}"  DockPanel.Dock="Left"/>
             <Button  Margin="5,0" DockPanel.Dock="Right" Content="Select Folder" Click="Button_Click"/>
-            <TextBox  x:Name="txtbox_InputDir" Text="{Binding FolderPath, Mode=TwoWay}"/>
+            <TextBox  x:Name="txtbox_InputDir" Text="{Binding FolderPath, Mode=TwoWay}" TextChanged="txtbox_InputDir_TextChanged"/>
         </DockPanel>
     </Grid>
 </UserControl>

@@ -86,8 +86,7 @@ namespace NHIRD
                 refresh();
             }
         }
-
-
+        
         private void ButtonDel_Click(object sender, RoutedEventArgs e)
         {
             if (Lv_StringList.SelectedItem != null)

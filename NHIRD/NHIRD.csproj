@@ -80,32 +80,32 @@
     <Compile Include="Datatype.cs" />
     <Compile Include="Extentions.cs" />
     <Compile Include="Extract Data.cs" />
-    <Compile Include="%28UserControl%29EXT_FolderSelector\EXT_FolderSelector.xaml.cs">
+    <Compile Include="UserControls\%28UserControl%29EXT_FolderSelector\EXT_FolderSelector.xaml.cs">
       <DependentUpon>EXT_FolderSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GetCD\Command.cs" />
-    <Compile Include="GetCD\GetCD_Model.cs" />
-    <Compile Include="GetCD\GetCD_ViewModel.cs" />
-    <Compile Include="GetCD\window_GetCD.xaml.cs">
+    <Compile Include="WPF Forms\GetCD\Command.cs" />
+    <Compile Include="WPF Forms\GetCD\GetCD_Model.cs" />
+    <Compile Include="WPF Forms\GetCD\GetCD_ViewModel.cs" />
+    <Compile Include="WPF Forms\GetCD\window_GetCD.xaml.cs">
       <DependentUpon>window_GetCD.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GetOrder\GetOrder_Model.cs" />
-    <Compile Include="GetOrder\GetOrder_ViewModel.cs" />
-    <Compile Include="GetOrder\window_GetOrder.xaml.cs">
+    <Compile Include="WPF Forms\GetOrder\GetOrder_Model.cs" />
+    <Compile Include="WPF Forms\GetOrder\GetOrder_ViewModel.cs" />
+    <Compile Include="WPF Forms\GetOrder\window_GetOrder.xaml.cs">
       <DependentUpon>window_GetOrder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="%28UserControl%29StringList\StringList.xaml.cs">
+    <Compile Include="UserControls\%28UserControl%29StringList\StringList.xaml.cs">
       <DependentUpon>StringList.xaml</DependentUpon>
     </Compile>
-    <Page Include="%28UserControl%29EXT_FolderSelector\EXT_FolderSelector.xaml">
+    <Page Include="UserControls\%28UserControl%29EXT_FolderSelector\EXT_FolderSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="%28UserControl%29 FileListControl\MainFIleListControl.xaml">
+    <Page Include="UserControls\%28UserControl%29 FileListControl\MainFIleListControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="IO Path Selector.xaml">
+    <Page Include="UserControls\%28UserControl%29 IO Path Selector\IO Path Selector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -119,25 +119,25 @@
     </Compile>
     <Compile Include="GlobalSetting.cs" />
     <Compile Include="Interfaces.cs" />
-    <Compile Include="%28UserControl%29 FileListControl\MainFIleListControl.xaml.cs">
+    <Compile Include="UserControls\%28UserControl%29 FileListControl\MainFIleListControl.xaml.cs">
       <DependentUpon>MainFIleListControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IO Path Selector.xaml.cs">
+    <Compile Include="UserControls\%28UserControl%29 IO Path Selector\IO Path Selector.xaml.cs">
       <DependentUpon>IO Path Selector.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="GetCD\window_GetCD.xaml">
+    <Page Include="WPF Forms\GetCD\window_GetCD.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GetOrder\window_GetOrder.xaml">
+    <Page Include="WPF Forms\GetOrder\window_GetOrder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="%28UserControl%29StringList\StringList.xaml">
+    <Page Include="UserControls\%28UserControl%29StringList\StringList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
