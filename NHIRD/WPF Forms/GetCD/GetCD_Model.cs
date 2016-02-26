@@ -22,11 +22,7 @@ namespace NHIRD
             this.parentVM = parentVM;
         }
  
-        #region -- Input file control
-        /// <summary>
-        /// 讀取檔案的資料夾路徑
-        /// </summary>
-        public string str_inputDir { get; set; }
+        #region -- file control
         /// <summary>
         /// 輸出檔案的資料夾路徑
         /// </summary>

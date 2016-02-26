@@ -32,15 +32,16 @@ namespace NHIRD
 
         #region -- file input controls
         // -- 資料夾的路徑，更動時觸發fileListControl的renew功能
+        string _inputDir;
         public string InputDir
         {
             get
             {
-                return Model_Instance.str_inputDir;
+                return _inputDir;
             }
             set
             {
-                Model_Instance.str_inputDir = value;
+                _inputDir = value;
                 GlobalSetting.set("CD_InputDir", value);
                 OnPropertyChanged(nameof(InputDir));
                 renewSelectedFileTypes();

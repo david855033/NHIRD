@@ -132,5 +132,6 @@ namespace NHIRD
                 IsCriteriaChecked = true;
             }
         }
+        
     }
 }

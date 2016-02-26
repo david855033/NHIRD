@@ -14,17 +14,16 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <StackPanel HorizontalAlignment="Center" Grid.Column="0" Margin="0,20">
-            <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Margin="5,0" Text="Input Dir: "/>
-                <TextBox  x:Name="txtbox_InputDir" Text="{Binding InputDir, Mode=TwoWay}" Width="450"/>
-                <Button  Click="SelectInputDir_Click"  Margin="5,0">Select Folder</Button>
-            </StackPanel>
+            <local:IOFolderSelector x:Name="inputFolderSelect" 
+                                    Title="Input Dir:"  
+                                    FolderPath="{Binding InputDir, Mode=TwoWay}"
+                                    OnFolderChanged="inputFolderSelect_OnFolderChanged"/>
             <StackPanel Margin="0,10" HorizontalAlignment="Center" Orientation="Horizontal">
                 <CheckBox Margin="15,0" IsChecked="{Binding IsCDFileTypeEnabled}">CD</CheckBox>
                 <CheckBox Margin="15,0"  IsChecked="{Binding IsDDFileTypeEnabled}">DD</CheckBox>
             </StackPanel>
             <local:FileListControl x:Name="fileListControl"/>
-            
+
             <!--<Grid Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="400"/>
@@ -141,8 +140,8 @@
                                       IsCriteriaChecked="{Binding IsOrderCriteriaEnable, Mode=TwoWay}"
                                       FolderPath="{Binding OrderCriteriaFolderPath, Mode=TwoWay}"
                                       FileList="{Binding OrderCriteriaFileList, Mode=TwoWay}"
-                                      FileType="OO,DO,GO"/> 
-           
+                                      FileType="OO,DO,GO"/>
+
             <Button Width="100" Click="ResetAll_Click">Reset All</Button>
             <DockPanel  Margin="5,50,5,0" LastChildFill="True" HorizontalAlignment="Stretch">
                 <TextBlock Margin="5,0">Output Dir:</TextBlock>

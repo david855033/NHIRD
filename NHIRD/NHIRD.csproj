@@ -101,7 +101,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainFIleListControl.xaml">
+    <Page Include="%28UserControl%29 FileListControl\MainFIleListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="IO Path Selector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -115,8 +119,11 @@
     </Compile>
     <Compile Include="GlobalSetting.cs" />
     <Compile Include="Interfaces.cs" />
-    <Compile Include="MainFIleListControl.xaml.cs">
+    <Compile Include="%28UserControl%29 FileListControl\MainFIleListControl.xaml.cs">
       <DependentUpon>MainFIleListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IO Path Selector.xaml.cs">
+      <DependentUpon>IO Path Selector.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

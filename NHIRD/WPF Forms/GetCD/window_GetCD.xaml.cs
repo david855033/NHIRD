@@ -92,8 +92,7 @@ namespace NHIRD
 
         private void WindowGetCD_Loaded(object sender, RoutedEventArgs e)
         {
-           
-            ViewModel_Instance.InputDir = 
+            inputFolderSelect.FolderPath = 
                 GlobalSetting.get("CD_InputDir");
             ViewModel_Instance.str_outputDir = 
                 GlobalSetting.get("CD_OutputDir");
@@ -103,6 +102,10 @@ namespace NHIRD
                 GlobalSetting.get("CD_OrderCriteriaDir");
         }
 
-     
+ 
+        private void inputFolderSelect_OnFolderChanged()
+        {
+            ViewModel_Instance.InputDir = inputFolderSelect.FolderPath;
+        }
     }
 }

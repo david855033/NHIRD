@@ -21,5 +21,7 @@ D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\(UserControl)StringList\StringList.g.cs
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\(UserControl)StringList\StringList.baml
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\(UserControl)EXT_FolderSelector\EXT_FolderSelector.g.cs
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\(UserControl)EXT_FolderSelector\EXT_FolderSelector.baml
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\MainFIleListControl.g.cs
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\MainFIleListControl.baml
+D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\(UserControl) FileListControl\MainFIleListControl.g.cs
+D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\IO Path Selector.g.cs
+D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\(UserControl) FileListControl\MainFIleListControl.baml
+D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\IO Path Selector.baml

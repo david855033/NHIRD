@@ -47,13 +47,13 @@
                                 <GridViewColumn Width="30">
                                     <GridViewColumn.Header>
                                         <CheckBox IsChecked="True" 
-                                                   Command="{Binding Command_checkFileByCriteria}"
+                                                  
                                                   Checked="yearsCheckAll_Checked" Unchecked="yearsCheckAll_Unchecked"/>
                                     </GridViewColumn.Header>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <CheckBox IsChecked="{Binding selected}" 
-                                                       Command="{Binding Command_checkFileByCriteria}"
+                                                      
                                                       Checked="yearsCheckOne_Checked" Unchecked="yearsCheckOne_UnChecked"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>

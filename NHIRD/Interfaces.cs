@@ -14,7 +14,6 @@ namespace NHIRD
         public string APPL_DATE;
         public string CASE_TYPE;
         public string SEQ_NO;
-
         string Comparer
         {
             get
