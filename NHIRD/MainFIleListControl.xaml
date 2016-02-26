@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="NHIRD.FileListControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NHIRD"
+             mc:Ignorable="d" 
+             d:DesignHeight="560" d:DesignWidth="640">
+    <Grid Background="White">
+        <StackPanel>
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="400"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel  VerticalAlignment="Top" >
+                    <TextBlock>File List</TextBlock>
+                    <ListView x:Name="listview_files" Height="500" Width="400" ItemsSource="{Binding inputFileList}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="30">
+                                    <GridViewColumn.Header>
+                                        <CheckBox Name="chkWspSelectAll" IsChecked="True" 
+                                                  Checked="FilesCheckAll_Checked" 
+                                                  Unchecked="FilesCheckAll_Unchecked"/>
+                                    </GridViewColumn.Header>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding selected}" Checked="FilesCheckOne_Checked" Unchecked="FilesCheckOne_UnChecked"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="FileName" Width="150" DisplayMemberBinding="{Binding name}"/>
+                                <GridViewColumn Header="Size" Width="100"  DisplayMemberBinding="{Binding sizeMB}"/>
+                                <GridViewColumn Header="Year" Width="40"  DisplayMemberBinding="{Binding year}"/>
+                                <GridViewColumn Header="Group" Width="40"  DisplayMemberBinding="{Binding group}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+                <StackPanel VerticalAlignment="Top" Margin="2,0" Grid.Column="1">
+                    <TextBlock>Available Year</TextBlock>
+                    <ListView x:Name="listview_years" Height="500"  ItemsSource="{Binding inputYearList}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="30">
+                                    <GridViewColumn.Header>
+                                        <CheckBox IsChecked="True" 
+                                                   Command="{Binding Command_checkFileByCriteria}"
+                                                  Checked="yearsCheckAll_Checked" Unchecked="yearsCheckAll_Unchecked"/>
+                                    </GridViewColumn.Header>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding selected}" 
+                                                       Command="{Binding Command_checkFileByCriteria}"
+                                                      Checked="yearsCheckOne_Checked" Unchecked="yearsCheckOne_UnChecked"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Year" Width ="50" DisplayMemberBinding="{Binding str_year}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+                <StackPanel Margin="2,0" Grid.Column="2"  VerticalAlignment="Top" >
+                    <TextBlock>Available Group</TextBlock>
+                    <ListView x:Name="listview_groups" Height="500"  ItemsSource="{Binding inputGroupList}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="30">
+                                    <GridViewColumn.Header>
+                                        <CheckBox IsChecked="True" 
+                                                  Checked="groupsCheckAll_Checked" Unchecked="groupsCheckAll_Unchecked"                                                   />
+                                    </GridViewColumn.Header>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding selected}"  
+                                                      Checked="groupsCheckOne_Checked" Unchecked="groupsCheckOne_UnChecked"                                                      />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Group" Width ="50" DisplayMemberBinding="{Binding str_group}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+
+            </Grid>
+            <TextBlock x:Name="TextBlock_FileStatus" Margin="5" Text="{Binding FileStatus}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

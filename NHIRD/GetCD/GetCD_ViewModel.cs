@@ -27,31 +27,11 @@ namespace NHIRD
             Do_ExtractData = new RelayCommand(ExtractData, (x) => true);
         }
 
-        public bool IsCDFileTypeEnabled
-        {
-            get { return Model_Instance.IsCDFileTypeEnabled; }
-            set
-            {
-                Model_Instance.IsCDFileTypeEnabled = value;
-                makeFileList(InputDir);
-                OnPropertyChanged(nameof(IsCDFileTypeEnabled));
-            }
-        }
-        public bool IsDDFileTypeEnabled
-        {
-            get { return Model_Instance.IsDDFileTypeEnabled; }
-            set
-            {
-                Model_Instance.IsDDFileTypeEnabled = value;
-                makeFileList(InputDir);
-                OnPropertyChanged(nameof(IsDDFileTypeEnabled));
-            }
-        }
 
-        // -- Properties
-        /// <summary>
-        /// 資料夾的路徑，更動時自動更新fileList
-        /// </summary>
+        // -- Properties --
+
+        #region -- file input controls
+        // -- 資料夾的路徑，更動時觸發fileListControl的renew功能
         public string InputDir
         {
             get
@@ -62,114 +42,33 @@ namespace NHIRD
             {
                 Model_Instance.str_inputDir = value;
                 GlobalSetting.set("CD_InputDir", value);
-                // -- 初始化 file / year / group list
-                makeFileList(value);
                 OnPropertyChanged(nameof(InputDir));
+                renewSelectedFileTypes();
+                parentWindow.fileListControl.Renew(InputDir, selectedFileTypes);
             }
         }
-        /// <summary>
-        /// 更動input dir 或
-        /// </summary>
-        /// <param name="inputPath"></param>
-        void makeFileList(string inputPath)
+        // -- 選擇檔案類型, 選擇完後更新selectedFileTypes(List<string>)再來 觸發fileListcontrol的renew功能(重繪listview))
+        bool _IsCDFileTypeEnabled = true;
+        public bool IsCDFileTypeEnabled
         {
-            try
-            {
-                List<string> paths = new List<string>();
-                foreach (var currentFileType in Model_Instance.selectedFileTypes)
-                {
-                    paths.AddRange(Directory.EnumerateFiles(inputPath, "*" + currentFileType + "*.DAT", SearchOption.AllDirectories));
-                }
-                paths.Sort();
-                // -- file
-                var newfiles = new ObservableCollection<File>();
-                foreach (string str_filepath in paths)
-                {
-                    newfiles.Add(new File(str_filepath));
-                }
-                inputFileList.Clear();
-                inputFileList = newfiles;
-                // -- year
-                var newyears = new ObservableCollection<Year>();
-                foreach (string s in inputFileList.Select(x => x.year).Distinct())
-                {
-                    newyears.Add(new Year(s));
-                }
-                inputYearList.Clear();
-                inputYearList = newyears;
-                // -- group
-                var newgroups = new ObservableCollection<Group>();
-                foreach (string s in inputFileList.Select(x => x.group).Distinct())
-                {
-                    newgroups.Add(new Group(s));
-                }
-                inputGroupList.Clear();
-                inputGroupList = newgroups;
-                parentWindow.refresh_Listviews();
-            }
-            catch
-            {
-                System.Windows.MessageBox.Show("不正確的路徑\r\n提示：不可以使用磁碟機之根目錄");
-            }
-        }
-        /// <summary>
-        /// 檔案清單
-        /// </summary>
-        public ObservableCollection<File> inputFileList
-        {
-            get
-            {
-                return Model_Instance.inputFileList;
-            }
-            set
-            {
-                Model_Instance.inputFileList = value;
-                OnPropertyChanged("");
-            }
-        }
-        /// <summary>
-        /// 年份清單(於載入檔案清單時建立)
-        /// </summary>
-        public ObservableCollection<Year> inputYearList
-        {
-            get
-            {
-                return Model_Instance.inputYearList;
-            }
-            set
-            {
-                Model_Instance.inputYearList = value;
-                OnPropertyChanged("");
-            }
-        }
-        /// <summary>
-        /// 組別清單(於載入檔案清單時建立)
-        /// </summary>
-        public ObservableCollection<Group> inputGroupList
-        {
-            get
-            {
-                return Model_Instance.inputGroupList;
-            }
-            set
-            {
-                Model_Instance.inputGroupList = value;
-                OnPropertyChanged("");
-            }
-        }
-        /// <summary>
-        /// 顯示目前選取的檔案數量
-        /// </summary>
-        public string FileStatus
-        {
-            get { return Model_Instance.str_filestatus; }
-            set
-            {
-                Model_Instance.str_filestatus = value;
-                OnPropertyChanged(nameof(FileStatus));
-            }
-        }
+            get { return _IsCDFileTypeEnabled; }
+            set { _IsCDFileTypeEnabled = value; renewSelectedFileTypes(); } }
 
+        bool _IsDDFileTypeEnabled = true;
+        public bool IsDDFileTypeEnabled
+        {
+            get { return _IsDDFileTypeEnabled; }
+            set { _IsDDFileTypeEnabled = value; renewSelectedFileTypes(); } }
+
+        void renewSelectedFileTypes()
+        {
+            selectedFileTypes.Clear();
+            if (_IsCDFileTypeEnabled) selectedFileTypes.Add("CD");
+            if (_IsDDFileTypeEnabled) selectedFileTypes.Add("DD");
+            parentWindow.fileListControl.Renew(InputDir, selectedFileTypes);
+        }
+        List<string> selectedFileTypes = new List<string>();
+        #endregion
 
         #region -- ICD criteira Contorls
         /// <summary>
@@ -423,11 +322,12 @@ namespace NHIRD
         /// </summary>
         public ICommand Do_ExtractData { get; }
         /// <summary>
-        /// 呼叫Model開始運算
+        /// 呼叫Model開始運算(在此正式將inputFileList傳入model)
         /// </summary>
         /// <param name="obj"></param>
         public void ExtractData(object obj)
         {
+            Model_Instance.inputFileList = parentWindow.fileListControl.inputFileList;
             Model_Instance.DoExtractData();
         }
 

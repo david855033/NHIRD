@@ -17,10 +17,10 @@ namespace NHIRD
         List<StringDataFormat> stringDataFormats = new List<StringDataFormat>();
         List<NumberDataFormat> numberDataFormats = new List<NumberDataFormat>();
 
-        public void Do(List<RawDataFormat> rawDataFormats, string[] selectedFileTypes, IEnumerable<File> list_file, string outputDir)
+        public void Do(List<RawDataFormat> rawDataFormats, IEnumerable<string> selectedFileTypes, IEnumerable<File> list_file, string outputDir)
         {
             ///使用rawDataFormats初始化資料清單(分為數值資料跟字串資料)
-            this.selectedFileTypes = selectedFileTypes;
+            this.selectedFileTypes = selectedFileTypes.ToArray();
             this.rawDataFormats = rawDataFormats;
             this.outputDir = outputDir;
             this.rawDataFileList = list_file;

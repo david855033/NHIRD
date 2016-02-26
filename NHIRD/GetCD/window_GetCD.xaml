@@ -15,7 +15,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel HorizontalAlignment="Center" Grid.Column="0" Margin="0,20">
             <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Margin="5,0">Input Dir:</TextBlock>
+                <TextBlock Margin="5,0" Text="Input Dir: "/>
                 <TextBox  x:Name="txtbox_InputDir" Text="{Binding InputDir, Mode=TwoWay}" Width="450"/>
                 <Button  Click="SelectInputDir_Click"  Margin="5,0">Select Folder</Button>
             </StackPanel>
@@ -23,7 +23,9 @@
                 <CheckBox Margin="15,0" IsChecked="{Binding IsCDFileTypeEnabled}">CD</CheckBox>
                 <CheckBox Margin="15,0"  IsChecked="{Binding IsDDFileTypeEnabled}">DD</CheckBox>
             </StackPanel>
-            <Grid Margin="5">
+            <local:FileListControl x:Name="fileListControl"/>
+            
+            <!--<Grid Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="400"/>
                     <ColumnDefinition Width="120"/>
@@ -102,7 +104,7 @@
                 </StackPanel>
 
             </Grid>
-            <TextBlock x:Name="TextBlock_FileStatus" Margin="5" Text="{Binding FileStatus}"/>
+            <TextBlock x:Name="TextBlock_FileStatus" Margin="5" Text="{Binding FileStatus}"/>-->
         </StackPanel>
         <StackPanel x:Name="criteriaStackPanel" Grid.Column="1" Margin="0,20" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

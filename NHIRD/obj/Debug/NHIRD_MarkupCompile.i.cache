@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\文件\GitHub\NHIRD\NHIRD\App.xaml
-5816605064
+61340217583
 
-231585958292
+24811315855
 15767094614
-(UserControl)EXT_FolderSelector\EXT_FolderSelector.xaml;MainWindow.xaml;GetCD\window_GetCD.xaml;GetOrder\window_GetOrder.xaml;(UserControl)StringList\StringList.xaml;
+(UserControl)EXT_FolderSelector\EXT_FolderSelector.xaml;MainFIleListControl.xaml;MainWindow.xaml;GetCD\window_GetCD.xaml;GetOrder\window_GetOrder.xaml;(UserControl)StringList\StringList.xaml;
 
 True
 
