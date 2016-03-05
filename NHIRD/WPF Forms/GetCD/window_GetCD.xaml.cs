@@ -48,7 +48,7 @@ namespace NHIRD
             IDCrieteria_FolderSelect.FolderPath =
                 GlobalSetting.get("CD_IDCriteriaDir");
             OrderCrieteria_FolderSelect.FolderPath =
-                GlobalSetting.get("CD_OrderCriteriaDir");
+                GlobalSetting.get("CD_ActionCriteriaDir");
         }
         /// <summary>
         /// 切回menu

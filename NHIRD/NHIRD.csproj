@@ -83,7 +83,7 @@
     <Compile Include="UserControls\%28UserControl%29EXT_FolderSelector\EXT_FolderSelector.xaml.cs">
       <DependentUpon>EXT_FolderSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF Forms\GetCD\Command.cs" />
+    <Compile Include="WPF Forms\Command.cs" />
     <Compile Include="WPF Forms\GetCD\GetCD_Model.cs" />
     <Compile Include="WPF Forms\GetCD\GetCD_ViewModel.cs" />
     <Compile Include="WPF Forms\GetCD\window_GetCD.xaml.cs">

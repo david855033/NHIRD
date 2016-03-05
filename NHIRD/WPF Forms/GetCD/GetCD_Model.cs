@@ -23,32 +23,27 @@ namespace NHIRD
         }
  
         #region -- file control
-   
         /// <summary>
         /// 儲存檔案清單
         /// </summary>
         public ObservableCollection<File> inputFileList = new ObservableCollection<File>();
-
         /// <summary>
         /// 輸出檔案的資料夾路徑
         /// </summary>
         public string str_outputDir { get; set; }
         #endregion
 
-        /// <summary>
-        /// 顯示除錯用訊息
-        /// </summary>
-        public string message { get; set; }
+        
         #region ICD criteria control
         /// <summary>
         /// 儲存ICD inclusion criteria
         /// </summary>
         public ObservableCollection<string> list_ICDinclude = new ObservableCollection<string>();
+        public bool IsICDIncludeEnabled;
         /// <summary>
         /// 儲存ICD inclusion criteria
         /// </summary>
         public ObservableCollection<string> list_ICDExclude = new ObservableCollection<string>();
-        public bool IsICDIncludeEnabled;
         public bool IsICDExcludeEnabled;
         #endregion
 
@@ -57,33 +52,31 @@ namespace NHIRD
         /// 儲存PROC inclusion criteria
         /// </summary>
         public ObservableCollection<string> list_PROCinclude = new ObservableCollection<string>();
+        public bool IsPROCIncludeEnabled;
         /// <summary>
         /// 儲存ICD inclusion criteria
         /// </summary>
         public ObservableCollection<string> list_PROCExclude = new ObservableCollection<string>();
-        public bool IsPROCIncludeEnabled;
         public bool IsPROCExcludeEnabled;
         #endregion
 
         #region Age Criteria Controls
         public bool IsAgeLCriteriaEnable { get; set; }
-        public bool IsAgeUCriteriaEnable { get; set; }
         public double db_AgeL { get; set; }
+        public bool IsAgeUCriteriaEnable { get; set; }
         public double db_AgeU { get; set; }
         #endregion
 
         #region ID criteria controls
         public string IDCriteriaFolderPath { get; set; }
-        public string IDCriteriaMessage { get; set; }
         public ObservableCollection<File> IDCriteriaFileList = new ObservableCollection<File>();
         public bool IsIDCriteriaEnable { get; set; }
         #endregion
 
-        #region Order Criteria Controls
-        public string OrderCriteriaFolderPath { get; set; }
-        public string OrderCriteriaMessage { get; set; }
-        public ObservableCollection<File> OrderCriteriaFileList = new ObservableCollection<File>();
-        public bool IsOrderCriteriaEnable { get; set; }
+        #region Action Criteria Controls
+        public string ActionCriteriaFolderPath { get; set; }
+        public ObservableCollection<File> ActionCriteriaFileList = new ObservableCollection<File>();
+        public bool IsActionCriteriaEnable { get; set; }
         #endregion
 
         /// <summary>
@@ -154,13 +147,13 @@ namespace NHIRD
                     IDCriteriaFileList = IDCriteriaFileList
                 });
             }
-            //判斷是否啟動Order(ActionList)條件
-            if (IsOrderCriteriaEnable)
+            //判斷是否啟動ActionList條件
+            if (IsActionCriteriaEnable)
             {
                 extractData.CriteriaList.Add(new ExtractData.Criteria()
                 {
                     key = "ACTIONLIST",
-                    ActionCriteriaFileList = OrderCriteriaFileList
+                    ActionCriteriaFileList = ActionCriteriaFileList
                 });
             }
 

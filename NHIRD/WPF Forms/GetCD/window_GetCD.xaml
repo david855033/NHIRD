@@ -65,11 +65,10 @@
                                       FileList="{Binding IDCriteriaFileList, Mode=TwoWay}"
                                       FileType="CD,DD"/>
             <local:EXT_FolderSelector Title="Use Extracted Order Files:" x:Name="OrderCrieteria_FolderSelect"
-                                      IsCriteriaChecked="{Binding IsOrderCriteriaEnable, Mode=TwoWay}"
-                                      FolderPath="{Binding OrderCriteriaFolderPath, Mode=TwoWay}"
-                                      FileList="{Binding OrderCriteriaFileList, Mode=TwoWay}"
+                                      IsCriteriaChecked="{Binding IsActionCriteriaEnable, Mode=TwoWay}"
+                                      FolderPath="{Binding ActionCriteriaFolderPath, Mode=TwoWay}"
+                                      FileList="{Binding ActionCriteriaFileList, Mode=TwoWay}"
                                       FileType="OO,DO,GO"/>
-
             <Button Width="100" Click="ResetAll_Click">Reset All</Button>
             <local:IOFolderSelector x:Name="ouputFolderSelect" 
                                     Title="Ouput Dir:"  
@@ -77,10 +76,7 @@
                                     OnFolderChanged="OuputFolderSelect_OnFolderChanged"/>
            
             <Button Height="50" Margin="0,25" Command="{Binding Do_ExtractData}">Do _Extract</Button>
-            <StackPanel>
-                <TextBlock Margin="0,25,0,25"  x:Name="TextBlockMessage" Height="100" MinWidth="400"
-                   HorizontalAlignment="Center" Background="Azure" Text="{Binding message}"/>
-            </StackPanel>
+            <StackPanel/>
         </StackPanel>
     </Grid>
 </Window>

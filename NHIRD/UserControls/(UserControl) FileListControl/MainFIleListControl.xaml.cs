@@ -63,7 +63,8 @@ namespace NHIRD
         /// <param name="selectedFileType"></param>
         public void Renew(string inputDir, List<string> selectedFileType)
         {
-            this.inputDir = inputDir; this.selectedFileType = selectedFileType;
+            this.inputDir = inputDir;
+            this.selectedFileType = selectedFileType;
             makeFileList();
         }
         

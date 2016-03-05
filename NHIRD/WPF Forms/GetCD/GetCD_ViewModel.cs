@@ -48,19 +48,21 @@ namespace NHIRD
                 parentWindow.fileListControl.Renew(InputDir, selectedFileTypes);
             }
         }
-        
+
         // -- 選擇檔案類型, 選擇完後更新selectedFileTypes(List<string>)再來 觸發fileListcontrol的renew功能(重繪listview))
         bool _IsCDFileTypeEnabled = true;
         public bool IsCDFileTypeEnabled
         {
             get { return _IsCDFileTypeEnabled; }
-            set { _IsCDFileTypeEnabled = value; renewSelectedFileTypes(); } }
+            set { _IsCDFileTypeEnabled = value; renewSelectedFileTypes(); }
+        }
 
         bool _IsDDFileTypeEnabled = true;
         public bool IsDDFileTypeEnabled
         {
             get { return _IsDDFileTypeEnabled; }
-            set { _IsDDFileTypeEnabled = value; renewSelectedFileTypes(); } }
+            set { _IsDDFileTypeEnabled = value; renewSelectedFileTypes(); }
+        }
 
         void renewSelectedFileTypes()
         {
@@ -74,7 +76,9 @@ namespace NHIRD
         public ObservableCollection<File> inputFileList
         {
             get { return Model_Instance.inputFileList; }
-            set { Model_Instance.inputFileList = value;
+            set
+            {
+                Model_Instance.inputFileList = value;
                 OnPropertyChanged(nameof(inputFileList));
             }
         }
@@ -96,6 +100,16 @@ namespace NHIRD
                 OnPropertyChanged(nameof(ICDIncludes));
             }
         }
+        public bool IsICDIncludeEnabled
+        {
+            get { return Model_Instance.IsICDIncludeEnabled; }
+            set
+            {
+                Model_Instance.IsICDIncludeEnabled = value;
+                if (value == false) IsICDExcludeEnabled = false; //Include被取消時同時取消Exclude
+                OnPropertyChanged(nameof(IsICDIncludeEnabled));
+            }
+        }
         /// <summary>
         /// ICD Exclude清單
         /// </summary>
@@ -109,16 +123,6 @@ namespace NHIRD
             {
                 Model_Instance.list_ICDExclude = value;
                 OnPropertyChanged(nameof(ICDExcludes));
-            }
-        }
-        public bool IsICDIncludeEnabled
-        {
-            get { return Model_Instance.IsICDIncludeEnabled; }
-            set
-            {
-                Model_Instance.IsICDIncludeEnabled = value;
-                if (value == false) IsICDExcludeEnabled = false; //Include被取消時同時取消Exclude
-                OnPropertyChanged(nameof(IsICDIncludeEnabled));
             }
         }
         public bool IsICDExcludeEnabled
@@ -227,21 +231,22 @@ namespace NHIRD
 
         #region -- ID criteria controls
         /// <summary>
-        /// ID Criteria List 的Folder Path(資料夾內應該要內含CD或DD的EXT檔案), 更動時更新ID Criteria List
+        /// ID Criteria List 
         /// </summary>
         public bool IsIDCriteriaEnable
         {
             get { return Model_Instance.IsIDCriteriaEnable; }
-            set {
+            set
+            {
                 Model_Instance.IsIDCriteriaEnable = value;
             }
-        } 
+        }
         public string IDCriteriaFolderPath
         {
             get { return Model_Instance.IDCriteriaFolderPath; }
             set
             {
-                Model_Instance.IDCriteriaFolderPath =value;
+                Model_Instance.IDCriteriaFolderPath = value;
                 GlobalSetting.set("CD_IDCriteriaDir", value);
                 OnPropertyChanged(nameof(IDCriteriaFolderPath));
             }
@@ -251,52 +256,34 @@ namespace NHIRD
             get { return Model_Instance.IDCriteriaFileList; }
             set { Model_Instance.IDCriteriaFileList = value; }
         }
-        public string IDCriteriaMessage
-        {
-            get { return Model_Instance.IDCriteriaMessage; }
-            set
-            {
-                Model_Instance.IDCriteriaMessage = value;
-                OnPropertyChanged(nameof(IDCriteriaMessage));
-            }
-        }
         #endregion
 
-        #region -- Order criteria controls
+        #region -- Action criteria controls
         /// <summary>
-        /// ID Criteria List 的Folder Path(資料夾內應該要內含CD或DD的EXT檔案), 更動時更新ID Criteria List
+        /// Action Criteria List 
         /// </summary>
-        public bool IsOrderCriteriaEnable
+        public bool IsActionCriteriaEnable
         {
-            get { return Model_Instance.IsOrderCriteriaEnable; }
+            get { return Model_Instance.IsActionCriteriaEnable; }
             set
             {
-                Model_Instance.IsOrderCriteriaEnable = value;
+                Model_Instance.IsActionCriteriaEnable = value;
             }
         }
-        public string OrderCriteriaFolderPath
+        public string ActionCriteriaFolderPath
         {
-            get { return Model_Instance.OrderCriteriaFolderPath; }
+            get { return Model_Instance.ActionCriteriaFolderPath; }
             set
             {
-                Model_Instance.OrderCriteriaFolderPath = value;
-                GlobalSetting.set("CD_OrderCriteriaDir", value);
-                OnPropertyChanged(nameof(OrderCriteriaFolderPath));
+                Model_Instance.ActionCriteriaFolderPath = value;
+                GlobalSetting.set("CD_ActionCriteriaDir", value);
+                OnPropertyChanged(nameof(ActionCriteriaFolderPath));
             }
         }
-        public ObservableCollection<File> OrderCriteriaFileList
+        public ObservableCollection<File> ActionCriteriaFileList
         {
-            get { return Model_Instance.OrderCriteriaFileList; }
-            set { Model_Instance.OrderCriteriaFileList = value; }
-        }
-        public string OrderCriteriaMessage
-        {
-            get { return Model_Instance.OrderCriteriaMessage; }
-            set
-            {
-                Model_Instance.OrderCriteriaMessage = value;
-                OnPropertyChanged(nameof(OrderCriteriaMessage));
-            }
+            get { return Model_Instance.ActionCriteriaFileList; }
+            set { Model_Instance.ActionCriteriaFileList = value; }
         }
         #endregion
 
@@ -316,14 +303,6 @@ namespace NHIRD
                 GlobalSetting.set("CD_OutputDir", value);
                 OnPropertyChanged("");
             }
-        }
-        /// <summary>
-        /// 顯示訊息(除錯用)
-        /// </summary>
-        public string message
-        {
-            get { return Model_Instance.message; }
-            set { Model_Instance.message = value; OnPropertyChanged(nameof(message)); }
         }
 
         // -- Actions
