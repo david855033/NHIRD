@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NHIRD"
         mc:Ignorable="d"
-       Title="Window1" Height="700" Width="1200" Unloaded="WindowGetOrder_Unloaded" Loaded="WindowGetOrder_Loaded">
+       Title="Window1" Height="700" Width="1400" Unloaded="WindowGetOrder_Unloaded" Loaded="WindowGetOrder_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="640"/>
@@ -24,7 +24,7 @@
             <local:FileListControl x:Name="fileListControl"
                                    inputFileList="{Binding inputFileList}"/>
         </StackPanel>
-        <StackPanel Grid.Column="1">
+        <StackPanel Grid.Column="1" Margin="0,20" HorizontalAlignment="Center">
             <local:StringListControl x:Name="OrderCriteria"  Margin="10" CurrentList="{Binding OrderIncludes}" 
                                      Title="Order Inclusion Criteria" 
                                      IsCriteriaEnabled="{Binding IsOrderIncludeEnabled, Mode=TwoWay}"/>

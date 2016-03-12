@@ -37,7 +37,12 @@ namespace NHIRD
             var GetOrder_instance = new Window_GetOrder(this);
             GetOrder_instance.Show();
         }
-
+        private void ButtonID_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+            var GetID_instance = new Window_ID(this);
+            GetID_instance.Show();
+        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

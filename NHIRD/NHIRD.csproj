@@ -80,8 +80,15 @@
     <Compile Include="Datatype.cs" />
     <Compile Include="Extentions.cs" />
     <Compile Include="Extract Data.cs" />
+    <Compile Include="ID Datatype.cs" />
+    <Compile Include="StandarizeID.cs" />
     <Compile Include="UserControls\%28UserControl%29EXT_FolderSelector\EXT_FolderSelector.xaml.cs">
       <DependentUpon>EXT_FolderSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF Forms\ID\ID_Model.cs" />
+    <Compile Include="WPF Forms\ID\ID_ViewModel.cs" />
+    <Compile Include="WPF Forms\ID\WindowID.xaml.cs">
+      <DependentUpon>WindowID.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF Forms\Command.cs" />
     <Compile Include="WPF Forms\GetCD\GetCD_Model.cs" />
@@ -129,6 +136,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="WPF Forms\ID\WindowID.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WPF Forms\GetCD\window_GetCD.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -1,0 +1,32 @@
+﻿<Window x:Class="NHIRD.Window_ID"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NHIRD"
+        mc:Ignorable="d"
+        Title="Window1" Height="700" Width="1400" Unloaded="WindowID_Unloaded" Loaded="WindowID_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="640"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel HorizontalAlignment="Center" Grid.Column="0" Margin="0,20">
+            <local:IOFolderSelector x:Name="inputFolderSelect" 
+                                    Title="Input Dir:"  
+                                    FolderPath="{Binding InputDir, Mode=TwoWay}"
+                                    OnFolderChanged="inputFolderSelect_OnFolderChanged"/>
+
+            <local:FileListControl x:Name="fileListControl"
+                                   inputFileList="{Binding inputFileList}"
+                                   Margin="0,50"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Margin="0,200" HorizontalAlignment="Center">
+            <local:IOFolderSelector x:Name="ouputFolderSelect" 
+                                    Title="Ouput Dir:"  
+                                    FolderPath="{Binding str_outputDir, Mode=TwoWay}"
+                                    OnFolderChanged="OuputFolderSelect_OnFolderChanged"/>
+            <Button Height="50" Margin="0,25" Command="{Binding Do_StandarizeID}">Do _Standarize ID</Button>
+        </StackPanel>
+    </Grid>
+</Window>
