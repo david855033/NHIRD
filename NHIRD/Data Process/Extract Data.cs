@@ -7,83 +7,34 @@ using System.IO;
 
 namespace NHIRD
 {
-    class ExtractData
+    class ExtractData : DataProcessor
     {
-        List<RawDataFormat> rawDataFormats;
-        string[] selectedFileTypes;
-        IEnumerable<File> rawDataFileList;
-
-        string outputDir;
-        List<StringDataFormat> stringDataFormats = new List<StringDataFormat>();
-        List<NumberDataFormat> numberDataFormats = new List<NumberDataFormat>();
-
-        public void Do(List<RawDataFormat> rawDataFormats, IEnumerable<string> selectedFileTypes, IEnumerable<File> list_file, string outputDir)
+        public void Do(List<RawDataFormat> rawDataFormats, IEnumerable<string> selectedFileTypes, IEnumerable<File> files, string outputDir)
         {
             ///使用rawDataFormats初始化資料清單(分為數值資料跟字串資料)
             this.selectedFileTypes = selectedFileTypes.ToArray();
             this.rawDataFormats = rawDataFormats;
             this.outputDir = outputDir;
-            this.rawDataFileList = list_file;
+            this.rawDataFileList = files;
 
             initializeDataFormats();
 
             //逐個檔案執行讀寫
             ReadJudgeWriteFiles();
-        }
-
-        // step 1
-        void initializeDataFormats()
-        {
-            var queryStr =
-                from r in rawDataFormats
-                where selectedFileTypes.Any(x => x == r.FileType) && r.DataType == "C"
-                select r;
-            foreach (var q in queryStr)
-            {
-                var toAdd = new StringDataFormat()
-                {
-                    key = q.ColumnName,
-                    position = q.Postion,
-                    length = q.Lengths,
-                    start_year = q.start_year,
-                    end_year = q.end_year,
-                    FileType = q.FileType
-                };
-                stringDataFormats.Add(toAdd);
-            }
-
-
-            var queryNum =
-               from r in rawDataFormats
-               where selectedFileTypes.Any(x => x == r.FileType) && r.DataType == "N"
-               select r;
-            foreach (var q in queryNum)
-            {
-                var toAdd = new NumberDataFormat()
-                {
-                    key = q.ColumnName,
-                    position = q.Postion,
-                    length = q.Lengths,
-                    start_year = q.start_year,
-                    end_year = q.end_year,
-                    FileType = q.FileType
-                };
-                numberDataFormats.Add(toAdd);
-            }
-        }
+        }      
 
         // step 2 依序質性下面五個function
         void ReadJudgeWriteFiles()
         {
 
             //先分析總共有多少組別
-            var groupQuery = (from q in rawDataFileList where q.selected == true select q.@group).Distinct();
+            var distinctGroupQuery = (from q in rawDataFileList where q.selected == true select q.@group).Distinct();
             //逐個組別進行(若是有比較的資料 如ID / SEQ，則先載入比較用的list)
-            foreach (string g in groupQuery)
+            foreach (string currentDistinctGroup in distinctGroupQuery)
             {
-                var current_list_file = from q in rawDataFileList where q.@group == g select q;
+                var current_list_file = from q in rawDataFileList where q.@group == currentDistinctGroup select q;
                 if (CriteriaList.Any(x => x.key == "IDLIST") == true)//有使用"IDLIST"的條件，需要載入IDLIST
-                    initializeIDCriteria(g);
+                    initializeIDCriteria(currentDistinctGroup);
                 // 逐個檔案進行
                 foreach (File currentfile in current_list_file)
                 {
@@ -441,39 +392,6 @@ namespace NHIRD
             }
         }
 
-        #region Extract Data使用的class
-        public class StringDataFormat
-        {
-            public string key;
-            public int start_year;
-            public int end_year;
-            public int position;
-            public int length;
-            public string FileType;
-        }
 
-        public class NumberDataFormat
-        {
-            public string key;
-            public int start_year;
-            public int end_year;
-            public int position;
-            public int length;
-            public string FileType;
-        }
-
-        public class DataRow
-        {
-            public string[] stringData;
-            public double?[] numberData;
-            public bool IsMatch;
-            public DataRow(int strDataCount, int numDataCount)
-            {
-                stringData = new string[strDataCount];
-                numberData = new double?[numDataCount];
-                IsMatch = true;
-            }
-        }
-        #endregion
     }
 }

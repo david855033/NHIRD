@@ -29,7 +29,9 @@ namespace NHIRD
         public void DoStandarizeID()
         {
             var standarizeID = new StandarizeID();
-            standarizeID.Do();
+            standarizeID.Do(parentVM.parentWindow.parentWindow.rawDataFormats, 
+                inputFileList, 
+                str_outputDir);
         }
 
     }

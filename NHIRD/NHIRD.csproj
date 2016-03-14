@@ -79,9 +79,10 @@
     </ApplicationDefinition>
     <Compile Include="Datatype.cs" />
     <Compile Include="Extentions.cs" />
-    <Compile Include="Extract Data.cs" />
-    <Compile Include="ID Datatype.cs" />
-    <Compile Include="StandarizeID.cs" />
+    <Compile Include="Data Process\Extract Data.cs" />
+    <Compile Include="Data Process\ID Datatype.cs" />
+    <Compile Include="Data Process\StandarizeID.cs" />
+    <Compile Include="Data Process\DataProcessor%28Base class%29.cs" />
     <Compile Include="UserControls\%28UserControl%29EXT_FolderSelector\EXT_FolderSelector.xaml.cs">
       <DependentUpon>EXT_FolderSelector.xaml</DependentUpon>
     </Compile>
@@ -180,6 +181,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
