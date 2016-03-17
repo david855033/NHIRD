@@ -34,6 +34,10 @@ namespace NHIRD
     {
         public string ID;
         private DateTime _Birthday;
+        public DateTime BirthdayInDateTime
+        {
+            get { return _Birthday; }
+        }
         /// <summary>
         /// return "yyyy-MM"
         /// </summary>

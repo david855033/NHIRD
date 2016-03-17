@@ -16,7 +16,7 @@ namespace NHIRD
         public List<StringDataFormat> stringDataFormats = new List<StringDataFormat>();
         public List<NumberDataFormat> numberDataFormats = new List<NumberDataFormat>();
 
-        // step 1
+       
         public void initializeDataFormats()
         {
             var queryStr =

@@ -252,6 +252,7 @@ namespace NHIRD
                 }
             }
         }
+
         void JudgeRow(DataRow dataRow)
         {
             //比對(使用criteria.DoCheck)，只要有一項不相符就將該筆DataRow.IsMatch設定為false(預設值為true)，並跳過該筆資料

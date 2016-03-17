@@ -80,7 +80,7 @@
     <Compile Include="Datatype.cs" />
     <Compile Include="Extentions.cs" />
     <Compile Include="Data Process\Extract Data.cs" />
-    <Compile Include="Data Process\ID Datatype.cs" />
+    <Compile Include="Data Process\Stamdarize ID Datatype.cs" />
     <Compile Include="Data Process\StandarizeID.cs" />
     <Compile Include="Data Process\DataProcessor%28Base class%29.cs" />
     <Compile Include="UserControls\%28UserControl%29EXT_FolderSelector\EXT_FolderSelector.xaml.cs">
