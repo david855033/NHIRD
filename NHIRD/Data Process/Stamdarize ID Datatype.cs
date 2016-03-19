@@ -77,13 +77,13 @@ namespace NHIRD
             sb.Append('\t');
             sb.Append(isMale ? "M" : "F");
             sb.Append('\t');
-            sb.Append(firstInDate);
+            sb.Append(firstInDate.DateToString());
             sb.Append('\t');
-            sb.Append(firstOutDate);
+            sb.Append(firstOutDate.DateToString());
             sb.Append('\t');
-            sb.Append(lastInDate);
+            sb.Append(lastInDate.DateToString());
             sb.Append('\t');
-            sb.Append(lastOutDate);
+            sb.Append(lastOutDate.DateToString());
             return sb.ToString();
         }
     }

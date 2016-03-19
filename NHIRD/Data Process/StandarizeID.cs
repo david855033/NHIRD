@@ -10,11 +10,23 @@ namespace NHIRD
 {
     class StandarizeID : DataProcessor
     {
+        private int _birthYearUpperLimit;
+        public int birthYearUpperLimit
+        {
+            get { return _birthYearUpperLimit; }
+            set { _birthYearUpperLimit = value; }
+        }
+        private int _birthYearLowerLimit;
+        public int birthYearLowerLimit
+        {
+            get { return _birthYearLowerLimit; }
+            set { _birthYearLowerLimit = value; }
+        }
 
         public StandarizeID()
         {
             baselineDayForHash = DateTime.Parse("2013-12-31");
-            hashTableElementCount = 36 * 36 * 36;
+            ; hashTableElementCount = 16 * 16 * 16 * 16;
         }
 
         public void Do(List<RawDataFormat> rawDataFormats, IEnumerable<File> files, string outputDir)
@@ -35,7 +47,7 @@ namespace NHIRD
             int counter = 0;
             foreach (string currentDistinctGroup in distinctGroupQuery)
             {
-                var filesInThisGroup = from q in rawDataFileList where q.@group == currentDistinctGroup select q;
+                var filesInThisGroup = from q in rawDataFileList where (q.@group == currentDistinctGroup && q.selected == true) select q;
                 DistinctList<StandarizedIDData>[] standarizedIDDataTable = new DistinctList<StandarizedIDData>[hashTableElementCount];
                 for (int i = 0; i < hashTableElementCount; i++) standarizedIDDataTable[i] = new DistinctList<StandarizedIDData>();
                 foreach (File currentFile in filesInThisGroup)
@@ -53,6 +65,10 @@ namespace NHIRD
                         while (!sr.EndOfStream)
                         {
                             var dataRow = ReadRow(sr, stringDataFormatsForCurrentFile, numberDataFormatsForCurrentFile);
+
+                            if (!isMatchBirthYearRange(dataRow.stringData[indexBirthday]))
+                                continue;
+
                             var newIDData = new StandarizedIDData()
                             {
                                 ID = dataRow.stringData[indexID],
@@ -63,7 +79,7 @@ namespace NHIRD
                                 firstOutDate = dataRow.stringData[indexOutDate].StringToDate(),
                                 lastOutDate = dataRow.stringData[indexOutDate].StringToDate()
                             };
-                            int hash = getHash(newIDData.ID);
+                            uint hash = getIDHash(newIDData);
                             int index = standarizedIDDataTable[hash].AddDistinct(newIDData);
                             if (index >= 0)
                             {
@@ -148,19 +164,29 @@ namespace NHIRD
 
         private readonly DateTime baselineDayForHash;
         private readonly int hashTableElementCount;
-
-        private int getHash(string ID)
+        private uint getIDHash(StandarizedIDData inputIDData)
         {
-            var result = charToASCII(ID[0]) * 36 * 36 + charToASCII(ID[1]) * 36 + charToASCII(ID[2]);
-            if (result < 0) result = 0;
-            if (result > hashTableElementCount - 1) result = hashTableElementCount - 1;
-            return result;
+            return uint.Parse(inputIDData.ID.Substring(0, 4), System.Globalization.NumberStyles.HexNumber);
         }
         private int charToASCII(char c)
         {
             if (c < 59)
                 return c - 48;
             return c - 86;
+        }
+        private bool isMatchBirthYearRange(string birthdate)
+        {
+            DateTime dt = birthdate.StringToDate();
+            try
+            {
+                bool result = (dt.Year >= birthYearLowerLimit || _birthYearLowerLimit == default(int)) &&
+                    (dt.Year <= _birthYearUpperLimit || _birthYearUpperLimit == default(int));
+                return result;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

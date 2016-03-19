@@ -29,6 +29,7 @@ namespace NHIRD
         public void DoStandarizeID()
         {
             var standarizeID = new StandarizeID();
+            standarizeID.birthYearLowerLimit = 1990; standarizeID.birthYearUpperLimit= 1990;
             standarizeID.Do(parentVM.parentWindow.parentWindow.rawDataFormats, 
                 inputFileList, 
                 str_outputDir);

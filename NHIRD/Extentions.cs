@@ -62,7 +62,11 @@ namespace NHIRD
             Regex regex = new Regex(@"[0-9]+\.?[0-9]*"); //regex that matches disallowed text
             return regex.Match(text).ToString();
         }
-
+        public static string DateToString(this DateTime input)
+        {
+            return input.ToString("yyyy-MM-dd");
+        }
+        
         //找到元件的所有層級的children
         public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
         {

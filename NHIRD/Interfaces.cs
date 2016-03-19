@@ -30,43 +30,7 @@ namespace NHIRD
         }
     }
 
-    public class IDData : IComparable
-    {
-        public string ID;
-        private DateTime _Birthday;
-        public DateTime BirthdayInDateTime
-        {
-            get { return _Birthday; }
-        }
-        /// <summary>
-        /// return "yyyy-MM"
-        /// </summary>
-        public string Birthday
-        {
-            get
-            {
-                return _Birthday.ToString("yyyy-MM");
-            }
-            set
-            {
-                _Birthday = value.StringToDate();
-            }
-        }
-
-        string Comparer
-        {
-            get
-            {
-                return ID + Birthday;
-            }
-        }
-
-        public int CompareTo(object obj)
-        {
-            var that = obj as IDData;
-            return (this.Comparer).CompareTo(that.Comparer);
-        }
-    }
+  
     //accept object with Icomparable, use Binary search to do Sorted list
     public class DistinctList<T> : List<T>
     {
