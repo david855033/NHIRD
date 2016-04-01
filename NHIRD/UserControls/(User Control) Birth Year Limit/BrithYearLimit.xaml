@@ -3,23 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:NHIRD.UserControls"
+             xmlns:local="clr-namespace:NHIRD"
              mc:Ignorable="d" >
     <Grid Background="White">
         <StackPanel HorizontalAlignment="Center" Margin="0, 10">
             <StackPanel  HorizontalAlignment="Center"  Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center">Age Criteria:</TextBlock>
+                <TextBlock VerticalAlignment="Center" Text="{Binding Title}"/>
                 <StackPanel Margin="10,0">
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox x:Name="Cb_AgeL" Width="80" IsChecked="{Binding IsAgeLCriteriaEnable, Mode=TwoWay}">Lower Limit</CheckBox>
-                        <TextBox x:Name="Tx_AgeL" Margin="10,0" Width="50" Text="{Binding str_AgeL}" KeyDown="Textbox_FloatVerify_KeyDown"></TextBox>
+                        <CheckBox  Width="80" IsChecked="{Binding isLowerLimitEnabled, Mode=TwoWay}" Content=">="/>
+                        <TextBox Margin="10,0" Width="50" Text="{Binding lowerLimit, Mode=TwoWay}" KeyDown="Textbox_FloatVerify_KeyDown"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox x:Name="Cb_AgeU" Width="80" IsChecked="{Binding IsAgeUCriteriaEnable, Mode=TwoWay}">Upper Limit</CheckBox>
-                        <TextBox  x:Name="Tx_AgeU" Margin="10,0" Width="50" Text="{Binding str_AgeU}" KeyDown="Textbox_FloatVerify_KeyDown"></TextBox>
+                        <CheckBox Width="80" IsChecked="{Binding isUpperLimitEnabled, Mode=TwoWay}" Content="&lt;"/>
+                        <TextBox  Margin="10,0" Width="50" Text="{Binding upperLimit, Mode=TwoWay}" KeyDown="Textbox_FloatVerify_KeyDown"></TextBox>
                     </StackPanel>
                 </StackPanel>
-                <TextBlock VerticalAlignment="Center">Year Old</TextBlock>
+                <TextBlock VerticalAlignment="Center">(西元年)</TextBlock>
             </StackPanel>
         </StackPanel>
     </Grid>

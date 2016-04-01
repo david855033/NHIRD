@@ -27,3 +27,5 @@ D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\ID\WindowID.g.cs
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\ID\WindowID.baml
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\MainWindow.g.cs
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\MainWindow.baml
+D:\文件\Github\NHIRD\NHIRD\obj\Debug\UserControls\(User Control) Birth Year Limit\BrithYearLimit.g.cs
+D:\文件\Github\NHIRD\NHIRD\obj\Debug\UserControls\(User Control) Birth Year Limit\BrithYearLimit.baml

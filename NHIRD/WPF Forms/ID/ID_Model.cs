@@ -26,12 +26,18 @@ namespace NHIRD
         public string str_outputDir { get; set; }
         #endregion
 
+        public int upperLimit;
+        public int lowerLimit;
+        public bool isUpperLimitEnabled;
+        public bool isLowerLimitEnabled;
+
         public void DoStandarizeID()
         {
             var standarizeID = new StandarizeID();
-            standarizeID.birthYearLowerLimit = 1990; standarizeID.birthYearUpperLimit= 1990;
-            standarizeID.Do(parentVM.parentWindow.parentWindow.rawDataFormats, 
-                inputFileList, 
+            if (isUpperLimitEnabled) standarizeID.birthYearUpperLimit = upperLimit;
+            if (isLowerLimitEnabled) standarizeID.birthYearLowerLimit = lowerLimit;
+            standarizeID.Do(parentVM.parentWindow.parentWindow.rawDataFormats,
+                inputFileList,
                 str_outputDir);
         }
 

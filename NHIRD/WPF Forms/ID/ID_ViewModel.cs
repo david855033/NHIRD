@@ -47,6 +47,37 @@ namespace NHIRD
         }
         #endregion
 
+        public string upperLimit_
+        {
+            get {
+                return Model_Instance.upperLimit.ToString();
+            }
+            set {
+                Int32.TryParse(value, out Model_Instance.upperLimit);
+                OnPropertyChanged(nameof(upperLimit_)); }
+        }
+        public bool isUpperLimitEnabled_
+        {
+            get { return Model_Instance.isUpperLimitEnabled; }
+            set {
+                Model_Instance.isUpperLimitEnabled = value;
+                OnPropertyChanged(nameof(isUpperLimitEnabled_));
+            }
+        }
+
+        public string lowerLimit_
+        {
+            get { return Model_Instance.lowerLimit.ToString(); }
+            set { Int32.TryParse(value, out Model_Instance.lowerLimit); OnPropertyChanged(nameof(lowerLimit_)); }
+        }
+        public bool isLowerLimitEnabled_
+        {
+            get { return Model_Instance.isLowerLimitEnabled; }
+            set {
+                Model_Instance.isLowerLimitEnabled = value;
+                OnPropertyChanged(nameof(isLowerLimitEnabled_)); }
+        }
+
         /// <summary>
         /// 輸出資料夾
         /// </summary>

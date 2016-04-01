@@ -35,9 +35,7 @@ namespace NHIRD
         public static readonly DependencyProperty TitleProperty =
             DependencyProperty.Register(nameof(Title), typeof(string), typeof(IOFolderSelector));
 
-        public delegate void FolderChangeEventHandler();
-        public event FolderChangeEventHandler OnFolderChanged;
-
+       
         public string FolderPath
         {
             get { return (string)GetValue(FolderPathProperty); }
@@ -47,6 +45,9 @@ namespace NHIRD
         public static readonly DependencyProperty FolderPathProperty =
             DependencyProperty.Register(nameof(FolderPath), typeof(string), typeof(IOFolderSelector),
                 new FrameworkPropertyMetadata(string.Empty,FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        public delegate void FolderChangeEventHandler();
+        public event FolderChangeEventHandler OnFolderChanged;
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {

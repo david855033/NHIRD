@@ -36,7 +36,7 @@ namespace NHIRD
             this.rawDataFormats = rawDataFormats;
             this.outputDir = outputDir;
             this.rawDataFileList = files;
-
+            
             initializeDataFormats();
             ReadAndStandarizeIDFile();
         }

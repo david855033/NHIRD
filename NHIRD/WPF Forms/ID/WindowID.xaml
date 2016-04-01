@@ -22,6 +22,12 @@
                                    Margin="0,50"/>
         </StackPanel>
         <StackPanel Grid.Column="1" Margin="0,200" HorizontalAlignment="Center">
+            <local:BrithYearLimit Margin="0,0,0,50"  x:Name="birthYearLimit"
+                                  isUpperLimitEnabled="{Binding isUpperLimitEnabled_, Mode=TwoWay}"
+                                  isLowerLimitEnabled="{Binding isLowerLimitEnabled_, Mode=TwoWay}"
+                                  upperLimit="{Binding upperLimit_, Mode=TwoWay}"
+                                  lowerLimit="{Binding lowerLimit_, Mode=TwoWay}"
+                                  />
             <local:IOFolderSelector x:Name="ouputFolderSelect" 
                                     Title="Ouput Dir:"  
                                     FolderPath="{Binding str_outputDir, Mode=TwoWay}"

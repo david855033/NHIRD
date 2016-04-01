@@ -23,6 +23,7 @@ namespace NHIRD
         public MainWindow()
         {
             InitializeComponent();
+            this.Left = 10; this.Top = 30;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
