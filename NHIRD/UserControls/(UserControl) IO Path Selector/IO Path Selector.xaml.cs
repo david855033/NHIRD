@@ -23,7 +23,6 @@ namespace NHIRD
         public IOFolderSelector()
         {
             InitializeComponent();
-            (this as FrameworkElement).DataContext = this;
             if (Title == null) Title = "Default Title";
         }
 

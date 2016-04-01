@@ -5,12 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NHIRD"
              mc:Ignorable="d" 
+             x:Name="thisControl"
              d:DesignHeight="30" d:DesignWidth="550" Background="White">
     <Grid>
         <DockPanel Margin="5" Width="550" LastChildFill="True" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Margin="5,0" Text="{Binding Title}"  DockPanel.Dock="Left"/>
+            <TextBlock Margin="5,0" Text="{Binding Title,ElementName=thisControl}"  DockPanel.Dock="Left"/>
             <Button  Margin="5,0" DockPanel.Dock="Right" Content="Select Folder" Click="Button_Click"/>
-            <TextBox  x:Name="txtbox_InputDir" Text="{Binding FolderPath, Mode=TwoWay}" TextChanged="txtbox_InputDir_TextChanged"/>
+            <TextBox  x:Name="txtbox_InputDir" Text="{Binding FolderPath,ElementName=thisControl, Mode=TwoWay}" TextChanged="txtbox_InputDir_TextChanged"/>
         </DockPanel>
     </Grid>
 </UserControl>

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NHIRD"
+        x:Name="thisWindow"
         mc:Ignorable="d"
         Title="Window1" Height="700" Width="1400" Unloaded="WindowID_Unloaded" Loaded="WindowID_Loaded">
     <Grid>
@@ -22,11 +23,11 @@
                                    Margin="0,50"/>
         </StackPanel>
         <StackPanel Grid.Column="1" Margin="0,200" HorizontalAlignment="Center">
-            <local:BrithYearLimit Margin="0,0,0,50"  x:Name="birthYearLimit"
-                                  isUpperLimitEnabled="{Binding isUpperLimitEnabled_, Mode=TwoWay}"
-                                  isLowerLimitEnabled="{Binding isLowerLimitEnabled_, Mode=TwoWay}"
-                                  upperLimit="{Binding upperLimit_, Mode=TwoWay}"
-                                  lowerLimit="{Binding lowerLimit_, Mode=TwoWay}"
+            <local:BirthYearLimit Margin="0,0,0,50"
+                                  isUpperLimitEnabled="{Binding Path=isUpperLimitEnabled, Mode=TwoWay}"
+                                  isLowerLimitEnabled="{Binding Path=isLowerLimitEnabled, Mode=TwoWay}"
+                                  upperLimit="{Binding Path=upperLimit, Mode=TwoWay}"
+                                  lowerLimit="{Binding Path=lowerLimit, Mode=TwoWay}"
                                   />
             <local:IOFolderSelector x:Name="ouputFolderSelect" 
                                     Title="Ouput Dir:"  

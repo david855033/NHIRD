@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-D:\文件\Github\NHIRD\NHIRD\obj\Debug\
+D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\
 NHIRD
 none
 false
 DEBUG;TRACE
-D:\文件\Github\NHIRD\NHIRD\App.xaml
-9-1448181708
+D:\文件\GitHub\NHIRD\NHIRD\App.xaml
+92082348975
 
-29-863921201
+29244124350
 15767094614
-UserControls\(UserControl)EXT_FolderSelector\EXT_FolderSelector.xaml;UserControls\(UserControl) FileListControl\MainFIleListControl.xaml;UserControls\(UserControl) IO Path Selector\IO Path Selector.xaml;MainWindow.xaml;UserControls\(User Control) Birth Year Limit\BrithYearLimit.xaml;WPF Forms\ID\WindowID.xaml;WPF Forms\GetCD\window_GetCD.xaml;WPF Forms\GetOrder\window_GetOrder.xaml;UserControls\(UserControl)StringList\StringList.xaml;
+UserControls\(UserControl)EXT_FolderSelector\EXT_FolderSelector.xaml;UserControls\(UserControl) FileListControl\MainFIleListControl.xaml;UserControls\(UserControl) IO Path Selector\IO Path Selector.xaml;MainWindow.xaml;UserControls\(User Control) Birth Year Limit\BirthYearLimit.xaml;WPF Forms\ID\WindowID.xaml;WPF Forms\GetCD\window_GetCD.xaml;WPF Forms\GetOrder\window_GetOrder.xaml;UserControls\(UserControl)StringList\StringList.xaml;
 
 False
 

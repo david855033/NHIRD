@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="NHIRD.BirthYearLimit"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NHIRD"
+             x:Name="thisControl"
+             mc:Ignorable="d" >
+    <Grid Background="White">
+        <StackPanel HorizontalAlignment="Center" Margin="0, 10">
+            <StackPanel  HorizontalAlignment="Center"  Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center" Text="{Binding Path=Title,ElementName=thisControl}" Margin="0,0,20,0"/>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Width="40" 
+                              IsChecked="{Binding Path=isLowerLimitEnabled,ElementName=thisControl, Mode=TwoWay}" Content=">="/>
+                    <TextBox Margin="0,0,20,0" Width="50" 
+                             Text="{Binding Path=lowerLimit,ElementName=thisControl, Mode=TwoWay}" KeyDown="Textbox_FloatVerify_KeyDown"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Width="40" 
+                              IsChecked="{Binding Path=isUpperLimitEnabled,ElementName=thisControl, Mode=TwoWay}" Content="&lt;"/>
+                    <TextBox  Margin="0,0" Width="50" 
+                              Text="{Binding Path=upperLimit,ElementName=thisControl, Mode=TwoWay}" KeyDown="Textbox_FloatVerify_KeyDown"/>
+                </StackPanel>
+                <TextBlock VerticalAlignment="Center">(西元年)</TextBlock>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

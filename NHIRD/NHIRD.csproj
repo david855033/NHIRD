@@ -87,8 +87,8 @@
     <Compile Include="UserControls\%28UserControl%29EXT_FolderSelector\EXT_FolderSelector.xaml.cs">
       <DependentUpon>EXT_FolderSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\%28User Control%29 Birth Year Limit\BrithYearLimit.xaml.cs">
-      <DependentUpon>BrithYearLimit.xaml</DependentUpon>
+    <Compile Include="UserControls\%28User Control%29 Birth Year Limit\BirthYearLimit.xaml.cs">
+      <DependentUpon>BirthYearLimit.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF Forms\ID\ID_Model.cs" />
     <Compile Include="WPF Forms\ID\ID_ViewModel.cs" />
@@ -141,7 +141,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="UserControls\%28User Control%29 Birth Year Limit\BrithYearLimit.xaml">
+    <Page Include="UserControls\%28User Control%29 Birth Year Limit\BirthYearLimit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
