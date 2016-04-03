@@ -39,15 +39,13 @@ namespace NHIRD
         {
             get { return (string)GetValue(FolderPathProperty); }
             set { SetValue(FolderPathProperty, value);
-                this.OnFolderChanged(); }
+                 }
         }
         public static readonly DependencyProperty FolderPathProperty =
             DependencyProperty.Register(nameof(FolderPath), typeof(string), typeof(IOFolderSelector),
                 new FrameworkPropertyMetadata(string.Empty,FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
-        public delegate void FolderChangeEventHandler();
-        public event FolderChangeEventHandler OnFolderChanged;
-
+     
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var FolderSelector = new System.Windows.Forms.FolderBrowserDialog();

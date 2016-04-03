@@ -15,35 +15,35 @@ using System.Windows.Shapes;
 namespace NHIRD
 {
     /// <summary>
-    /// Window1.xaml 的互動邏輯
+    /// IDHashSplitter.xaml 的互動邏輯
     /// </summary>
-    public partial class Window_ID : Window
+    public partial class Window_IDHashSplitter : Window
     {
-        public readonly ID_ViewModel ViewModel_Instance;
+        public readonly IDHashSplitter_ViewModel ViewModel_Instance;
         public MainWindow parentWindow;
-        public Window_ID(MainWindow parent)
+        public Window_IDHashSplitter(MainWindow parent)
         {
             InitializeComponent();
             parentWindow = parent;
             this.Left = parent.Left + parent.Width;
             this.Top = parent.Top;
-            ViewModel_Instance = new ID_ViewModel(this);
+            ViewModel_Instance = new IDHashSplitter_ViewModel(this);
             this.DataContext = ViewModel_Instance;
         }
 
-        private void WindowID_Loaded(object sender, RoutedEventArgs e)
-        {
-            inputFolderSelect.FolderPath =
-              GlobalSetting.get("ID_InputDir");
-            ouputFolderSelect.FolderPath =
-              GlobalSetting.get("ID_OutputDir");
-        }
-
-        private void WindowID_Unloaded(object sender, RoutedEventArgs e)
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
             parentWindow.Show();
         }
 
-       
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            inputFolderSelect.FolderPath =
+             GlobalSetting.get("IDSplit_InputDir");
+            ouputFolderSelect.FolderPath =
+              GlobalSetting.get("IDSplit_OutputDir");
+        }
+
+        
     }
 }

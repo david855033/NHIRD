@@ -29,3 +29,5 @@ D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\NHIRD.exe
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\NHIRD.pdb
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\UserControls\(User Control) Birth Year Limit\BirthYearLimit.g.cs
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\UserControls\(User Control) Birth Year Limit\BirthYearLimit.baml
+D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\IDHashSplitter\IDHashSplitter.g.cs
+D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\IDHashSplitter\IDHashSplitter.baml

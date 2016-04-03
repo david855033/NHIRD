@@ -26,6 +26,7 @@ namespace NHIRD
         /// </summary>
         public int MKyear {get { return Convert.ToInt32(year) - 1911; } }
         public string group { get; set; }
+        public string hashGroup { get; set; }
         public bool? selected{ get; set; }
         public File(string filepath)
         {
@@ -54,6 +55,19 @@ namespace NHIRD
             {
                 group = "NA";
             }
+
+            Regex HashGroupRegex = new Regex(@"H\d{1,3}", RegexOptions.IgnoreCase);
+            Match HashGroupMatch = HashGroupRegex.Match(name);
+            try
+            {
+                hashGroup = HashGroupMatch.Groups[0].ToString();
+                if (hashGroup == "") hashGroup = "NA";
+            }
+            catch
+            {
+                hashGroup = "NA";
+            }
+
             Regex YearRegex = new Regex(@"\d{4}");
             Match YearMatch = YearRegex.Match(name);
             try

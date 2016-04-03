@@ -25,7 +25,7 @@ namespace NHIRD
 
         public StandarizeID()
         {
-            baselineDayForHash = DateTime.Parse("2013-12-31");
+           
             ; hashTableElementCount = 16 * 16 * 16 * 16;
         }
 
@@ -36,7 +36,7 @@ namespace NHIRD
             this.rawDataFormats = rawDataFormats;
             this.outputDir = outputDir;
             this.rawDataFileList = files;
-            
+
             initializeDataFormats();
             ReadAndStandarizeIDFile();
         }
@@ -54,11 +54,11 @@ namespace NHIRD
                 {
                     List<StringDataFormat> stringDataFormatsForCurrentFile = getStringDataFormatsWithRightYear(currentFile);
                     List<NumberDataFormat> numberDataFormatsForCurrentFile = getNumberDataFormatsWithRightYear(currentFile);
-                    int indexID = stringDataFormats.FindIndex(x => x.key == "ID");
-                    int indexBirthday = stringDataFormats.FindIndex(x => x.key == "ID_BIRTHDAY");
-                    int indexSex = stringDataFormats.FindIndex(x => x.key == "ID_SEX");
-                    int indexInDate = stringDataFormats.FindIndex(x => x.key == "ID_IN_DATE");
-                    int indexOutDate = stringDataFormats.FindIndex(x => x.key == "ID_OUT_DATE");
+                    int indexID = stringDataFormatsForCurrentFile.FindIndex(x => x.key == "ID");
+                    int indexBirthday = stringDataFormatsForCurrentFile.FindIndex(x => x.key == "ID_BIRTHDAY");
+                    int indexSex = stringDataFormatsForCurrentFile.FindIndex(x => x.key == "ID_SEX");
+                    int indexInDate = stringDataFormatsForCurrentFile.FindIndex(x => x.key == "ID_IN_DATE");
+                    int indexOutDate = stringDataFormatsForCurrentFile.FindIndex(x => x.key == "ID_OUT_DATE");
 
                     using (var sr = new StreamReader(currentFile.path, System.Text.Encoding.Default))
                     {
@@ -108,65 +108,18 @@ namespace NHIRD
                 }
             }
         }
-        private List<StringDataFormat> getStringDataFormatsWithRightYear(File currentFile)
-        {
-            return (from q in stringDataFormats
-                    where
-                        (currentFile.MKyear >= q.start_year || q.start_year == 0) &&
-                        (currentFile.MKyear <= q.end_year || q.end_year == 0) &&
-                        q.FileType == currentFile.FileType
-                    select
-                        q).ToList();
-        }
-        private List<NumberDataFormat> getNumberDataFormatsWithRightYear(File currentFile)
-        {
-            return (from q in numberDataFormats
-                    where
-                        (currentFile.MKyear >= q.start_year || q.start_year == 0) &&
-                        (currentFile.MKyear <= q.end_year || q.end_year == 0) &&
-                        q.FileType == currentFile.FileType
-                    select
-                        q).ToList();
-        }
+       
         private string getOutputFilePath(string group)
         {
             if (!Directory.Exists(outputDir))
                 Directory.CreateDirectory(outputDir);
             return outputDir + "\\" + $"standarized ID table_{group}.IDS";
         }
-        private DataRow ReadRow(StreamReader sr, List<StringDataFormat> stringDataFormatsForCurrentFile, List<NumberDataFormat> numberDataFormatsForCurrentFile)
-        {
-            string line = sr.ReadLine();
-            int stringDataCount = stringDataFormatsForCurrentFile.Count, numberDataCount = numberDataFormatsForCurrentFile.Count;
-            var dataRow = new DataRow(stringDataCount, numberDataCount);
-            for (int i = 0; i < stringDataCount; i++)
-            {
-                dataRow.stringData[i] =
-                    line.Substring(stringDataFormatsForCurrentFile[i].position,
-                    stringDataFormatsForCurrentFile[i].length);
-            }
-            for (int i = 0; i < numberDataCount; i++)
-            {
-                var data =
-                    line.Substring(numberDataFormatsForCurrentFile[i].position,
-                    numberDataFormatsForCurrentFile[i].length);
-                if (data == "")
-                {
-                    dataRow.numberData[i] = null;
-                }
-                else
-                {
-                    dataRow.numberData[i] = Convert.ToDouble(data);
-                }
-            }
-            return dataRow;
-        }
-
-        private readonly DateTime baselineDayForHash;
+             
         private readonly int hashTableElementCount;
-        private uint getIDHash(StandarizedIDData inputIDData)
+        private uint getIDHash(StandarizedIDData inputIDData) //使用第二組四位數來作為hash (第一組留給split group by hash用)
         {
-            return uint.Parse(inputIDData.ID.Substring(0, 4), System.Globalization.NumberStyles.HexNumber);
+            return uint.Parse(inputIDData.ID.Substring(4, 4), System.Globalization.NumberStyles.HexNumber);
         }
         private int charToASCII(char c)
         {

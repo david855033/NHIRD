@@ -113,6 +113,11 @@ namespace NHIRD
             }
         }
 
-       
+        private void ButtonIDSplit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+            var GetIDSplit_instance = new Window_IDHashSplitter(this);
+            GetIDSplit_instance.Show();
+        }
     }
 }

@@ -1,12 +1,11 @@
-﻿<Window x:Class="NHIRD.Window_ID"
+﻿<Window x:Class="NHIRD.Window_IDHashSplitter"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NHIRD"
-        x:Name="thisWindow"
         mc:Ignorable="d"
-        Title="Window1" Height="700" Width="1400" Unloaded="WindowID_Unloaded" Loaded="WindowID_Loaded">
+        Title="IDHashSplitter"  Height="700" Width="1400" Unloaded="Window_Unloaded" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="640"/>
@@ -15,25 +14,17 @@
         <StackPanel HorizontalAlignment="Center" Grid.Column="0" Margin="0,20">
             <local:IOFolderSelector x:Name="inputFolderSelect" 
                                     Title="Input Dir:"  
-                                    FolderPath="{Binding InputDir, Mode=TwoWay}"
-                                    />
+                                    FolderPath="{Binding InputDir, Mode=TwoWay}"/>
 
             <local:FileListControl x:Name="fileListControl"
                                    inputFileList="{Binding inputFileList}"
                                    Margin="0,50"/>
         </StackPanel>
         <StackPanel Grid.Column="1" Margin="0,200" HorizontalAlignment="Center">
-            <local:BirthYearLimit Margin="0,0,0,50"
-                                  isUpperLimitEnabled="{Binding Path=isUpperLimitEnabled, Mode=TwoWay}"
-                                  isLowerLimitEnabled="{Binding Path=isLowerLimitEnabled, Mode=TwoWay}"
-                                  upperLimit="{Binding Path=upperLimit, Mode=TwoWay}"
-                                  lowerLimit="{Binding Path=lowerLimit, Mode=TwoWay}"
-                                  />
             <local:IOFolderSelector x:Name="ouputFolderSelect" 
                                     Title="Ouput Dir:"  
-                                    FolderPath="{Binding str_outputDir, Mode=TwoWay}"
-                                   />
-            <Button Height="50" Margin="0,25" Command="{Binding Do_StandarizeID}">Do _Standarize ID</Button>
+                                    FolderPath="{Binding str_outputDir, Mode=TwoWay}"/>
+            <Button Height="50" Margin="0,25" Command="{Binding Do_IDHashSplit}">Do _Split ID By Hash</Button>
         </StackPanel>
     </Grid>
 </Window>
