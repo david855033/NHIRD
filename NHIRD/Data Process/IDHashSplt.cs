@@ -24,13 +24,13 @@ namespace NHIRD
 
         private void SplitIDDataInFiles()
         {
-            initiateStreamWriterArray();
             var selectedFile = (from q in rawDataFileList where q.selected == true select q);
             foreach (var currentFile in selectedFile)
             {
+                initiateStreamWriterArray(currentFile);
                 SplitIDData(currentFile);
+                closeStreamWriterArray();
             }
-            closeStreamWriterArray();
         }
         private void SplitIDData(File currentFile)
         {
@@ -49,19 +49,19 @@ namespace NHIRD
             }
         }
         StreamWriter[] swArray = new StreamWriter[256];
-        private void initiateStreamWriterArray()
+        private void initiateStreamWriterArray(File currentFile)
         {
             for (int i = 0; i < swArray.Length; i++)
             {
-                var outputFilePath = getOutputFilePath(i);
+                var outputFilePath = getOutputFilePath(currentFile.year, i);
                 swArray[i] = new StreamWriter(outputFilePath, false, System.Text.Encoding.Default);
             }
         }
-        private string getOutputFilePath(int hash)
+        private string getOutputFilePath(string year, int hash)
         {
             if (!Directory.Exists(outputDir))
                 Directory.CreateDirectory(outputDir);
-            return outputDir + "\\" + $"ID splitted_H{hash}.DAT";
+            return outputDir + "\\" + $"IDsplitted{year}_H{hash}.DAT";
         }
         private void closeStreamWriterArray()
         {
