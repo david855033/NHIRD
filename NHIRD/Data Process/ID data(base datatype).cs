@@ -8,7 +8,7 @@ namespace NHIRD
 {
     public class IDData : IComparable
     {
-        string _ID;
+        private string _ID;
         public string ID
         {
             get { return _ID; }
@@ -19,8 +19,12 @@ namespace NHIRD
                     _IDHexToInt[i] = HextoUInt(value.Substring(i * 8, 8));
             }
         }
-        public uint[] IDHexToInt { get { return _IDHexToInt.ToArray(); } }
-        uint[] _IDHexToInt = new uint[4];
+
+        private uint[] _IDHexToInt = new uint[4];
+        public uint[] IDHexToInt
+        {
+            get { return _IDHexToInt.ToArray(); }
+        }
 
         static uint HextoUInt(string input)
         {
@@ -51,7 +55,7 @@ namespace NHIRD
         {
             var that = obj as IDData;
 
-            if(this._IDHexToInt[0]!= that._IDHexToInt[0])
+            if (this._IDHexToInt[0] != that._IDHexToInt[0])
                 return (this._IDHexToInt[0]).CompareTo(that._IDHexToInt[0]);
 
             if (this._IDHexToInt[1] != that._IDHexToInt[1])

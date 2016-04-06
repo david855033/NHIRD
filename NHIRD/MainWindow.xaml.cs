@@ -119,5 +119,13 @@ namespace NHIRD
             var GetIDSplit_instance = new Window_IDHashSplitter(this);
             GetIDSplit_instance.Show();
         }
+              
+
+        private void ButtonGetGD_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+            var GetGDWindow_instance = new GetGDWindow(this);
+            GetGDWindow_instance.Show();
+        }
     }
 }

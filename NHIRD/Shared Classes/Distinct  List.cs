@@ -6,31 +6,7 @@ using System.Threading.Tasks;
 
 namespace NHIRD
 {
-    public class ActionData : IComparable
-    {
-        public string FEE_YM;
-        public string HOSP_ID;
-        public string APPL_TYPE;
-        public string APPL_DATE;
-        public string CASE_TYPE;
-        public string SEQ_NO;
-        string Comparer
-        {
-            get
-            {
-                return FEE_YM + HOSP_ID + APPL_TYPE
-                  + APPL_DATE + CASE_TYPE + SEQ_NO;
-            }
-        }
 
-        public int CompareTo(object obj)
-        {
-            var that = obj as ActionData;
-            return (this.Comparer).CompareTo(that.Comparer);
-        }
-    }
-
-  
     //accept object with Icomparable, use Binary search to do Sorted list
     public class DistinctList<T> : List<T>
     {

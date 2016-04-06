@@ -32,7 +32,7 @@ namespace NHIRD
         {
             path = filepath;
             name = path.PathToFileName();
-            string[] AvailableFileType = new string[] { "CD", "DD","GO","OO","DO","ID" };
+            string[] AvailableFileType = new string[] { "CD", "DD","GO","OO","DO","ID","GD" };
             FileType = AvailableFileType.First(x => name.IndexOf(x) >= 0);
             try
             {

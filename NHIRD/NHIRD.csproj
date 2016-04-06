@@ -80,7 +80,13 @@
     <Compile Include="Data Process\HashByIDGenerator.cs" />
     <Compile Include="Data Process\ID data%28base datatype%29.cs" />
     <Compile Include="Data Process\IDHashSplt.cs" />
-    <Compile Include="Datatype.cs" />
+    <Compile Include="Shared Classes\Distinct  List.cs" />
+    <Compile Include="WPF Forms\GetGD\GetGDModel.cs" />
+    <Compile Include="WPF Forms\GetGD\GetGDViewModel.cs" />
+    <Compile Include="WPF Forms\GetGD\GetGDWindow.xaml.cs">
+      <DependentUpon>GetGDWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shared Classes\Datatypes.cs" />
     <Compile Include="Extentions.cs" />
     <Compile Include="Data Process\Extract Data.cs" />
     <Compile Include="Data Process\Stamdarize ID Datatype.cs" />
@@ -116,6 +122,10 @@
     <Compile Include="UserControls\%28UserControl%29StringList\StringList.xaml.cs">
       <DependentUpon>StringList.xaml</DependentUpon>
     </Compile>
+    <Page Include="WPF Forms\GetGD\GetGDWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WPF Forms\IDHashSplitter\IDHashSplitter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -140,8 +150,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GlobalSetting.cs" />
-    <Compile Include="Interfaces.cs" />
+    <Compile Include="Shared Classes\GlobalSetting.cs" />
+    <Compile Include="Shared Classes\Action Data.cs" />
     <Compile Include="UserControls\%28UserControl%29 FileListControl\MainFIleListControl.xaml.cs">
       <DependentUpon>MainFIleListControl.xaml</DependentUpon>
     </Compile>

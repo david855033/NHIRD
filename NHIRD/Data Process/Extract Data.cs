@@ -242,7 +242,7 @@ namespace NHIRD
                 var data =
                     line.Substring(queryNumberDataFormats[i].position,
                     queryNumberDataFormats[i].length);
-                if (data == "")
+                if (data.Trim() == "")
                 {
                     dataRow.numberData[i] = null;
                 }
