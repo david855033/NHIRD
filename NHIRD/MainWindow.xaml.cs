@@ -127,5 +127,12 @@ namespace NHIRD
             var GetGDWindow_instance = new GetGDWindow(this);
             GetGDWindow_instance.Show();
         }
+
+        private void ButtonJoinOrder_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+            var JoinOrderWindow_instance = new JoinOrderWindow(this);
+            JoinOrderWindow_instance.Show();
+        }
     }
 }

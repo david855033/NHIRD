@@ -1,0 +1,24 @@
+﻿<Window x:Class="NHIRD.JoinOrderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NHIRD"
+        mc:Ignorable="d"
+        Title="JoinOrderWindow" Height="700" Width="700" Unloaded="JoinOrderWindow_Unloaded" Loaded="JoinOrderWindow_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="700"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel HorizontalAlignment="Center" Grid.Column="0" Margin="0,20">
+            <local:EXT_FolderSelector Title="Action file Folder" x:Name="ActionFolderSelector"
+                                      FolderPath="{Binding InputDirAction}"/>
+            <local:EXT_FolderSelector Title="Order file Folder" x:Name="OrderFolderSelector"
+                                      FolderPath="{Binding InputDirOrder}"/>
+            <local:IOFolderSelector Title="Output" x:Name="OutputFolderSelector"
+                                    FolderPath="{Binding str_outputDir}"/>
+            <Button Height="50" Margin="0,25" Command="{Binding joinOrderCommand}">Do _Join</Button>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -33,3 +33,5 @@ D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\IDHashSplitter\IDHashSplitter.g
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\IDHashSplitter\IDHashSplitter.baml
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\GetGD\GetGDWindow.g.cs
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\GetGD\GetGDWindow.baml
+D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\JoinOrder\JoinOrderWindow.g.cs
+D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\JoinOrder\JoinOrderWindow.baml

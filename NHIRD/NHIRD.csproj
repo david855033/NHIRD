@@ -80,6 +80,11 @@
     <Compile Include="Data Process\HashByIDGenerator.cs" />
     <Compile Include="Data Process\ID data%28base datatype%29.cs" />
     <Compile Include="Data Process\IDHashSplt.cs" />
+    <Compile Include="WPF Forms\JoinOrder\JoinOrderModel.cs" />
+    <Compile Include="WPF Forms\JoinOrder\JoinOrderViewModel.cs" />
+    <Compile Include="WPF Forms\JoinOrder\JoinOrderWindow.xaml.cs">
+      <DependentUpon>JoinOrderWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Shared Classes\Distinct  List.cs" />
     <Compile Include="WPF Forms\GetGD\GetGDModel.cs" />
     <Compile Include="WPF Forms\GetGD\GetGDViewModel.cs" />
@@ -122,6 +127,10 @@
     <Compile Include="UserControls\%28UserControl%29StringList\StringList.xaml.cs">
       <DependentUpon>StringList.xaml</DependentUpon>
     </Compile>
+    <Page Include="WPF Forms\JoinOrder\JoinOrderWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WPF Forms\GetGD\GetGDWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
