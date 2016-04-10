@@ -16,6 +16,7 @@
                                       FolderPath="{Binding InputDirAction}"/>
             <local:EXT_FolderSelector Title="Order file Folder" x:Name="OrderFolderSelector"
                                       FolderPath="{Binding InputDirOrder}"/>
+            <local:OrderGroupEditor/>
             <local:IOFolderSelector Title="Output" x:Name="OutputFolderSelector"
                                     FolderPath="{Binding str_outputDir}"/>
             <Button Height="50" Margin="0,25" Command="{Binding joinOrderCommand}">Do _Join</Button>

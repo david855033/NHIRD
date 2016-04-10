@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
+using System.Windows.Forms;
+
 namespace NHIRD
 {
     /// <summary>
@@ -23,7 +25,13 @@ namespace NHIRD
         public MainWindow()
         {
             InitializeComponent();
-            this.Left = 10; this.Top = 30;
+
+            Screen s1 = Screen.AllScreens.Last();
+            System.Drawing.Rectangle r1 = s1.WorkingArea;
+            this.WindowStartupLocation = System.Windows.WindowStartupLocation.Manual;
+            this.Top = r1.Top+30;
+            this.Left = r1.Left+30;
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
