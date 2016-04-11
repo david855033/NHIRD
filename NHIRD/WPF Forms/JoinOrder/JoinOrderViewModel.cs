@@ -20,7 +20,6 @@ namespace NHIRD
             joinOrderCommand = new RelayCommand(joinOrder, (x) => true);
         }
 
-
         // -- Properties --
         #region input settings
         public string InputDirAction
@@ -73,8 +72,8 @@ namespace NHIRD
         public ICommand joinOrderCommand { get; }
         public void joinOrder(object obj)
         {
+            Model_Instance.orderGroupList = parentWindow.orderGroupEditor.orderGroupList;
             Model_Instance.joinOrder();
-
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

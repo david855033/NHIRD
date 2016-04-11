@@ -49,17 +49,14 @@ namespace NHIRD
                     key = "IDLIST",
                     IDCriteriaFileList = IDCriteriaFileList
                 });
+            }
 
-                //執行
-                extractData.Do(parentVM.parentWindow.parentWindow.rawDataFormats,
-                    (from f in inputFileList where f.selected == true select f.FileType).Distinct()
-                    , from f in inputFileList where f.selected == true select f,
-                    str_outputDir);
-            }
-            else
-            {
-                System.Windows.MessageBox.Show("必須啟動ID criteria");
-            }
+            //執行
+            extractData.Do(parentVM.parentWindow.parentWindow.rawDataFormats,
+                (from f in inputFileList where f.selected == true select f.FileType).Distinct()
+                , from f in inputFileList where f.selected == true select f,
+                str_outputDir);
+
         }
     }
 }

@@ -18,10 +18,13 @@ namespace NHIRD
         public string str_InputDirOrder { get; set; }
         public string str_OuputDir { get; set; }
         #endregion
+        #region -- orderGroupList
+        public List<OrderGroup> orderGroupList;
+        #endregion
 
         public void joinOrder()
         {
-            System.Windows.MessageBox.Show("Do");
+            System.Windows.MessageBox.Show($"{orderGroupList.Count} groups");
         }
     }
 }

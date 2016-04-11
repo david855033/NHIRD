@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace NHIRD
 {
@@ -22,7 +23,17 @@ namespace NHIRD
     /// </summary>
     public partial class OrderGroupEditor : UserControl, INotifyPropertyChanged
     {
-        public List<OrderGroup> orderGroupList = new List<OrderGroup>();
+        public static readonly DependencyProperty orderGroupListProperty =
+        DependencyProperty.Register("orderGroupList", typeof(List<OrderGroup>), typeof(OrderGroupEditor),
+           new PropertyMetadata(new List<OrderGroup>()));
+        public List<OrderGroup> orderGroupList
+        {
+            get { return (List<OrderGroup>)GetValue(orderGroupListProperty); }
+            set
+            {
+                SetValue(orderGroupListProperty, value);
+            }
+        }
 
         private ObservableCollection<string> _orderGroupNameList;
         public ObservableCollection<string> orderGroupNameList
@@ -56,7 +67,6 @@ namespace NHIRD
         {
             if (GroupSelector.SelectedIndex >= 0)
             {
-                GroupNameTextBox.Text = getSelectedGroupName();
                 renewLists();
             }
         }
@@ -71,10 +81,8 @@ namespace NHIRD
 
         private void orderSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
             if (GroupSelector.SelectedIndex >= 0 && orderSelector.SelectedIndex >= 0)
             {
-                OrderNameTextBox.Text = getSelectedOrderName();
             }
         }
         private string getSelectedOrderName()
@@ -89,7 +97,12 @@ namespace NHIRD
         private void addGroupButton_Click(object sender, RoutedEventArgs e)
         {
             if (addGroup(GroupNameTextBox.Text))
+            {
                 GroupNameTextBox.Text = "";
+                OrderNameTextBox.Text = "";
+                GroupNameTextBox.Focus();
+                GroupSelector.SelectedIndex = GroupSelector.Items.Count - 1;
+            }
         }
         private bool addGroup(string inputGroupName)
         {
@@ -147,18 +160,24 @@ namespace NHIRD
         private void addOrderButton_Click(object sender, RoutedEventArgs e)
         {
             int index = -1;
+            bool addSuccess=false;
             if (GroupSelector.SelectedItem != null)
             {
                 index = GroupSelector.SelectedIndex;
             }
             if (GroupSelector.SelectedIndex >= 0)
             {
-                if (addOrder(OrderNameTextBox.Text))
-                    OrderNameTextBox.Text = "";
+                addSuccess = addOrder(OrderNameTextBox.Text);
             }
             if (index >= 0)
             {
                 GroupSelector.SelectedIndex = index;
+                GroupNameTextBox.Text = "";
+            }
+            if (addSuccess)
+            {
+                OrderNameTextBox.Focus();
+                OrderNameTextBox.Text = "";
             }
         }
         private bool addOrder(string inputOrder)
@@ -177,18 +196,21 @@ namespace NHIRD
         private void editOrderButton_Click(object sender, RoutedEventArgs e)
         {
             int index = -1;
+            bool successEdit = false;
             if (GroupSelector.SelectedItem != null)
             {
                 index = GroupSelector.SelectedIndex;
             }
             if (GroupSelector.SelectedIndex >= 0)
             {
-                editOrder(OrderNameTextBox.Text);
+                successEdit=editOrder(OrderNameTextBox.Text);
             }
             if (index >= 0)
             {
                 GroupSelector.SelectedIndex = index;
             }
+            if (successEdit)
+                OrderNameTextBox.Text = "";
         }
         private bool editOrder(string inputOrder)
         {
@@ -253,8 +275,9 @@ namespace NHIRD
         }
         private bool loadOrder()
         {
+
             var dialog = new System.Windows.Forms.OpenFileDialog();
-            dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            dialog.InitialDirectory = GlobalSetting.get("JoinOrder_LoadOrderButton");
             dialog.Filter = "txt files (*.txt)|*.txt|All files(*.*)|*.*";
             dialog.FilterIndex = 2;
             dialog.RestoreDirectory = true;
@@ -270,6 +293,8 @@ namespace NHIRD
                             orderGroupList[GroupSelector.SelectedIndex].addOrder(stringtoAdd);
                         }
                     }
+                    GlobalSetting.set("JoinOrder_LoadOrderButton",
+                                         dialog.FileName.Substring(0, dialog.FileName.LastIndexOf('\\')));
                 }
                 renewLists();
                 return true;
@@ -282,7 +307,7 @@ namespace NHIRD
         {
             var newOrderGroupList = new List<OrderGroup>();
             var dialog = new System.Windows.Forms.OpenFileDialog();
-            dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            dialog.InitialDirectory = GlobalSetting.get("JoinOrder_ImportButton");
             dialog.Filter = "txt files (*.txt)|*.txt|All files(*.*)|*.*";
             dialog.FilterIndex = 2;
             dialog.RestoreDirectory = true;
@@ -293,7 +318,7 @@ namespace NHIRD
                     while (!sr.EndOfStream)
                     {
                         var splitline = sr.ReadLine().Split('\t');
-                        if (splitline.Length > 1)
+                        if (splitline.Length >= 1)
                         {
                             var groupToAdd = new OrderGroup() { name = splitline[0] };
                             for (int i = 1; i < splitline.Length; i++)
@@ -301,6 +326,8 @@ namespace NHIRD
                             newOrderGroupList.Add(groupToAdd);
                         }
                     }
+                    GlobalSetting.set("JoinOrder_ImportButton", 
+                       dialog.FileName.Substring(0, dialog.FileName.LastIndexOf('\\')));
                 }
                 if (newOrderGroupList.Count > 0)
                 {
@@ -310,6 +337,32 @@ namespace NHIRD
             }
         }
 
+        private void ExportButton_Click(object sender, RoutedEventArgs e)
+        {
+            var saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            saveFileDialog.Filter = "Text File(*.txt)|*.txt";
+            saveFileDialog.InitialDirectory = GlobalSetting.get("JoinOrder_ExportOrderButton");
+            saveFileDialog.Title = "Export Order Setting";
+            if (orderGroupList.Count > 0 &&
+                saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                using (var sw = new StreamWriter(saveFileDialog.FileName))
+                {
+                    foreach (var currentOrderGroup in orderGroupList)
+                    {
+                        sw.Write(currentOrderGroup.name);
+                        foreach (var order in currentOrderGroup.getOrderList())
+                        {
+                            sw.Write('\t' + order);
+                        }
+                        sw.WriteLine();
+
+                    }
+                }
+                GlobalSetting.set("JoinOrder_ExportOrderButton",
+                  saveFileDialog.FileName.Substring(0, saveFileDialog.FileName.LastIndexOf('\\')));
+            }
+        }
         void renewLists()
         {
             orderGroupNameList = new ObservableCollection<string>();
@@ -329,7 +382,7 @@ namespace NHIRD
             }
             else
             {
-                OrderNameTextBox.Text = orderSelector.SelectedItem.ToString() ;
+                OrderNameTextBox.Text = orderSelector.SelectedItem.ToString();
             }
             OnPropertyChanged();
         }
@@ -343,12 +396,5 @@ namespace NHIRD
             }
         }
 
-        private void ExportButton_Click(object sender, RoutedEventArgs e)
-        {
-            var saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            saveFileDialog1.Filter = "Text File(*.txt)|*.txt";
-            saveFileDialog1.Title = "Export Order Setting";
-            saveFileDialog1.ShowDialog();
-        }
     }
 }
