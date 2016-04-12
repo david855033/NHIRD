@@ -27,7 +27,6 @@ namespace NHIRD
         public EXT_FolderSelector()
         {
             InitializeComponent();
-            (this.Content as FrameworkElement).DataContext = this;
             if (Title == null) Title = "Default Title";
         }
 
@@ -130,5 +129,16 @@ namespace NHIRD
             }
         }
 
+        private void Tx_ID_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (Directory.Exists((sender as TextBox).Text))
+            {
+                FolderPath = (sender as TextBox).Text;
+            }
+            else
+            {
+                Message = "Invalid path";
+            }
+        }
     }
 }

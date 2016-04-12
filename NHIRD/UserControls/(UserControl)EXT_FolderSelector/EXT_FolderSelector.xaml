@@ -4,15 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NHIRD"
-             mc:Ignorable="d" >
+             mc:Ignorable="d" 
+             x:Name="thisControl">
     <Grid Background="White" >
         <StackPanel HorizontalAlignment="Center" Margin="0, 10" >
             <DockPanel Width="480" HorizontalAlignment="Stretch" LastChildFill="True">
-                <CheckBox IsChecked="{Binding IsCriteriaChecked, Mode=TwoWay}" Content="{Binding Title}" DockPanel.Dock="Left"/>
+                <CheckBox IsChecked="{Binding IsCriteriaChecked, Mode=TwoWay,ElementName=thisControl}"
+                          Content="{Binding Title,ElementName=thisControl}" DockPanel.Dock="Left"/>
                 <Button DockPanel.Dock="Right" Click="Button_Click">Select Folder</Button>
-                <TextBox x:Name="Tx_ID" Margin="5,0" Text="{Binding FolderPath, Mode=TwoWay}"/>
+                <TextBox x:Name="Tx_ID" Margin="5,0" 
+                         Text="{Binding FolderPath, Mode=TwoWay,ElementName=thisControl}" TextChanged="Tx_ID_TextChanged"
+                         />
             </DockPanel>
-            <TextBlock x:Name="Tb_IDmessage" HorizontalAlignment="Center" Text="{Binding Message, Mode=TwoWay}"/>
+            <TextBlock x:Name="Tb_IDmessage" HorizontalAlignment="Center" 
+                       Text="{Binding Message, Mode=TwoWay,
+                        ElementName=thisControl}"/>
         </StackPanel>
     </Grid>
 </UserControl>

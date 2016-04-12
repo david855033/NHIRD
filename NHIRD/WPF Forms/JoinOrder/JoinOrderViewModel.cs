@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ namespace NHIRD
             parentWindow = parent;
             Model_Instance = new JoinOrderModel(this);
             joinOrderCommand = new RelayCommand(joinOrder, (x) => true);
+            matchActionAndOrderFileCommnad = new RelayCommand(matchActionAndOrderFile, (x) => true);
         }
 
         // -- Properties --
@@ -35,6 +37,11 @@ namespace NHIRD
                 OnPropertyChanged(nameof(InputDirAction));
             }
         }
+        public ObservableCollection<File> actionFiles
+        {
+            get { return Model_Instance.actionFiles; }
+            set { Model_Instance.actionFiles = value; }
+        }
 
         public string InputDirOrder
         {
@@ -49,6 +56,12 @@ namespace NHIRD
                 OnPropertyChanged(nameof(InputDirOrder));
             }
         }
+        public ObservableCollection<File> orderFiles
+        {
+            get { return Model_Instance.orderFiles; }
+            set { Model_Instance.orderFiles = value; }
+        }
+
         #endregion
 
         /// <summary>
@@ -74,6 +87,12 @@ namespace NHIRD
         {
             Model_Instance.orderGroupList = parentWindow.orderGroupEditor.orderGroupList;
             Model_Instance.joinOrder();
+        }
+
+        public ICommand matchActionAndOrderFileCommnad { get; }
+        public void matchActionAndOrderFile(object obj)
+        {
+            Model_Instance.matchActionAndOrderFile();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
