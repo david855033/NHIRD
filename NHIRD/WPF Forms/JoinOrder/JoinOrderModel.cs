@@ -29,6 +29,8 @@ namespace NHIRD
 
         public void matchActionAndOrderFile()
         {
+            var matchResult = new List<MatchOfActionAndOrder>();
+            matchResult = ActionAndOrderMatcher.doMatch(actionFiles, orderFiles);
             System.Windows.MessageBox.Show($"{actionFiles.Count} action files and {orderFiles.Count} order files");
         }
 

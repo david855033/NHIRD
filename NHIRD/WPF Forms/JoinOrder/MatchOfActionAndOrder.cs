@@ -8,6 +8,7 @@ namespace NHIRD
 {
     class MatchOfActionAndOrder
     {
-
+        public File actionFile;
+        public List<File> MatchedOrderFiles;
     }
 }
