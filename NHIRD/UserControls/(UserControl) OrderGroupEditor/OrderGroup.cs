@@ -15,7 +15,7 @@ namespace NHIRD
             set { _name = value; }
         }
 
-        private List<string> _orderList = new List<string>();
+        private DistinctList<string> _orderList = new DistinctList<string>();
         public int getOrderCount()
         {
             return _orderList.Count();
@@ -27,8 +27,7 @@ namespace NHIRD
         public void addOrder(string order)
         {
             if (order.Trim() == "") return;
-            _orderList.Add(order);
-            _orderList = _orderList.Distinct().ToList();
+            _orderList.AddDistinct(order.Trim());
         }
         public void deleteOrder(string order)
         {
@@ -43,6 +42,11 @@ namespace NHIRD
             int index = _orderList.IndexOf(target);
             if (index >= 0 && index < _orderList.Count && !_orderList.Any(x => x == editTo))
                 _orderList[index] = editTo;
+        }
+        public bool hasThisOrder(string order)
+        {
+            int result = _orderList.BinarySearch(order);
+            return  result>= 0;
         }
     }
 }
