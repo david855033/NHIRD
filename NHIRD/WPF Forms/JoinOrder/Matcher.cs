@@ -17,7 +17,8 @@ namespace NHIRD
                 var query = from q in orderList
                             where q.FileType == (getCorrespondingOrderFileType(action.FileType)) &&
                             q.year == action.year &&
-                            q.@group == action.@group
+                            q.@group == action.@group &&
+                            q.hashGroup== action.hashGroup 
                             select q;
                 var matchToAdd = new MatchOfActionAndOrder()
                 {
