@@ -19,63 +19,71 @@ namespace NHIRD
             this.outputDir = outputDir;
             this.orderGroupList = orderGroupList;
             ActionDataCombinedWithOrderData.orderGroupCount = orderGroupList.Count;
+           
+            //檢查目錄是否存
+            if (!Directory.Exists(outputDir))
+                Directory.CreateDirectory(outputDir);
         }
 
         public void Do()
         {
-            title = new List<string>();
-            data = new DistinctList<ActionDataCombinedWithOrderData>();
+            actionTitle = new List<string>();
+            actionData = new DistinctList<ActionDataCombinedWithOrderData>();
+            
+
+
             foreach (var currentMatch in matchResult)
             {
-                System.Windows.MessageBox.Show($"read Action{currentMatch.actionFile.path}");
                 readAction(currentMatch.actionFile.path);
-                appendOrderGroupToTitle();
+                appendOrderGroupToActionTitle();
                 foreach (var currentOrder in currentMatch.MatchedOrderFiles)
                 {
                     combineOrderToAction(currentOrder.path);
                 }
-                var query = from q in data where q.hasThisOrder.Any(x => x) select q;
-                System.Windows.MessageBox.Show($"In this action {query.Count()} has positive order");
-                write();
-                data.Clear();
-                title.Clear();
+                var query = from q in actionData where q.hasThisOrder.Any(x => x) select q;
+
+                write(currentMatch.actionFile);
+
+                actionData.Clear();
+                actionTitle.Clear();
             }
         }
 
-        List<string> title;
-        DistinctList<ActionDataCombinedWithOrderData> data;
+        List<string> actionTitle;
+        List<string> orderTitle;
+        DistinctList<ActionDataCombinedWithOrderData> actionData;
 
         void readAction(string actionFilePath)
         {
             using (var sr = new StreamReader(actionFilePath))
             {
-                title = new List<string>(sr.ReadLine().Split('\t'));
+                actionTitle = new List<string>(sr.ReadLine().Split('\t'));
                 var index = new Index();
-                index.analyzeTitle(title);
+                index.analyzeTitle(actionTitle);
                 while (!sr.EndOfStream)
                 {
                     var dataRow = new ActionDataCombinedWithOrderData(sr.ReadLine(), index);
-                    data.AddDistinct(dataRow);
+                    actionData.AddDistinct(dataRow);
                 }
 
             }
         }
         void readTitle() { }
-        void appendOrderGroupToTitle()
+        void appendOrderGroupToActionTitle()
         {
             foreach (var orderGroup in orderGroupList)
             {
-                title.Add(orderGroup.name);
+                actionTitle.Add(orderGroup.name);
             }
         }
         void combineOrderToAction(string orderFilePath)
         {
             using (var sr = new StreamReader(orderFilePath))
             {
-                title = new List<string>(sr.ReadLine().Split('\t'));
+                orderTitle = new List<string>(sr.ReadLine().Split('\t'));
                 var index = new Index();
-                index.analyzeTitle(title);
-                var orderIndex = title.FindIndex(x => x == "ORDER_CODE" || x == "DRUG_NO");
+                index.analyzeTitle(orderTitle);
+                var orderIndex = orderTitle.FindIndex(x => x == "ORDER_CODE" || x == "DRUG_NO");
                 while (!sr.EndOfStream)
                 {
                     string dataline = sr.ReadLine();
@@ -85,10 +93,10 @@ namespace NHIRD
                         if (orderGroupList[i].hasThisOrder(order))
                         {
                             var comparer = ActionDataCombinedWithOrderData.getComparer(dataline, index);
-                            int indexData = data.BinarySearch(comparer);
+                            int indexData = actionData.BinarySearch(comparer);
                             if (indexData >= 0)
                             {
-                                data[indexData].hasThisOrder[i] = true;
+                                actionData[indexData].hasThisOrder[i] = true;
                                 continue;
                             }
                         }
@@ -96,12 +104,38 @@ namespace NHIRD
                 }
             }
         }
-        void write() { }
+        void write(File actionFile)
+        {
+            string outputFilePath = outputDir + @"\" + actionFile.name.Split('.').First()+".EXTO";
+            using (var sw = new StreamWriter(outputFilePath))
+            {
+                StringBuilder titleToWrite= new StringBuilder();
+                foreach (var s in actionTitle)
+                {
+                    titleToWrite.Append(s + "\t");
+                }
+                foreach (var g in orderGroupList)
+                {
+                    titleToWrite.Append(g.name + "\t");
+                }
+                sw.WriteLine(titleToWrite.ToString().TrimEnd('\t'));
+
+                foreach (var d in actionData)
+                {
+                    StringBuilder currentRow = new StringBuilder(d.dataline);
+                    foreach (var hasOrder in d.hasThisOrder)
+                    {
+                        currentRow.Append("\t" +( hasOrder ? "1" : "0"));
+                    }
+                    sw.WriteLine(currentRow);
+                }
+            }
+        }
 
         class ActionDataCombinedWithOrderData : ActionData
         {
             public static int orderGroupCount;
-            readonly string dataline;
+            public readonly string dataline;
             public bool[] hasThisOrder = new bool[orderGroupCount];
             public ActionDataCombinedWithOrderData(string dataline, Index index)
             {
