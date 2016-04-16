@@ -142,5 +142,12 @@ namespace NHIRD
             var JoinOrderWindow_instance = new JoinOrderWindow(this);
             JoinOrderWindow_instance.Show();
         }
+
+        private void PatientBasedData_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+            var PatientBasedDataWindow_instance = new PatientBasedDataWindow(this);
+            PatientBasedDataWindow_instance.Show();
+        }
     }
 }

@@ -54,6 +54,18 @@ namespace NHIRD
             }
         }
 
+        // -- Property for IsCriteriaChecked
+        public static readonly DependencyProperty IsEXTOProperty =
+        DependencyProperty.Register(nameof(IsEXTO), typeof(bool), typeof(EXT_FolderSelector));
+        public bool IsEXTO
+        {
+            get { return (bool)GetValue(IsEXTOProperty); }
+            set
+            {
+                SetValue(IsEXTOProperty, value);
+            }
+        }
+
         // -- Property for FolderPath
         public static readonly DependencyProperty FolderPathProperty =
         DependencyProperty.Register(nameof(FolderPath), typeof(string), typeof(EXT_FolderSelector));
@@ -101,7 +113,10 @@ namespace NHIRD
                 var paths = new List<string>();
                 foreach (var F in FileType.Split(','))
                 {
-                    paths.AddRange(Directory.EnumerateFiles(FolderPath, "*" + F + "*.EXT", SearchOption.AllDirectories).ToArray());
+                    string subname = "*.EXT";
+                    if (IsEXTO)
+                        subname = "*.EXT*";
+                    paths.AddRange(Directory.EnumerateFiles(FolderPath, "*" + F + subname, SearchOption.AllDirectories).ToArray());
                 }
                 var newfiles = new ObservableCollection<File>();
                 foreach (string str_filepath in paths)

@@ -95,6 +95,9 @@
     <Compile Include="Data Process\HashByIDGenerator.cs" />
     <Compile Include="Data Process\ID data%28base datatype%29.cs" />
     <Compile Include="Data Process\IDHashSplt.cs" />
+    <Compile Include="WPF Forms\PatientBasedData\PatientBasedDataWindow.xaml.cs">
+      <DependentUpon>PatientBasedDataWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF Forms\JoinOrder\JoinActionAndOrder.cs" />
     <Compile Include="WPF Forms\JoinOrder\Matcher.cs" />
     <Compile Include="WPF Forms\JoinOrder\MatchOfActionAndOrder.cs" />
@@ -149,6 +152,10 @@
     <Compile Include="UserControls\%28UserControl%29StringList\StringList.xaml.cs">
       <DependentUpon>StringList.xaml</DependentUpon>
     </Compile>
+    <Page Include="WPF Forms\PatientBasedData\PatientBasedDataWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\%28UserControl%29 OrderGroupEditor\OrderGroupEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
