@@ -28,5 +28,15 @@ namespace NHIRD
             this.Top = parent.Top;
             
         }
+
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            parentWindow.Show();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            //TODO: load global
+        }
     }
 }

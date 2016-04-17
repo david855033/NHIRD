@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NHIRD"
         mc:Ignorable="d"
-        Title="PatientBasedDataWindow" Height="700" Width="1400">
+        Title="PatientBasedDataWindow" Height="700" Width="1400" Unloaded="Window_Unloaded" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="700"/>
@@ -17,6 +17,12 @@
                                       FileList="{Binding actionFiles, Mode=TwoWay}"
                                       IsEXTO="True" 
                                       FileType="CD,DD,GD"/>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Center" Grid.Column="1" Margin="0,20">
+            <local:OrderGroupEditor x:Name="orderGroupEditor"/>
+
+            <local:IOFolderSelector Title="Output" x:Name="OutputFolderSelector"
+                                    FolderPath="{Binding str_outputDir}"/>
         </StackPanel>
     </Grid>
 </Window>

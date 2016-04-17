@@ -28,15 +28,18 @@ namespace NHIRD
         #endregion
 
         List<MatchOfActionAndOrder> matchResult;
-        public void matchActionAndOrderFile()
-        {
-            matchResult = new List<MatchOfActionAndOrder>();
-            matchResult = ActionAndOrderMatcher.doMatch(actionFiles, orderFiles);
-        }
+     
 
         public void joinOrder()
         {
-            System.Windows.MessageBox.Show($"{matchResult.Count(x => x.MatchedOrderFiles.Count > 0)} groups");
+            matchResult = new List<MatchOfActionAndOrder>();
+            matchResult = ActionAndOrderMatcher.doMatch(actionFiles, orderFiles);
+            if (matchResult.Count(x => x.MatchedOrderFiles.Count>0) == 0)
+            {
+                System.Windows.MessageBox.Show($"no matched groups");
+                return;
+            }
+            new JoinActionAndOrder(orderGroupList, matchResult, str_OuputDir).Do();
         }
     }
 }

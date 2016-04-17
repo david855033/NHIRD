@@ -34,6 +34,7 @@ namespace NHIRD
 
             foreach (var currentMatch in matchResult)
             {
+                if (currentMatch.MatchedOrderFiles.Count == 0) continue;
                 readAction(currentMatch.actionFile.path);
                 appendOrderGroupToActionTitle();
                 foreach (var currentOrder in currentMatch.MatchedOrderFiles)
@@ -113,10 +114,6 @@ namespace NHIRD
                 foreach (var s in actionTitle)
                 {
                     titleToWrite.Append(s + "\t");
-                }
-                foreach (var g in orderGroupList)
-                {
-                    titleToWrite.Append(g.name + "\t");
                 }
                 sw.WriteLine(titleToWrite.ToString().TrimEnd('\t'));
 

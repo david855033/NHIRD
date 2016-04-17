@@ -41,7 +41,7 @@ namespace NHIRD
         {
             int index = _orderList.IndexOf(target);
             if (index >= 0 && index < _orderList.Count && !_orderList.Any(x => x == editTo))
-                _orderList[index] = editTo;
+                _orderList[index] = editTo.Trim();
         }
         public bool hasThisOrder(string order)
         {

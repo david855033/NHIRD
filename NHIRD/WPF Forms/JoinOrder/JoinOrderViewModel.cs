@@ -19,7 +19,7 @@ namespace NHIRD
             parentWindow = parent;
             Model_Instance = new JoinOrderModel(this);
             joinOrderCommand = new RelayCommand(joinOrder, (x) => true);
-            matchActionAndOrderFileCommnad = new RelayCommand(matchActionAndOrderFile, (x) => true);
+         
         }
 
         // -- Properties --
@@ -89,11 +89,7 @@ namespace NHIRD
             Model_Instance.joinOrder();
         }
 
-        public ICommand matchActionAndOrderFileCommnad { get; }
-        public void matchActionAndOrderFile(object obj)
-        {
-            Model_Instance.matchActionAndOrderFile();
-        }
+       
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string propertyName = null)
