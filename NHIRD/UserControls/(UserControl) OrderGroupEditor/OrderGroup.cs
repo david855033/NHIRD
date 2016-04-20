@@ -40,13 +40,15 @@ namespace NHIRD
         public void editOrder(string target, string editTo)
         {
             int index = _orderList.IndexOf(target);
-            if (index >= 0 && index < _orderList.Count && !_orderList.Any(x => x == editTo))
+            if (index >= 0 && index < _orderList.Count
+                && editTo.Trim() != ""
+                && !_orderList.Any(x => x == editTo))
                 _orderList[index] = editTo.Trim();
         }
         public bool hasThisOrder(string order)
         {
             int result = _orderList.BinarySearch(order);
-            return  result>= 0;
+            return result >= 0;
         }
     }
 }

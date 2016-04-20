@@ -39,3 +39,4 @@ D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\NHIRD.exe
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\NHIRD.pdb
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\PatientBasedData\PatientBasedDataWindow.g.cs
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\PatientBasedData\PatientBasedDataWindow.baml
+D:\文件\Github\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) diagnosisGroupEditor\diagnosisGroup.g.cs

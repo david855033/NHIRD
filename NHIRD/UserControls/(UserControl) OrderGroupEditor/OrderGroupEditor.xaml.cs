@@ -363,6 +363,7 @@ namespace NHIRD
                   saveFileDialog.FileName.Substring(0, saveFileDialog.FileName.LastIndexOf('\\')));
             }
         }
+
         void renewLists()
         {
             orderGroupNameList = new ObservableCollection<string>();

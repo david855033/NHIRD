@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NHIRD
 {
-    class DiagnosisGroup
+    public class DiagnosisGroup
     {
         private string _name;
         public string name
@@ -42,14 +42,57 @@ namespace NHIRD
         public void editInclude(string target, string editTo)
         {
             int index = _includeList.IndexOf(target);
-            if (index >= 0 && index < _includeList.Count && !_includeList.Any(x => x == editTo))
+            if (index >= 0 && index < _includeList.Count
+                && editTo.Trim() != ""
+                && !_includeList.Any(x => x == editTo))
                 _includeList[index] = editTo;
         }
 
-        public bool hasThisOrder(IEnumerable<string> ICDs)
+        public int getExcludeCount()
         {
-            int result = _includeList.BinarySearch(order);
-            return result >= 0;
+            return _excludeList.Count();
+        }
+        public string[] getExcludeList()
+        {
+            return _excludeList.ToArray();
+        }
+        public void addExclude(string Exclude)
+        {
+            if (Exclude.Trim() == "") return;
+            _excludeList.AddDistinct(Exclude);
+        }
+        public void deleteExclude(string Exclude)
+        {
+            _excludeList.Remove(Exclude);
+        }
+        public void clearExclude()
+        {
+            _excludeList.Clear();
+        }
+        public void editExclude(string target, string editTo)
+        {
+            int index = _excludeList.IndexOf(target);
+            if (index >= 0 && index < _excludeList.Count
+                && editTo.Trim() != ""
+                && !_excludeList.Any(x => x == editTo))
+                _excludeList[index] = editTo;
+        }
+
+        public bool isThisGroupMatched(IEnumerable<string> ICDs)
+        {
+            bool matched=false;
+            foreach (var ICD in ICDs)
+            {
+                if (_includeList.Any(x => x == ICD.Substring(0, x.Length)))
+                {
+                    matched = true;
+                }
+                if (!_excludeList.Any(x => x == ICD.Substring(0, x.Length)))
+                {
+                    return false;
+                }
+            }
+            return matched;
         }
 
     }

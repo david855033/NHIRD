@@ -45,9 +45,9 @@
                         <StackPanel Orientation="Vertical">
                             <TextBox x:Name="excludeNameTextBox" Width="100" Margin="5,0"/>
                             <StackPanel Orientation="Horizontal">
-                                <Button Click="addGroupButton_Click" Margin="0,0" Width="40">Add</Button>
-                                <Button Click="editGroupButton_Click" Margin="0,0" Width="40">Edit</Button>
-                                <Button Click="deleteGroupButton_Click" Margin="0,0" Width="40">Del</Button>
+                                <Button Click="addIncludeButton_Click" Margin="0,0" Width="40">Add</Button>
+                                <Button Click="editIncludeButton_Click" Margin="0,0" Width="40">Edit</Button>
+                                <Button Click="deleteIncludeButton_Click" Margin="0,0" Width="40">Del</Button>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
