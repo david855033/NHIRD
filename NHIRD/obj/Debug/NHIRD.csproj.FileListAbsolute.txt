@@ -1,42 +1,43 @@
-D:\文件\GitHub\NHIRD\NHIRD\bin\Debug\NHIRD.exe.config
-D:\文件\GitHub\NHIRD\NHIRD\bin\Debug\NHIRD.exe
-D:\文件\GitHub\NHIRD\NHIRD\bin\Debug\NHIRD.pdb
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\NHIRD.csprojResolveAssemblyReference.cache
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) OrderGroupEditor\OrderGroupEditor.g.cs
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\JoinOrder\JoinOrderWindow.g.cs
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\GetGD\GetGDWindow.g.cs
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\IDHashSplitter\IDHashSplitter.g.cs
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl)EXT_FolderSelector\EXT_FolderSelector.g.cs
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) FileListControl\MainFIleListControl.g.cs
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) IO Path Selector\IO Path Selector.g.cs
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\MainWindow.g.cs
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\UserControls\(User Control) Birth Year Limit\BirthYearLimit.g.cs
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\ID\WindowID.g.cs
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\GetCD\window_GetCD.g.cs
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\GetOrder\window_GetOrder.g.cs
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl)StringList\StringList.g.cs
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\App.g.cs
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\GeneratedInternalTypeHelper.g.cs
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\NHIRD_MarkupCompile.cache
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\NHIRD_MarkupCompile.lref
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) OrderGroupEditor\OrderGroupEditor.baml
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\JoinOrder\JoinOrderWindow.baml
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\GetGD\GetGDWindow.baml
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\IDHashSplitter\IDHashSplitter.baml
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl)EXT_FolderSelector\EXT_FolderSelector.baml
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) FileListControl\MainFIleListControl.baml
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) IO Path Selector\IO Path Selector.baml
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\MainWindow.baml
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\UserControls\(User Control) Birth Year Limit\BirthYearLimit.baml
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\ID\WindowID.baml
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\GetCD\window_GetCD.baml
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\GetOrder\window_GetOrder.baml
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl)StringList\StringList.baml
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\NHIRD.g.resources
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\NHIRD.Properties.Resources.resources
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\NHIRD.csproj.GenerateResource.Cache
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\NHIRD.exe
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\NHIRD.pdb
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\PatientBasedData\PatientBasedDataWindow.g.cs
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\PatientBasedData\PatientBasedDataWindow.baml
-D:\文件\Github\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) diagnosisGroupEditor\diagnosisGroup.g.cs
+D:\文件\NHIRD\NHIRD\bin\Debug\NHIRD.exe.config
+D:\文件\NHIRD\NHIRD\obj\Debug\NHIRD.csprojResolveAssemblyReference.cache
+D:\文件\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) diagnosisGroupEditor\diagnosisGroup.g.cs
+D:\文件\NHIRD\NHIRD\obj\Debug\WPF Forms\PatientBasedData\PatientBasedDataWindow.g.cs
+D:\文件\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) OrderGroupEditor\OrderGroupEditor.g.cs
+D:\文件\NHIRD\NHIRD\obj\Debug\WPF Forms\JoinOrder\JoinOrderWindow.g.cs
+D:\文件\NHIRD\NHIRD\obj\Debug\WPF Forms\GetGD\GetGDWindow.g.cs
+D:\文件\NHIRD\NHIRD\obj\Debug\WPF Forms\IDHashSplitter\IDHashSplitter.g.cs
+D:\文件\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl)EXT_FolderSelector\EXT_FolderSelector.g.cs
+D:\文件\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) FileListControl\MainFIleListControl.g.cs
+D:\文件\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) IO Path Selector\IO Path Selector.g.cs
+D:\文件\NHIRD\NHIRD\obj\Debug\MainWindow.g.cs
+D:\文件\NHIRD\NHIRD\obj\Debug\UserControls\(User Control) Birth Year Limit\BirthYearLimit.g.cs
+D:\文件\NHIRD\NHIRD\obj\Debug\WPF Forms\ID\WindowID.g.cs
+D:\文件\NHIRD\NHIRD\obj\Debug\WPF Forms\GetCD\window_GetCD.g.cs
+D:\文件\NHIRD\NHIRD\obj\Debug\WPF Forms\GetOrder\window_GetOrder.g.cs
+D:\文件\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl)StringList\StringList.g.cs
+D:\文件\NHIRD\NHIRD\obj\Debug\App.g.cs
+D:\文件\NHIRD\NHIRD\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\文件\NHIRD\NHIRD\obj\Debug\NHIRD_MarkupCompile.cache
+D:\文件\NHIRD\NHIRD\obj\Debug\NHIRD_MarkupCompile.lref
+D:\文件\NHIRD\NHIRD\bin\Debug\NHIRD.exe
+D:\文件\NHIRD\NHIRD\bin\Debug\NHIRD.pdb
+D:\文件\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) diagnosisGroupEditor\diagnosisGroup.baml
+D:\文件\NHIRD\NHIRD\obj\Debug\WPF Forms\PatientBasedData\PatientBasedDataWindow.baml
+D:\文件\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) OrderGroupEditor\OrderGroupEditor.baml
+D:\文件\NHIRD\NHIRD\obj\Debug\WPF Forms\JoinOrder\JoinOrderWindow.baml
+D:\文件\NHIRD\NHIRD\obj\Debug\WPF Forms\GetGD\GetGDWindow.baml
+D:\文件\NHIRD\NHIRD\obj\Debug\WPF Forms\IDHashSplitter\IDHashSplitter.baml
+D:\文件\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl)EXT_FolderSelector\EXT_FolderSelector.baml
+D:\文件\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) FileListControl\MainFIleListControl.baml
+D:\文件\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) IO Path Selector\IO Path Selector.baml
+D:\文件\NHIRD\NHIRD\obj\Debug\MainWindow.baml
+D:\文件\NHIRD\NHIRD\obj\Debug\UserControls\(User Control) Birth Year Limit\BirthYearLimit.baml
+D:\文件\NHIRD\NHIRD\obj\Debug\WPF Forms\ID\WindowID.baml
+D:\文件\NHIRD\NHIRD\obj\Debug\WPF Forms\GetCD\window_GetCD.baml
+D:\文件\NHIRD\NHIRD\obj\Debug\WPF Forms\GetOrder\window_GetOrder.baml
+D:\文件\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl)StringList\StringList.baml
+D:\文件\NHIRD\NHIRD\obj\Debug\NHIRD.g.resources
+D:\文件\NHIRD\NHIRD\obj\Debug\NHIRD.Properties.Resources.resources
+D:\文件\NHIRD\NHIRD\obj\Debug\NHIRD.csproj.GenerateResource.Cache
+D:\文件\NHIRD\NHIRD\obj\Debug\NHIRD.exe
+D:\文件\NHIRD\NHIRD\obj\Debug\NHIRD.pdb

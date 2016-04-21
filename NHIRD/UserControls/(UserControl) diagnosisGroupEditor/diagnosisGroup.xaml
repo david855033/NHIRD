@@ -12,7 +12,8 @@
             <StackPanel Orientation="Horizontal">
                 <StackPanel Width="200">
                     <TextBlock>Diagnosis Group Name</TextBlock>
-                    <ListBox x:Name="GroupSelector" Height="270" ItemsSource="{Binding orderGroupNameList, ElementName=thisControl}" SelectionChanged="ListBox_SelectionChanged"/>
+                    <ListBox x:Name="GroupSelector" Height="270" ItemsSource="{Binding diagnosisGroupNameList, ElementName=thisControl}" 
+                             SelectionChanged="ListBox_SelectionChanged"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <StackPanel Orientation="Vertical">
                             <TextBox x:Name="GroupNameTextBox" Width="100" Margin="5,0"/>
@@ -26,28 +27,30 @@
                 </StackPanel>
                 <StackPanel Width="200">
                     <TextBlock>Include</TextBlock>
-                    <ListBox x:Name="includeSelector" Height="270" ItemsSource="{Binding ordersInSelectedGroup, ElementName=thisControl}" SelectionChanged="orderSelector_SelectionChanged"/>
+                    <ListBox x:Name="includeSelector" Height="270" ItemsSource="{Binding ordersInSelectedGroup, ElementName=thisControl}"
+                             SelectionChanged="includeSelector_SelectionChanged"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <StackPanel Orientation="Vertical">
                             <TextBox x:Name="includeNameTextBox" Width="100" Margin="5,0"/>
                             <StackPanel Orientation="Horizontal">
-                                <Button Click="addGroupButton_Click" Margin="0,0" Width="40">Add</Button>
-                                <Button Click="editGroupButton_Click" Margin="0,0" Width="40">Edit</Button>
-                                <Button Click="deleteGroupButton_Click" Margin="0,0" Width="40">Del</Button>
+                                <Button Margin="0,0" Width="40">Add</Button>
+                                <Button Margin="0,0" Width="40">Edit</Button>
+                                <Button Margin="0,0" Width="40">Del</Button>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Width="200">
                     <TextBlock>Exclude</TextBlock>
-                    <ListBox x:Name="excludeSelector" Height="270" ItemsSource="{Binding ordersInSelectedGroup, ElementName=thisControl}" SelectionChanged="orderSelector_SelectionChanged"/>
+                    <ListBox x:Name="excludeSelector" Height="270" ItemsSource="{Binding ordersInSelectedGroup, ElementName=thisControl}" 
+                             SelectionChanged="excludeSelector_SelectionChanged"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <StackPanel Orientation="Vertical">
                             <TextBox x:Name="excludeNameTextBox" Width="100" Margin="5,0"/>
                             <StackPanel Orientation="Horizontal">
-                                <Button Click="addIncludeButton_Click" Margin="0,0" Width="40">Add</Button>
-                                <Button Click="editIncludeButton_Click" Margin="0,0" Width="40">Edit</Button>
-                                <Button Click="deleteIncludeButton_Click" Margin="0,0" Width="40">Del</Button>
+                                <Button Margin="0,0" Width="40">Add</Button>
+                                <Button Margin="0,0" Width="40">Edit</Button>
+                                <Button Margin="0,0" Width="40">Del</Button>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
@@ -55,8 +58,8 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" Width="600" Height="50" 
                         HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button Click="ImportButton_Click"  Margin="110,0" Height="20" Width="80">Import...</Button>
-                <Button Click="ExportButton_Click"  Margin="110,0" Height="20" Width="80">Export...</Button>
+                <Button Margin="110,0" Height="20" Width="80">Import...</Button>
+                <Button Margin="110,0" Height="20" Width="80">Export...</Button>
             </StackPanel>
         </StackPanel>
     </Grid>

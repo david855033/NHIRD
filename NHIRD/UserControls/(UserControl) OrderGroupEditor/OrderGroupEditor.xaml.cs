@@ -83,6 +83,7 @@ namespace NHIRD
         {
             if (GroupSelector.SelectedIndex >= 0 && orderSelector.SelectedIndex >= 0)
             {
+                renewLists();
             }
         }
         private string getSelectedOrderName()

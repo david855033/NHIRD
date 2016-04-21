@@ -22,7 +22,8 @@
                 </StackPanel>
                 <StackPanel Width="300">
                     <TextBlock> Order code in selected group</TextBlock>
-                    <ListBox x:Name="orderSelector" Height="270" ItemsSource="{Binding ordersInSelectedGroup, ElementName=thisControl}" SelectionChanged="orderSelector_SelectionChanged"/>
+                    <ListBox x:Name="orderSelector" Height="270" ItemsSource="{Binding ordersInSelectedGroup, ElementName=thisControl}"
+                             SelectionChanged="orderSelector_SelectionChanged"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBox x:Name="OrderNameTextBox"  Width="100" Margin="5,0"/>
                         <Button Click="addOrderButton_Click" Margin="3,0" Width="40">Add</Button>
