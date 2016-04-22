@@ -29,7 +29,7 @@
                         <Button Click="addOrderButton_Click" Margin="3,0" Width="40">Add</Button>
                         <Button Click="editOrderButton_Click" Margin="3,0" Width="40">Edit</Button>
                         <Button  Click="delOrderButton_Click"  Margin="3,0" Width="40">Del</Button>
-                        <Button  Click="loadOrderButtone_Click" Margin="3,0" Width="40">Load..</Button>
+                        <Button  Click="loadOrderButton_Click" Margin="3,0" Width="40">Load..</Button>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

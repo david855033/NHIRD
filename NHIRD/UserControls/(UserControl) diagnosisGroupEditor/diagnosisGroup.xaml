@@ -33,9 +33,10 @@
                         <StackPanel Orientation="Vertical">
                             <TextBox x:Name="includeNameTextBox" Width="100" Margin="5,0"/>
                             <StackPanel Orientation="Horizontal">
-                                <Button Margin="0,0" Width="40">Add</Button>
-                                <Button Margin="0,0" Width="40">Edit</Button>
-                                <Button Margin="0,0" Width="40">Del</Button>
+                                <Button Margin="0,0" Width="40" Click="addIncludeButton_Click">Add</Button>
+                                <Button Margin="0,0" Width="40" Click="editIncludeButton_Click">Edit</Button>
+                                <Button Margin="0,0" Width="40" Click="delIncludeButton_Click">Del</Button>
+                                <Button Margin="0,0" Width="40" Click="loadIncludeButton_Click">Load...</Button>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
@@ -48,9 +49,10 @@
                         <StackPanel Orientation="Vertical">
                             <TextBox x:Name="excludeNameTextBox" Width="100" Margin="5,0"/>
                             <StackPanel Orientation="Horizontal">
-                                <Button Margin="0,0" Width="40">Add</Button>
-                                <Button Margin="0,0" Width="40">Edit</Button>
-                                <Button Margin="0,0" Width="40">Del</Button>
+                                <Button Margin="0,0" Width="40" Click="addExcludeButton_Click">Add</Button>
+                                <Button Margin="0,0" Width="40" Click="editExcludeButton_Click">Edit</Button>
+                                <Button Margin="0,0" Width="40" Click="delExcludeButton_Click">Del</Button>
+                                <Button Margin="0,0" Width="40" Click="loadExcludeButton_Click">Load...</Button>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>

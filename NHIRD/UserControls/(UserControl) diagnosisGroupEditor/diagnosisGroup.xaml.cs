@@ -184,7 +184,298 @@ namespace NHIRD
             }
             return false;
         }
-        
+
+
+        private void addIncludeButton_Click(object sender, RoutedEventArgs e)
+        {
+            int index = -1;
+            bool addSuccess = false;
+            if (GroupSelector.SelectedItem != null)
+            {
+                index = GroupSelector.SelectedIndex;
+            }
+            if (GroupSelector.SelectedIndex >= 0)
+            {
+                addSuccess = addInclude(includeNameTextBox.Text);
+            }
+            if (index >= 0)
+            {
+                GroupSelector.SelectedIndex = index;
+                GroupNameTextBox.Text = "";
+            }
+            if (addSuccess)
+            {
+                includeNameTextBox.Focus();
+                includeNameTextBox.Text = "";
+            }
+        }
+        private bool addInclude(string inputinclude)
+        {
+            bool alreadyHasThisinclude = diagnosisGroupList[GroupSelector.SelectedIndex].getIncludeList().Any(x => x == inputinclude);
+            if (!alreadyHasThisinclude && inputinclude != "")
+            {
+                diagnosisGroupList[GroupSelector.SelectedIndex].addInclude(inputinclude);
+                renewLists();
+                includeSelector.SelectedIndex = includeSelector.Items.Count - 1;
+                return true;
+            }
+            return false;
+        }
+
+        private void editIncludeButton_Click(object sender, RoutedEventArgs e)
+        {
+            int index = -1;
+            bool successEdit = false;
+            if (GroupSelector.SelectedItem != null)
+            {
+                index = GroupSelector.SelectedIndex;
+            }
+            if (GroupSelector.SelectedIndex >= 0)
+            {
+                successEdit = editInclude(includeNameTextBox.Text);
+            }
+            if (index >= 0)
+            {
+                GroupSelector.SelectedIndex = index;
+            }
+            if (successEdit)
+                includeNameTextBox.Text = "";
+        }
+        private bool editInclude(string inputinclude)
+        {
+            bool alreadyHasThisinclude = diagnosisGroupList[GroupSelector.SelectedIndex].getIncludeList().Any(x => x == getSelectedIncludeName());
+            if (alreadyHasThisinclude && includeNameTextBox.Text != "")
+            {
+                diagnosisGroupList[GroupSelector.SelectedIndex].editInclude(getSelectedIncludeName(), includeNameTextBox.Text);
+                renewLists();
+                return true;
+            }
+            return false;
+        }
+
+        private void delIncludeButton_Click(object sender, RoutedEventArgs e)
+        {
+            int index = -1;
+            int indexinclude = includeSelector.SelectedIndex;
+            if (GroupSelector.SelectedItem != null)
+            {
+                index = GroupSelector.SelectedIndex;
+            }
+            if (GroupSelector.SelectedIndex >= 0)
+            {
+                if (delInclude(getSelectedIncludeName()))
+                    GroupSelector.SelectedIndex = -1;
+                if (indexinclude > includeSelector.Items.Count - 1)
+                    indexinclude--;
+                if (includeSelector.Items.Count > 0)
+                    includeSelector.SelectedIndex = indexinclude;
+            }
+            if (index >= 0)
+            {
+                GroupSelector.SelectedIndex = index;
+            }
+
+        }
+        private bool delInclude(string inputinclude)
+        {
+
+            bool alreadyHasThisinclude = diagnosisGroupList[GroupSelector.SelectedIndex].getIncludeList().Any(x => x == inputinclude);
+            if (alreadyHasThisinclude)
+            {
+                diagnosisGroupList[GroupSelector.SelectedIndex].deleteInclude(inputinclude);
+                renewLists();
+                return true;
+            }
+            return false;
+        }
+
+        private void loadIncludeButton_Click(object sender, RoutedEventArgs e)
+        {
+            int index = -1;
+            if (GroupSelector.SelectedItem != null)
+            {
+                index = GroupSelector.SelectedIndex;
+            }
+            loadInclude();
+            if (index >= 0)
+            {
+                GroupSelector.SelectedIndex = index;
+            }
+        }
+        private bool loadInclude()
+        {
+
+            var dialog = new System.Windows.Forms.OpenFileDialog();
+            dialog.InitialDirectory = GlobalSetting.get("Diaganosis_LoadIncludeButton");
+            dialog.Filter = "txt files (*.txt)|*.txt|All files(*.*)|*.*";
+            dialog.FilterIndex = 2;
+            dialog.RestoreDirectory = true;
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                using (var sr = new System.IO.StreamReader(dialog.FileName, Encoding.Default))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        var stringtoAdd = sr.ReadLine().Replace("_", " ");
+                        if (stringtoAdd.Length > 0 && stringtoAdd.Length <= 12)
+                        {
+                            diagnosisGroupList[GroupSelector.SelectedIndex].addInclude(stringtoAdd);
+                        }
+                    }
+                    GlobalSetting.set("Diaganosis_LoadIncludeButton",
+                                         dialog.FileName.Substring(0, dialog.FileName.LastIndexOf('\\')));
+                }
+                renewLists();
+                return true;
+            }
+            return false;
+        }
+
+
+        private void addExcludeButton_Click(object sender, RoutedEventArgs e)
+        {
+            int index = -1;
+            bool addSuccess = false;
+            if (GroupSelector.SelectedItem != null)
+            {
+                index = GroupSelector.SelectedIndex;
+            }
+            if (GroupSelector.SelectedIndex >= 0)
+            {
+                addSuccess = addExclude(excludeNameTextBox.Text);
+            }
+            if (index >= 0)
+            {
+                GroupSelector.SelectedIndex = index;
+                GroupNameTextBox.Text = "";
+            }
+            if (addSuccess)
+            {
+                excludeNameTextBox.Focus();
+                excludeNameTextBox.Text = "";
+            }
+        }
+        private bool addExclude(string inputexclude)
+        {
+            bool alreadyHasThisexclude = diagnosisGroupList[GroupSelector.SelectedIndex].getExcludeList().Any(x => x == inputexclude);
+            if (!alreadyHasThisexclude && inputexclude != "")
+            {
+                diagnosisGroupList[GroupSelector.SelectedIndex].addExclude(inputexclude);
+                renewLists();
+                excludeSelector.SelectedIndex = excludeSelector.Items.Count - 1;
+                return true;
+            }
+            return false;
+        }
+
+        private void editExcludeButton_Click(object sender, RoutedEventArgs e)
+        {
+            int index = -1;
+            bool successEdit = false;
+            if (GroupSelector.SelectedItem != null)
+            {
+                index = GroupSelector.SelectedIndex;
+            }
+            if (GroupSelector.SelectedIndex >= 0)
+            {
+                successEdit = editExclude(excludeNameTextBox.Text);
+            }
+            if (index >= 0)
+            {
+                GroupSelector.SelectedIndex = index;
+            }
+            if (successEdit)
+                excludeNameTextBox.Text = "";
+        }
+        private bool editExclude(string inputexclude)
+        {
+            bool alreadyHasThisexclude = diagnosisGroupList[GroupSelector.SelectedIndex].getExcludeList().Any(x => x == getSelectedExcludeName());
+            if (alreadyHasThisexclude && excludeNameTextBox.Text != "")
+            {
+                diagnosisGroupList[GroupSelector.SelectedIndex].editExclude(getSelectedExcludeName(), excludeNameTextBox.Text);
+                renewLists();
+                return true;
+            }
+            return false;
+        }
+
+        private void delExcludeButton_Click(object sender, RoutedEventArgs e)
+        {
+            int index = -1;
+            int indexexclude = excludeSelector.SelectedIndex;
+            if (GroupSelector.SelectedItem != null)
+            {
+                index = GroupSelector.SelectedIndex;
+            }
+            if (GroupSelector.SelectedIndex >= 0)
+            {
+                if (delExclude(getSelectedExcludeName()))
+                    GroupSelector.SelectedIndex = -1;
+                if (indexexclude > excludeSelector.Items.Count - 1)
+                    indexexclude--;
+                if (excludeSelector.Items.Count > 0)
+                    excludeSelector.SelectedIndex = indexexclude;
+            }
+            if (index >= 0)
+            {
+                GroupSelector.SelectedIndex = index;
+            }
+
+        }
+        private bool delExclude(string inputexclude)
+        {
+
+            bool alreadyHasThisexclude = diagnosisGroupList[GroupSelector.SelectedIndex].getExcludeList().Any(x => x == inputexclude);
+            if (alreadyHasThisexclude)
+            {
+                diagnosisGroupList[GroupSelector.SelectedIndex].deleteExclude(inputexclude);
+                renewLists();
+                return true;
+            }
+            return false;
+        }
+
+        private void loadExcludeButton_Click(object sender, RoutedEventArgs e)
+        {
+            int index = -1;
+            if (GroupSelector.SelectedItem != null)
+            {
+                index = GroupSelector.SelectedIndex;
+            }
+            loadExclude();
+            if (index >= 0)
+            {
+                GroupSelector.SelectedIndex = index;
+            }
+        }
+        private bool loadExclude()
+        {
+
+            var dialog = new System.Windows.Forms.OpenFileDialog();
+            dialog.InitialDirectory = GlobalSetting.get("Diaganosis_LoadExcludeButton");
+            dialog.Filter = "txt files (*.txt)|*.txt|All files(*.*)|*.*";
+            dialog.FilterIndex = 2;
+            dialog.RestoreDirectory = true;
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                using (var sr = new System.IO.StreamReader(dialog.FileName, Encoding.Default))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        var stringtoAdd = sr.ReadLine().Replace("_", " ");
+                        if (stringtoAdd.Length > 0 && stringtoAdd.Length <= 12)
+                        {
+                            diagnosisGroupList[GroupSelector.SelectedIndex].addExclude(stringtoAdd);
+                        }
+                    }
+                    GlobalSetting.set("Diaganosis_LoadExcludeButton",
+                                         dialog.FileName.Substring(0, dialog.FileName.LastIndexOf('\\')));
+                }
+                renewLists();
+                return true;
+            }
+            return false;
+        }
 
         void renewLists()
         {

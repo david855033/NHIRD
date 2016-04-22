@@ -261,7 +261,7 @@ namespace NHIRD
             return false;
         }
 
-        private void loadOrderButtone_Click(object sender, RoutedEventArgs e)
+        private void loadOrderButton_Click(object sender, RoutedEventArgs e)
         {
             int index = -1;
             if (GroupSelector.SelectedItem != null)
