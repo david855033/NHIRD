@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,7 +71,7 @@ namespace NHIRD
             InitializeComponent();
         }
 
-        
+
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -207,6 +208,7 @@ namespace NHIRD
             {
                 includeNameTextBox.Focus();
                 includeNameTextBox.Text = "";
+                excludeNameTextBox.Text = "";
             }
         }
         private bool addInclude(string inputinclude)
@@ -239,7 +241,10 @@ namespace NHIRD
                 GroupSelector.SelectedIndex = index;
             }
             if (successEdit)
+            {
                 includeNameTextBox.Text = "";
+                excludeNameTextBox.Text = "";
+            }
         }
         private bool editInclude(string inputinclude)
         {
@@ -317,7 +322,7 @@ namespace NHIRD
                     while (!sr.EndOfStream)
                     {
                         var stringtoAdd = sr.ReadLine().Replace("_", " ");
-                        if (stringtoAdd.Length > 0 && stringtoAdd.Length <= 12)
+                        if (GroupSelector.SelectedIndex >= 0 && stringtoAdd.Length > 0 && stringtoAdd.Length <= 12)
                         {
                             diagnosisGroupList[GroupSelector.SelectedIndex].addInclude(stringtoAdd);
                         }
@@ -352,6 +357,7 @@ namespace NHIRD
             if (addSuccess)
             {
                 excludeNameTextBox.Focus();
+                includeNameTextBox.Text = "";
                 excludeNameTextBox.Text = "";
             }
         }
@@ -385,7 +391,10 @@ namespace NHIRD
                 GroupSelector.SelectedIndex = index;
             }
             if (successEdit)
+            {
+                includeNameTextBox.Text = "";
                 excludeNameTextBox.Text = "";
+            }
         }
         private bool editExclude(string inputexclude)
         {
@@ -463,7 +472,7 @@ namespace NHIRD
                     while (!sr.EndOfStream)
                     {
                         var stringtoAdd = sr.ReadLine().Replace("_", " ");
-                        if (stringtoAdd.Length > 0 && stringtoAdd.Length <= 12)
+                        if (GroupSelector.SelectedIndex >= 0 && stringtoAdd.Length > 0 && stringtoAdd.Length <= 12)
                         {
                             diagnosisGroupList[GroupSelector.SelectedIndex].addExclude(stringtoAdd);
                         }
@@ -475,6 +484,83 @@ namespace NHIRD
                 return true;
             }
             return false;
+        }
+
+        private void ImportButton_Click(object sender, RoutedEventArgs e)
+        {
+            var newDiagnosisGroupList = new List<DiagnosisGroup>();
+            var dialog = new System.Windows.Forms.OpenFileDialog();
+            dialog.InitialDirectory = GlobalSetting.get("DiagnosisGroup_ImportButton");
+            dialog.Filter = "txt files (*.txt)|*.txt|All files(*.*)|*.*";
+            dialog.FilterIndex = 2;
+            dialog.RestoreDirectory = true;
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                using (var sr = new System.IO.StreamReader(dialog.FileName, Encoding.Default))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        var splitline = sr.ReadLine().Split('\t');
+                        if (splitline.Length > 1)
+                        {
+                            var groupToAdd = new DiagnosisGroup() { name = splitline[0] };
+                            for (int i = 1; i < splitline.Length; i++)
+                            {
+                                if (splitline[i].Length > 0)
+                                {
+                                    if (splitline[i][0] == '!')
+                                    {
+                                        groupToAdd.addExclude(splitline[i].TrimStart('!'));
+                                    }
+                                    else
+                                    {
+                                        groupToAdd.addInclude(splitline[i]);
+                                    }
+                                }
+                            }
+                            newDiagnosisGroupList.Add(groupToAdd);
+                        }
+                    }
+                    GlobalSetting.set("DiagnosisGroup_ImportButton",
+                       dialog.FileName.Substring(0, dialog.FileName.LastIndexOf('\\')));
+                }
+                if (newDiagnosisGroupList.Count > 0)
+                {
+                    diagnosisGroupList = newDiagnosisGroupList;
+                    renewLists();
+                }
+            }
+        }
+
+        private void ExportButton_Click(object sender, RoutedEventArgs e)
+        {
+            var saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            saveFileDialog.Filter = "Text File(*.txt)|*.txt";
+            saveFileDialog.InitialDirectory = GlobalSetting.get("DiagnosisGroup_ExportOrderButton");
+            saveFileDialog.Title = "Export Order Setting";
+            if (diagnosisGroupList.Count > 0 &&
+                saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                using (var sw = new StreamWriter(saveFileDialog.FileName))
+                {
+                    foreach (var currentDiagnosisGroup in diagnosisGroupList)
+                    {
+                        sw.Write(currentDiagnosisGroup.name);
+                        foreach (var order in currentDiagnosisGroup.getIncludeList())
+                        {
+                            sw.Write('\t' + order);
+                        }
+                        foreach (var order in currentDiagnosisGroup.getExcludeList())
+                        {
+                            sw.Write('\t' + "!" + order);
+                        }
+                        sw.WriteLine();
+
+                    }
+                }
+                GlobalSetting.set("DiagnosisGroup_ExportOrderButton",
+                  saveFileDialog.FileName.Substring(0, saveFileDialog.FileName.LastIndexOf('\\')));
+            }
         }
 
         void renewLists()
@@ -489,8 +575,8 @@ namespace NHIRD
             if (GroupSelector.SelectedItem != null)
             {
                 int index = GroupSelector.SelectedIndex;
-                includesInSelectedGroup  = new ObservableCollection<string>(diagnosisGroupList[index].getIncludeList());
-                excludesInSelectedGroup  = new ObservableCollection<string>(diagnosisGroupList[index].getExcludeList());
+                includesInSelectedGroup = new ObservableCollection<string>(diagnosisGroupList[index].getIncludeList());
+                excludesInSelectedGroup = new ObservableCollection<string>(diagnosisGroupList[index].getExcludeList());
             }
             if (includeSelector.SelectedItem == null)
             {
@@ -511,8 +597,6 @@ namespace NHIRD
             OnPropertyChanged();
         }
 
-
-
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string propertyName = null)
         {
@@ -522,6 +606,6 @@ namespace NHIRD
             }
         }
 
-        
+
     }
 }
