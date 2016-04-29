@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace NHIRD
 {
-    internal class JoinOrderViewModel : INotifyPropertyChanged
+    internal class JoinOrderViewModel : BasedNotifyPropertyChanged
     {
         //initialiazation
         public readonly JoinOrderModel Model_Instance;
@@ -89,15 +89,5 @@ namespace NHIRD
             Model_Instance.joinOrder();
         }
 
-       
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(string propertyName = null)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
     }
 }

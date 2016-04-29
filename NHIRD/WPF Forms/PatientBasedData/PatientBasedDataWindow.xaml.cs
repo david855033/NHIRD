@@ -20,13 +20,16 @@ namespace NHIRD
     public partial class PatientBasedDataWindow : Window
     {
         public MainWindow parentWindow;
+        PatientBasedDataViewModal ViewModel_Instance;
         public PatientBasedDataWindow(MainWindow parent)
         {
             InitializeComponent();
             parentWindow = parent;
             this.Left = parent.Left + parent.Width;
             this.Top = parent.Top;
-            
+            ViewModel_Instance = new PatientBasedDataViewModal(this);
+            this.DataContext = ViewModel_Instance;
+
         }
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
@@ -36,7 +39,15 @@ namespace NHIRD
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //TODO: load global
+            ActionFolderSelector.FolderPath =
+               GlobalSetting.get("PatientBasedData_InputDir");
+            OutputFolderSelector.FolderPath =
+                GlobalSetting.get("PatientBasedData_OutputDir");
+        }
+
+        private void Do_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel_Instance.outputDir = "Now";
         }
     }
 }

@@ -92,13 +92,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Data Process\BasedNotifyPropertyChanged.cs" />
     <Compile Include="Data Process\HashByIDGenerator.cs" />
     <Compile Include="Data Process\ID data%28base datatype%29.cs" />
     <Compile Include="Data Process\IDHashSplt.cs" />
+    <Compile Include="PatientBaseData Data Transfer Class\PatientBasedData.cs" />
     <Compile Include="UserControls\%28UserControl%29 diagnosisGroupEditor\diagnosisGroup.xaml.cs">
       <DependentUpon>diagnosisGroup.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\%28UserControl%29 diagnosisGroupEditor\DiagnosisGroup.cs" />
+    <Compile Include="WPF Forms\PatientBasedData\PatientBasedDataGenerator.cs" />
     <Compile Include="WPF Forms\PatientBasedData\PatientBasedDataModel.cs" />
     <Compile Include="WPF Forms\PatientBasedData\PatientBasedDataViewModal.cs" />
     <Compile Include="WPF Forms\PatientBasedData\PatientBasedDataWindow.xaml.cs">
