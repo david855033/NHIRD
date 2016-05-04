@@ -13,7 +13,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel HorizontalAlignment="Center" Grid.Column="0" Margin="0,20">
             <local:EXT_FolderSelector Title="Action file Folder" x:Name="ActionFolderSelector"
-                                      FolderPath="{Binding InputDir, Mode=TwoWay}"
+                                      FolderPath="{Binding inputDir, Mode=TwoWay}"
                                       FileList="{Binding inputFiles, Mode=TwoWay}"
                                       IsEXTO="True" 
                                       FileType="CD,DD,GD"/>
@@ -24,7 +24,7 @@
 
             <local:IOFolderSelector Title="Output" x:Name="OutputFolderSelector"
                                     FolderPath="{Binding outputDir}"/>
-            <Button Click="Do_Click" Command="{Binding generatePatientBasedDataCommand}"> Generate Patient Based Data </Button>
+            <Button Command="{Binding generatePatientBasedDataCommand}"> Generate Patient Based Data </Button>
         </StackPanel>
     </Grid>
 </Window>

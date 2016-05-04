@@ -106,6 +106,7 @@ namespace NHIRD
 
         public string FileType { get; set; }
 
+
         void renewFileList()
         {
             try

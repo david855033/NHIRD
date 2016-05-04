@@ -14,8 +14,7 @@ namespace NHIRD
         readonly List<DiagnosisGroup> diagnosisGroupList;
         readonly string outputFolder;
 
-        List<PatientBasedData> PatientList = new List<PatientBasedData>();
-        
+        DistinctList<PatientBasedData> PatientList = new DistinctList<PatientBasedData>();
 
         public PatientBasedDataGenerator(IEnumerable<File> inputFile, IEnumerable<OrderGroup> orderGroupList, IEnumerable<DiagnosisGroup> diagnosisGroupList, string outputFolder)
         {
@@ -27,35 +26,59 @@ namespace NHIRD
 
         public void Do()
         {
-            System.Windows.MessageBox.Show($"input file count = {inputFile.Count}, group count = {orderGroupList.Count}, dx count = {diagnosisGroupList.Count}, output folder = {outputFolder}");
-            
-        }
+            var groupList = (from q in inputFile where q.FileType == "CD" || q.FileType == "DD" select q.@group).Distinct();
+            var hashGroupList = (from q in inputFile where q.FileType == "CD" || q.FileType == "DD" select q.hashGroup).Distinct();
 
-        void analyzeCDfiles()
+            System.Windows.MessageBox.Show($"input file count = {inputFile.Count}, group count = {orderGroupList.Count}, dx count = {diagnosisGroupList.Count}, output folder = {outputFolder}, groupList ={groupList.Count()}, hashGroupList = {hashGroupList.Count()}");
+            foreach (var Rgroup in groupList)
+            {
+                foreach (var Hgroup in hashGroupList)
+                {
+                    analyzeCDfilesInOneGroup(Rgroup, Hgroup);
+                    writeFile(Rgroup, Hgroup);
+                }
+            }
+
+        }
+        void analyzeCDfilesInOneGroup(string Rgroup, string Hgroup)
         {
-            var CDFileQuery = from q in inputFile where q.FileType == "CD" select q;
-            foreach(var CDFile in CDFileQuery)
+            var CDFileQuery = from q in inputFile
+                              where q.FileType == "CD"
+                                && q.@group == Rgroup
+                                && q.hashGroup == Hgroup
+                              select q;
+            foreach (var CDFile in CDFileQuery)
             {
                 using (var sr = new StreamReader(CDFile.path, Encoding.Default))
                 {
                     string[] title = sr.ReadLine().Split('\t');
+                    int indexID = Array.IndexOf(title, "ID");
+                    int indexBirthday = Array.FindIndex(title, x => x.IndexOf("BIRTHDAY") >= 0);
+
                     while (!sr.EndOfStream)
                     {
-                        string line = sr.ReadLine();
+                        string[] splitline = sr.ReadLine().Split('\t');
+                        string ID = splitline[indexID];
+                        string Birthday = splitline[indexBirthday];
+                        var NewPatient = new PatientBasedData() { ID = ID, Birthday = Birthday };
+                        int index = PatientList.BinarySearch(NewPatient);
+                        if (index < 0)
+                        {
+                            index = ~index;
+                            PatientList.Insert(index, NewPatient);
+                        }
+                        PatientList[index].CDcount++;
                     }
                 }
             }
         }
-    }
 
-    class DetailOfDiagnosisGroup
-    {
-        public DateTime firstDate;
-        public double firstAge;
-        public int CDCount, DDCount;
-        public string toString()
+        void writeFile(string Rgroup, string Hgroup)
         {
-            return "TODO";
+            string PostFix = (Rgroup == "NA" ? ("_" + Rgroup) : "") + (Hgroup == "NA" ? ("_" + Hgroup) : "");
+            string fileName = outputFolder + @"\" + "Patient Based Data" + PostFix + ".PBD";
         }
     }
+
+
 }

@@ -45,9 +45,6 @@ namespace NHIRD
                 GlobalSetting.get("PatientBasedData_OutputDir");
         }
 
-        private void Do_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel_Instance.outputDir = "Now";
-        }
+      
     }
 }
