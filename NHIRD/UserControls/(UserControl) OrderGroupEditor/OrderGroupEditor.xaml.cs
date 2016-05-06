@@ -161,7 +161,7 @@ namespace NHIRD
         private void addOrderButton_Click(object sender, RoutedEventArgs e)
         {
             int index = -1;
-            bool addSuccess=false;
+            bool addSuccess = false;
             if (GroupSelector.SelectedItem != null)
             {
                 index = GroupSelector.SelectedIndex;
@@ -204,7 +204,7 @@ namespace NHIRD
             }
             if (GroupSelector.SelectedIndex >= 0)
             {
-                successEdit=editOrder(OrderNameTextBox.Text);
+                successEdit = editOrder(OrderNameTextBox.Text);
             }
             if (index >= 0)
             {
@@ -327,7 +327,7 @@ namespace NHIRD
                             newOrderGroupList.Add(groupToAdd);
                         }
                     }
-                    GlobalSetting.set("JoinOrder_ImportButton", 
+                    GlobalSetting.set("JoinOrder_ImportButton",
                        dialog.FileName.Substring(0, dialog.FileName.LastIndexOf('\\')));
                 }
                 if (newOrderGroupList.Count > 0)
@@ -347,7 +347,7 @@ namespace NHIRD
             if (orderGroupList.Count > 0 &&
                 saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                using (var sw = new StreamWriter(saveFileDialog.FileName))
+                using (var sw = new StreamWriter(saveFileDialog.FileName, false, Encoding.Default))
                 {
                     foreach (var currentOrderGroup in orderGroupList)
                     {
@@ -360,43 +360,43 @@ namespace NHIRD
 
                     }
                 }
-                GlobalSetting.set("JoinOrder_ExportOrderButton",
-                  saveFileDialog.FileName.Substring(0, saveFileDialog.FileName.LastIndexOf('\\')));
-            }
+            GlobalSetting.set("JoinOrder_ExportOrderButton",
+              saveFileDialog.FileName.Substring(0, saveFileDialog.FileName.LastIndexOf('\\')));
         }
-
-        void renewLists()
-        {
-            orderGroupNameList = new ObservableCollection<string>();
-            ordersInSelectedGroup = new ObservableCollection<string>();
-            foreach (var orderGroup in orderGroupList)
-            {
-                orderGroupNameList.Add(orderGroup.name + $" [{orderGroup.getOrderCount()}]");
-            }
-            if (GroupSelector.SelectedItem != null)
-            {
-                int index = GroupSelector.SelectedIndex;
-                ordersInSelectedGroup = new ObservableCollection<string>(orderGroupList[index].getOrderList());
-            }
-            if (orderSelector.SelectedItem == null)
-            {
-                OrderNameTextBox.Text = "";
-            }
-            else
-            {
-                OrderNameTextBox.Text = orderSelector.SelectedItem.ToString();
-            }
-            OnPropertyChanged();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(string propertyName = null)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
     }
+
+    void renewLists()
+    {
+        orderGroupNameList = new ObservableCollection<string>();
+        ordersInSelectedGroup = new ObservableCollection<string>();
+        foreach (var orderGroup in orderGroupList)
+        {
+            orderGroupNameList.Add(orderGroup.name + $" [{orderGroup.getOrderCount()}]");
+        }
+        if (GroupSelector.SelectedItem != null)
+        {
+            int index = GroupSelector.SelectedIndex;
+            ordersInSelectedGroup = new ObservableCollection<string>(orderGroupList[index].getOrderList());
+        }
+        if (orderSelector.SelectedItem == null)
+        {
+            OrderNameTextBox.Text = "";
+        }
+        else
+        {
+            OrderNameTextBox.Text = orderSelector.SelectedItem.ToString();
+        }
+        OnPropertyChanged();
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+    public void OnPropertyChanged(string propertyName = null)
+    {
+        if (PropertyChanged != null)
+        {
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+}
 }

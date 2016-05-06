@@ -19,7 +19,7 @@ namespace NHIRD
             this.outputDir = outputDir;
             this.orderGroupList = orderGroupList;
             ActionDataCombinedWithOrderData.orderGroupCount = orderGroupList.Count;
-           
+
             //檢查目錄是否存
             if (!Directory.Exists(outputDir))
                 Directory.CreateDirectory(outputDir);
@@ -29,7 +29,7 @@ namespace NHIRD
         {
             actionTitle = new List<string>();
             actionData = new DistinctList<ActionDataCombinedWithOrderData>();
-            
+
 
 
             foreach (var currentMatch in matchResult)
@@ -107,13 +107,13 @@ namespace NHIRD
         }
         void write(File actionFile)
         {
-            string outputFilePath = outputDir + @"\" + actionFile.name.Split('.').First()+".EXTO";
-            using (var sw = new StreamWriter(outputFilePath))
+            string outputFilePath = outputDir + @"\" + actionFile.name.Split('.').First() + ".EXTO";
+            using (var sw = new StreamWriter(outputFilePath, false, Encoding.Default))
             {
-                StringBuilder titleToWrite= new StringBuilder();
+                StringBuilder titleToWrite = new StringBuilder();
                 foreach (var s in actionTitle)
                 {
-                    titleToWrite.Append(s + "\t");
+                    titleToWrite.Append("[group]" + s + "\t");
                 }
                 sw.WriteLine(titleToWrite.ToString().TrimEnd('\t'));
 
@@ -122,7 +122,7 @@ namespace NHIRD
                     StringBuilder currentRow = new StringBuilder(d.dataline);
                     foreach (var hasOrder in d.hasThisOrder)
                     {
-                        currentRow.Append("\t" +( hasOrder ? "1" : "0"));
+                        currentRow.Append("\t" + (hasOrder ? "1" : "0"));
                     }
                     sw.WriteLine(currentRow);
                 }

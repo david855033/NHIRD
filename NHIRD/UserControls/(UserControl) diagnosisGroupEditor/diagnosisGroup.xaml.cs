@@ -541,7 +541,7 @@ namespace NHIRD
             if (diagnosisGroupList.Count > 0 &&
                 saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                using (var sw = new StreamWriter(saveFileDialog.FileName))
+                using (var sw = new StreamWriter(saveFileDialog.FileName, false, Encoding.Default))
                 {
                     foreach (var currentDiagnosisGroup in diagnosisGroupList)
                     {

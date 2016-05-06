@@ -13,8 +13,9 @@ namespace NHIRD
         readonly List<OrderGroup> orderGroupList;
         readonly List<DiagnosisGroup> diagnosisGroupList;
         readonly string outputFolder;
+        StreamWriter swAllCombined;
 
-        DistinctList<PatientBasedData> PatientList = new DistinctList<PatientBasedData>();
+        DistinctList<PatientBasedData> PatientList;
 
         public PatientBasedDataGenerator(IEnumerable<File> inputFile, IEnumerable<OrderGroup> orderGroupList, IEnumerable<DiagnosisGroup> diagnosisGroupList, string outputFolder)
         {
@@ -30,15 +31,21 @@ namespace NHIRD
             var hashGroupList = (from q in inputFile where q.FileType == "CD" || q.FileType == "DD" select q.hashGroup).Distinct();
 
             System.Windows.MessageBox.Show($"input file count = {inputFile.Count}, group count = {orderGroupList.Count}, dx count = {diagnosisGroupList.Count}, output folder = {outputFolder}, groupList ={groupList.Count()}, hashGroupList = {hashGroupList.Count()}");
-            foreach (var Rgroup in groupList)
+
+            using (swAllCombined = new StreamWriter(outputFolder + @"\" + "Patient Based Data _All.PBD", false, Encoding.Default))
             {
-                foreach (var Hgroup in hashGroupList)
+                swAllCombined.WriteLine(makeTitle());
+                foreach (var Rgroup in groupList)
                 {
-                    analyzeCDfilesInOneGroup(Rgroup, Hgroup);
-                    writeFile(Rgroup, Hgroup);
+                    foreach (var Hgroup in hashGroupList)
+                    {
+                        PatientList = new DistinctList<PatientBasedData>();
+                        analyzeCDfilesInOneGroup(Rgroup, Hgroup);
+                        writeFile(Rgroup, Hgroup);
+                        PatientList.Clear();
+                    }
                 }
             }
-
         }
         void analyzeCDfilesInOneGroup(string Rgroup, string Hgroup)
         {
@@ -54,29 +61,70 @@ namespace NHIRD
                     string[] title = sr.ReadLine().Split('\t');
                     int indexID = Array.IndexOf(title, "ID");
                     int indexBirthday = Array.FindIndex(title, x => x.IndexOf("BIRTHDAY") >= 0);
-
+                    int indexICDs = Array.FindIndex(title, x => x.IndexOf("ACODE_ICD9") >= 0);
+                    int indexDate = Array.FindIndex(title, x => x.IndexOf("FUNC_DATE") >= 0);
                     while (!sr.EndOfStream)
                     {
                         string[] splitline = sr.ReadLine().Split('\t');
                         string ID = splitline[indexID];
                         string Birthday = splitline[indexBirthday];
+                        string[] ICDs = new string[] { splitline[indexICDs], splitline[indexICDs + 1], splitline[indexICDs + 2] };
+                        string date = splitline[indexDate];
                         var NewPatient = new PatientBasedData() { ID = ID, Birthday = Birthday };
+
                         int index = PatientList.BinarySearch(NewPatient);
                         if (index < 0)
                         {
                             index = ~index;
+                            NewPatient.setDiagnosisDetail(diagnosisGroupList.Count);
+                            NewPatient.setOrderDetail(orderGroupList.Count);
                             PatientList.Insert(index, NewPatient);
                         }
                         PatientList[index].CDcount++;
+                        for(int i = 0; i < diagnosisGroupList.Count;i++)
+                        {
+                            if (diagnosisGroupList[i].isThisGroupMatched(ICDs))
+                            {
+                                PatientList[index].diagnosisDetails[i].CDCount++;
+                                PatientList[index].diagnosisDetails[i].firstDate = date;
+                            }
+                        }
                     }
                 }
             }
         }
+        string makeTitle()
+        {
+            StringBuilder title = new StringBuilder(PatientBasedData.toTitile());
+            foreach (var g in diagnosisGroupList)
+                title.Append(EventDetail.toTitle(g.name));
+            foreach (var g in orderGroupList)
+                title.Append(EventDetail.toTitle(g.name));
+            return title.ToString();
+        }
+        bool checkDiagnosisGroup(IEnumerable<string> ICDs)
+        {
+            bool result = false;
+            foreach (var d in diagnosisGroupList)
+            {
+                if (result = d.isThisGroupMatched(ICDs)) break;
+            }
+            return result;
+        }
 
         void writeFile(string Rgroup, string Hgroup)
         {
-            string PostFix = (Rgroup == "NA" ? ("_" + Rgroup) : "") + (Hgroup == "NA" ? ("_" + Hgroup) : "");
-            string fileName = outputFolder + @"\" + "Patient Based Data" + PostFix + ".PBD";
+            string PostFix = (Rgroup == "NA" ? "" : ("_" + Rgroup)) + (Hgroup == "NA" ? "" : ("_" + Hgroup));
+            string filePath = outputFolder + @"\" + "Patient Based Data" + PostFix + ".PBD";
+            using (var sw = new StreamWriter(filePath, false, Encoding.Default))
+            {
+                sw.WriteLine(makeTitle());
+                foreach (var p in PatientList)
+                {
+                    sw.WriteLine(p.toWriteLine());
+                    swAllCombined.WriteLine(p.toWriteLine());
+                }
+            }
         }
     }
 

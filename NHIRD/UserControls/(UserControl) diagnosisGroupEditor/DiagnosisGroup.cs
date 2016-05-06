@@ -87,7 +87,7 @@ namespace NHIRD
                 {
                     matched = true;
                 }
-                if (!_excludeList.Any(x => x == ICD.Substring(0, x.Length)))
+                if (_excludeList.Count>0 && !_excludeList.Any(x => x == ICD.Substring(0, x.Length)))
                 {
                     return false;
                 }

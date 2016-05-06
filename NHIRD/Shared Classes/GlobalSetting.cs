@@ -50,7 +50,7 @@ namespace NHIRD
         }
         static void saveSetting()
         {
-            using (var sw = new StreamWriter(path, false))
+            using (var sw = new StreamWriter(path, false,  Encoding.Default))
             {
                 foreach (var set in settings)
                 {
