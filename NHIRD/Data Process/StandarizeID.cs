@@ -68,7 +68,7 @@ namespace NHIRD
                         int indexInDate = stringDataFormatsForCurrentFile.FindIndex(x => x.key == "ID_IN_DATE");
                         int indexOutDate = stringDataFormatsForCurrentFile.FindIndex(x => x.key == "ID_OUT_DATE");
 
-                        using (var sr = new StreamReader(currentFile.path, System.Text.Encoding.Default))
+                        using (var sr = new StreamReader(currentFile.path, Encoding.Default))
                         {
                             while (!sr.EndOfStream)
                             {

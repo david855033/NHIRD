@@ -109,7 +109,7 @@ namespace NHIRD
             //載入同組File中的ID+Birthday進入IDList，儲存在該筆criteria中
             foreach (var f in FilesOfTheGroup)
             {
-                using (var sr = new StreamReader(f.path))
+                using (var sr = new StreamReader(f.path, Encoding.Default))
                 {
                     string[] titles = sr.ReadLine().Split('\t');
                     var indexBirthday = Array.FindIndex(titles, x => x.IndexOf("BIRTHDAY") >= 0);
@@ -137,7 +137,7 @@ namespace NHIRD
             //載入同組File中的ID+Birthday進入IDList，儲存在該筆criteria中
             foreach (var f in FilesOfTheGroup)
             {
-                using (var sr = new StreamReader(f.path))
+                using (var sr = new StreamReader(f.path, Encoding.Default))
                 {
                     string[] titles = sr.ReadLine().Split('\t');
                     var indexFEE_YM = Array.FindIndex(titles, x => x == "FEE_YM");

@@ -9,8 +9,10 @@ namespace NHIRD
     class PatientBasedData : IDData
     {
         public int CDcount = 0, DDcount = 0, GDcount = 0;
+
         public EventDetail[] diagnosisDetails;
         public EventDetail[] orderDetails;
+        public string gender;
 
         public void setDiagnosisDetail(int GroupCount)
         {
@@ -31,12 +33,12 @@ namespace NHIRD
 
         public static string toTitile()
         {
-            StringBuilder result = new StringBuilder("ID" + "\t" + "Birthday" + "\t" + "門診檔資料數" + "\t" + "住院檔資料數");
+            StringBuilder result = new StringBuilder("ID" + "\t" + "Birthday" + "\t" + "Gender" + "\t" + "門診檔資料數" + "\t" + "住院檔資料數");
             return result.ToString();
         }
         public string toWriteLine()
         {
-            StringBuilder result = new StringBuilder(ID + "\t" + Birthday + "\t" + CDcount + "\t" + DDcount);
+            StringBuilder result = new StringBuilder(ID + "\t" + Birthday + "\t" + gender + "\t" + CDcount + "\t" + DDcount);
 
             foreach (var detail in diagnosisDetails)
             {
@@ -105,8 +107,8 @@ namespace NHIRD
 
         public static string toTitle(string prefix)
         {
-            return "\t" + prefix + "-最早年紀"
-                 + "\t" + prefix + "-門診次數"
+            return "\t" +  prefix + "-最早年紀"
+                 + "\t" +  prefix + "-門診次數"
                 + "\t" + prefix + "-住院次數";
         }
         public string toWriteLine()

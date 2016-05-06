@@ -62,7 +62,7 @@ namespace NHIRD
         {
             if (System.IO.File.Exists(path))
             {
-                using (var sr = new StreamReader(path))
+                using (var sr = new StreamReader(path, Encoding.Default))
                 {
                     while (!sr.EndOfStream)
                     {

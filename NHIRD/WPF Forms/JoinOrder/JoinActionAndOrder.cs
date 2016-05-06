@@ -56,7 +56,7 @@ namespace NHIRD
 
         void readAction(string actionFilePath)
         {
-            using (var sr = new StreamReader(actionFilePath))
+            using (var sr = new StreamReader(actionFilePath, Encoding.Default))
             {
                 actionTitle = new List<string>(sr.ReadLine().Split('\t'));
                 var index = new Index();
@@ -74,12 +74,12 @@ namespace NHIRD
         {
             foreach (var orderGroup in orderGroupList)
             {
-                actionTitle.Add(orderGroup.name);
+                actionTitle.Add("[order]" + orderGroup.name);
             }
         }
         void combineOrderToAction(string orderFilePath)
         {
-            using (var sr = new StreamReader(orderFilePath))
+            using (var sr = new StreamReader(orderFilePath, Encoding.Default))
             {
                 orderTitle = new List<string>(sr.ReadLine().Split('\t'));
                 var index = new Index();
@@ -113,7 +113,7 @@ namespace NHIRD
                 StringBuilder titleToWrite = new StringBuilder();
                 foreach (var s in actionTitle)
                 {
-                    titleToWrite.Append("[group]" + s + "\t");
+                    titleToWrite.Append( s + "\t");
                 }
                 sw.WriteLine(titleToWrite.ToString().TrimEnd('\t'));
 
