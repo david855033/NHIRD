@@ -1,0 +1,36 @@
+﻿<Window x:Class="NHIRD.AgeSpecificIncidenceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NHIRD"
+        mc:Ignorable="d"
+        Title="PatientBasedDataWindow" Height="700" Width="1400" Unloaded="Window_Unloaded" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="700"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel HorizontalAlignment="Center" Grid.Column="0" Margin="0,20">
+            <local:EXT_FolderSelector x:Name="patientBasedDataFolderSelector"
+                                    Title="Patient Based Data"
+                                    FolderPath="{Binding Path=patientBasedDataFolderPath, Mode=TwoWay}"
+                                    SubFileName="PBD"/>
+
+
+            <local:EXT_FolderSelector x:Name="standarizedIDFolderSelector"
+                                    Title="Standarized ID Data"
+                                    FolderPath="{Binding Path=standarizedIDFolderPath, Mode=TwoWay}"
+                                    SubFileName="IDS"/>
+            <Button Width="250" Click="Button_Click">Match</Button>
+            <DockPanel>
+                <TextBlock Text="Matching Result = "/>
+                <TextBlock Text="{Binding matchResult}"/>
+            </DockPanel>
+            <Button Click="Button_Click_1" Width="250"> Calculate </Button>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Center" Grid.Column="1" Margin="0,20">
+
+        </StackPanel>
+    </Grid>
+</Window>

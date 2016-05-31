@@ -104,24 +104,58 @@ namespace NHIRD
             }
         }
 
-        public string FileType { get; set; }
+        public String FileType { get; set; }
 
+        public String SubFileName { get; set; }
 
         void renewFileList()
         {
             try
             {
                 var paths = new List<string>();
-                foreach (var F in FileType.Split(','))
+                List<string> subFileNames = new List<string>();
+                if (SubFileName != null)
                 {
-                    string subname = "*.EXT";
+                    foreach (var s in SubFileName.Split(','))
+                    {
+                        subFileNames.Add("*." + s);
+                    }
+                }
+                else
+                {
                     if (IsEXTO)
-                        subname = "*.EXT*";
-                    paths.AddRange(Directory.EnumerateFiles(FolderPath, "*" + F + subname, SearchOption.AllDirectories).ToArray());
+                    {
+                        subFileNames.Add("*.EXT");
+                    }
+                    else
+                    {
+                        subFileNames.Add("*.EXT");
+                    }
+                }
+                var FileTypes = new List<string>();
+                if (FileType != null)
+                {
+                    foreach (var f in FileType.Split(','))
+                    {
+                        FileTypes.Add(f);
+                    }
+                }
+                else
+                {
+                    FileTypes.Add("");
+                }
+
+                foreach (var F in FileTypes)
+                {
+                    foreach (var subname in subFileNames)
+                    {
+                        paths.AddRange(Directory.EnumerateFiles(FolderPath, "*" + F + subname, SearchOption.AllDirectories).ToArray());
+                    }
                 }
                 var newfiles = new ObservableCollection<File>();
                 foreach (string str_filepath in paths)
                 {
+                    if (str_filepath.Split('\\').Last().IndexOf("All") >= 0) continue;
                     newfiles.Add(new File(str_filepath));
                 }
                 FileList.Clear();

@@ -24,15 +24,16 @@ namespace NHIRD
         /// <summary>
         /// 民國年(數值)
         /// </summary>
-        public int MKyear {get { return Convert.ToInt32(year) - 1911; } }
+        public int MKyear { get { return Convert.ToInt32(year) - 1911; } }
         public string group { get; set; }
         public string hashGroup { get; set; }
-        public bool? selected{ get; set; }
+        public bool? selected { get; set; }
         public File(string filepath)
         {
             path = filepath;
             name = path.PathToFileName();
-            string[] AvailableFileType = new string[] { "CD", "DD","GO","OO","DO","ID","GD" };
+            string[] AvailableFileType =
+                new string[] { "CD", "DD", "GO", "OO", "DO", "ID", "GD", "Patient Based Data", "standarized ID" };
             FileType = AvailableFileType.First(x => name.IndexOf(x) >= 0);
             try
             {

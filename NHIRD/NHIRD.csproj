@@ -101,6 +101,13 @@
       <DependentUpon>diagnosisGroup.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\%28UserControl%29 diagnosisGroupEditor\DiagnosisGroup.cs" />
+    <Compile Include="WPF Forms\AgeSpecificIncidence\AgeSpecificIncidenceCalculator.cs" />
+    <Compile Include="WPF Forms\AgeSpecificIncidence\Generator.cs" />
+    <Compile Include="WPF Forms\AgeSpecificIncidence\AgeSpecificIncidenceViewModel.cs" />
+    <Compile Include="WPF Forms\AgeSpecificIncidence\AgeSpecificIncidenceWindow.xaml.cs">
+      <DependentUpon>AgeSpecificIncidenceWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF Forms\AgeSpecificIncidence\MatchOfPatiendBasedDataAndStandarizedID.cs" />
     <Compile Include="WPF Forms\PatientBasedData\PatientBasedDataGenerator.cs" />
     <Compile Include="WPF Forms\PatientBasedData\PatientBasedDataModel.cs" />
     <Compile Include="WPF Forms\PatientBasedData\PatientBasedDataViewModal.cs" />
@@ -164,6 +171,10 @@
     <Page Include="UserControls\%28UserControl%29 diagnosisGroupEditor\diagnosisGroup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF Forms\AgeSpecificIncidence\AgeSpecificIncidenceWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WPF Forms\PatientBasedData\PatientBasedDataWindow.xaml">
       <SubType>Designer</SubType>

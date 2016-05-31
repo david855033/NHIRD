@@ -149,5 +149,14 @@ namespace NHIRD
             var PatientBasedDataWindow_instance = new PatientBasedDataWindow(this);
             PatientBasedDataWindow_instance.Show();
         }
+
+
+        private void AgeSpecificIncidence_Click(object sender, RoutedEventArgs e)
+        {
+
+            this.Hide();
+            var AgeSpecificIncidenceWindow_instance = new AgeSpecificIncidenceWindow(this);
+            AgeSpecificIncidenceWindow_instance.Show();
+        }
     }
 }
