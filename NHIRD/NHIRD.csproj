@@ -102,6 +102,7 @@
     </Compile>
     <Compile Include="UserControls\%28UserControl%29 diagnosisGroupEditor\DiagnosisGroup.cs" />
     <Compile Include="WPF Forms\AgeSpecificIncidence\AgeSpecificIncidenceCalculator.cs" />
+    <Compile Include="WPF Forms\AgeSpecificIncidence\AgeSpecificIncidenceTable.cs" />
     <Compile Include="WPF Forms\AgeSpecificIncidence\Generator.cs" />
     <Compile Include="WPF Forms\AgeSpecificIncidence\AgeSpecificIncidenceViewModel.cs" />
     <Compile Include="WPF Forms\AgeSpecificIncidence\AgeSpecificIncidenceWindow.xaml.cs">
