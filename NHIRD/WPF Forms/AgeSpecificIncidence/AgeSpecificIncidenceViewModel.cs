@@ -48,6 +48,34 @@ namespace NHIRD
             }
         }
 
+        string _outputDir;
+        public string outputDir
+        {
+            get
+            {
+                return _outputDir;
+            }
+
+            set
+            {
+                _outputDir = value;
+                GlobalSetting.set("ASI_outputDir", value);
+                OnPropertyChanged(nameof(outputDir));
+            }
+        }
+
+        string _dataEndDate;
+        public string dataEndDate
+        {
+            get { return _dataEndDate; }
+            set
+            {
+                _dataEndDate = value;
+                GlobalSetting.set("ASI_DataEndDate", value);
+                OnPropertyChanged(nameof(dataEndDate));
+            }
+        }
+
         string _matchResult;
         public string matchResult
         {
@@ -102,7 +130,15 @@ namespace NHIRD
 
         public void generateAgeSpecificIncidence()
         {
-            new AgeSpecificIncidenceCalculator(matchOfPatiendBasedDataAndStandarizedID).Do();
+            DateTime dataEnd;
+            if (DateTime.TryParse(dataEndDate, out dataEnd))
+            {
+                new AgeSpecificIncidenceCalculator(matchOfPatiendBasedDataAndStandarizedID).Do(dataEnd, outputDir);
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Invalid date time.");
+            }
         }
 
     }

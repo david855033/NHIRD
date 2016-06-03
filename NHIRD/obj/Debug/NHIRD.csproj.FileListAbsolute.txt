@@ -3,6 +3,7 @@ D:\文件\GitHub\NHIRD\NHIRD\bin\Debug\NHIRD.exe
 D:\文件\GitHub\NHIRD\NHIRD\bin\Debug\NHIRD.pdb
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\NHIRD.csprojResolveAssemblyReference.cache
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) diagnosisGroupEditor\diagnosisGroup.g.cs
+D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\AgeSpecificIncidence\AgeSpecificIncidenceWindow.g.cs
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\PatientBasedData\PatientBasedDataWindow.g.cs
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) OrderGroupEditor\OrderGroupEditor.g.cs
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\JoinOrder\JoinOrderWindow.g.cs
@@ -22,6 +23,7 @@ D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\GeneratedInternalTypeHelper.g.cs
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\NHIRD_MarkupCompile.cache
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\NHIRD_MarkupCompile.lref
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) diagnosisGroupEditor\diagnosisGroup.baml
+D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\AgeSpecificIncidence\AgeSpecificIncidenceWindow.baml
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\PatientBasedData\PatientBasedDataWindow.baml
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\UserControls\(UserControl) OrderGroupEditor\OrderGroupEditor.baml
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\JoinOrder\JoinOrderWindow.baml
@@ -41,5 +43,3 @@ D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\NHIRD.Properties.Resources.resources
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\NHIRD.csproj.GenerateResource.Cache
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\NHIRD.exe
 D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\NHIRD.pdb
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\AgeSpecificIncidence\AgeSpecificIncidenceWindow.g.cs
-D:\文件\GitHub\NHIRD\NHIRD\obj\Debug\WPF Forms\AgeSpecificIncidence\AgeSpecificIncidenceWindow.baml

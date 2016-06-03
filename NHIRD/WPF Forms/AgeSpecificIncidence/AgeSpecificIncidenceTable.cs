@@ -8,7 +8,7 @@ namespace NHIRD
 {
     class AgeSpecificIncidenceTable
     {
-        string tableName;
+        public string tableName;
 
         AgeSpecificIncidenceGroup[,] table =
             new AgeSpecificIncidenceGroup[100, 2];
@@ -16,6 +16,13 @@ namespace NHIRD
         private AgeSpecificIncidenceTable(string tableName)
         {
             this.tableName = tableName;
+            for (int i = 0; i < 100; i++)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    table[i, j] = new AgeSpecificIncidenceGroup();
+                }
+            }
         }
 
         static public AgeSpecificIncidenceTable getNewAgeSpecificIncidenceTable(string tableName)
@@ -61,7 +68,7 @@ namespace NHIRD
         public string getResult()
         {
             StringBuilder result = new StringBuilder();
-            string title1 = "" + "\tFemale\t\t" + "\tMale\t\t" + "\tTotal\t\t";
+            string title1 = tableName + "\tFemale\t\t" + "\tMale\t\t" + "\tTotal\t\t";
             string title2 = "Age Group" + "\tPatient Year\tEvent Count\tAge Specific Incidence"
                                         + "\tPatient Year\tEvent Count\tAge Specific Incidence"
                                         + "\tPatient Year\tEvent Count\tAge Specific Incidence";
@@ -75,16 +82,16 @@ namespace NHIRD
                     + table[i, 0].patientYear.Round(1) + "\t"
                     + table[i, 0].eventCount + "\t"
                     + ((double)table[i, 0].eventCount / table[i, 0].patientYear * 100).Round(1) + "%\t"
-                    
+
                     + table[i, 1].patientYear.Round(1) + "\t"
                     + table[i, 1].eventCount + "\t"
                     + ((double)table[i, 1].eventCount / table[i, 1].patientYear * 100).Round(1) + "%\t"
-                    
-                    + (table[i, 0].patientYear+ table[i, 1].patientYear).Round(1) + "\t"
-                    + (table[i, 0].eventCount+ table[i, 1].eventCount) + "\t"
-                    + ((double)(table[i, 0].eventCount+ table[i, 1].eventCount) / 
-                    (table[i, 0].patientYear+ table[i, 1].patientYear) * 100).Round(1) + "%\t"
-                    
+
+                    + (table[i, 0].patientYear + table[i, 1].patientYear).Round(1) + "\t"
+                    + (table[i, 0].eventCount + table[i, 1].eventCount) + "\t"
+                    + ((double)(table[i, 0].eventCount + table[i, 1].eventCount) /
+                    (table[i, 0].patientYear + table[i, 1].patientYear) * 100).Round(1) + "%\t"
+
                     );
             }
 

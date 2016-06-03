@@ -109,6 +109,7 @@
       <DependentUpon>AgeSpecificIncidenceWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF Forms\AgeSpecificIncidence\MatchOfPatiendBasedDataAndStandarizedID.cs" />
+    <Compile Include="WPF Forms\AgeSpecificIncidence\PatientBasedDataWithEvent.cs" />
     <Compile Include="WPF Forms\PatientBasedData\PatientBasedDataGenerator.cs" />
     <Compile Include="WPF Forms\PatientBasedData\PatientBasedDataModel.cs" />
     <Compile Include="WPF Forms\PatientBasedData\PatientBasedDataViewModal.cs" />

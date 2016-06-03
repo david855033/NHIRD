@@ -43,15 +43,17 @@ namespace NHIRD
                   GlobalSetting.get("ASI_PBD");
             ViewModel_Instance.standarizedIDFolderPath =
                   GlobalSetting.get("ASI_SIT");
+            ViewModel_Instance.dataEndDate=
+                GlobalSetting.get("ASI_DataEndDate");
+            ViewModel_Instance.outputDir =
+                GlobalSetting.get("ASI_outputDir");
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel_Instance.generateMatchResult();
-        }
+   
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            ViewModel_Instance.generateMatchResult();
             ViewModel_Instance.generateAgeSpecificIncidence();
         }
     }

@@ -10,32 +10,38 @@ namespace NHIRD
     {
         IEnumerable<MatchOfPatiendBasedDataAndStandarizedID> matchList;
         List<string> EventNames;
+        List<int> EventIndex;
+        List<PatientBasedDataWithEvent> patientBasedDataWithEvents;
         AgeSpecificIncidenceTable[] ASITables;
+        DateTime dataEndDate;
+        string outputDir;
         public AgeSpecificIncidenceCalculator(IEnumerable<MatchOfPatiendBasedDataAndStandarizedID> matchList)
         {
             this.matchList = matchList;
         }
 
-        public void Do()
+        public void Do(DateTime dataEndDate, string outputDir)
         {
-            System.Windows.MessageBox.Show("calculation ASI");
-
+            this.dataEndDate = dataEndDate;
+            this.outputDir = outputDir;
             analyzeTitleOfPatientBasedDataAndGetEventNames(matchList.First().patientBasedData.path);
             initializeAgeSpecificIncidenceTable();
             foreach (var currentMatch in matchList)
             {
                 CalculateOneMatch(currentMatch);
-            } 
-
+            }
+            writeASItables();
             // read PBD -> 先從title分析group list後 初始化List<string> eventNames, OK
             // 初始化ASI table, 欄位: Age  男-人年 -- 女-人年 - 男EventCount -  女EventCount , 以此做數個陣列(每個eventname用一個table)
-            
+
             // 再產生List<patient>(含ID/性別/Event[](field: hasThisEvent, eventAge))，再讀取每個病人資料
-            
+
             // 逐筆讀取Standarize ID, 比對有無出現在PBD裡面，然後增加所有ASI table的人年 以及對應的ASI table的evnetcount數量           
             // 對每個match重複以上動作
             // 輸出ASI
         }
+
+
 
         private void analyzeTitleOfPatientBasedDataAndGetEventNames(string anyPatientBasedDataPath)
         {
@@ -47,7 +53,7 @@ namespace NHIRD
                 var query = from q in split where q.IndexOf("-最早年紀") >= 0 select q;
                 foreach (var s in query)
                 {
-                    EventNames.Add(s.Replace("-最早年紀",""));
+                    EventNames.Add(s.Replace("-最早年紀", ""));
                 }
             }
         }
@@ -68,19 +74,105 @@ namespace NHIRD
         }
         private void readPBD(string filePath)
         {
-            using (var sr = new StreamReader(filePath))
+            using (var sr = new StreamReader(filePath, Encoding.Default))
             {
-                string title = sr.ReadLine();
-                while (!sr.EndOfStream())
+                patientBasedDataWithEvents = new List<PatientBasedDataWithEvent>();
+                string[] titles = sr.ReadLine().Split('\t');
+                initializeEventIndex(titles);
+                int index_ID = Array.IndexOf(titles, "ID");
+                int index_Birthday = Array.IndexOf(titles, "Birthday");
+                int index_Gender = Array.IndexOf(titles, "Gender");
+                while (!sr.EndOfStream)
                 {
+                    string[] splitline = sr.ReadLine().Split('\t');
+                    PatientBasedDataWithEvent toAdd = new PatientBasedDataWithEvent()
+                    {
+                        ID = splitline[index_ID],
+                        Birthday = splitline[index_Birthday],
+                        gender = splitline[index_Gender] == "F" ? Gender.Female : Gender.Male
+                    };
+                    foreach (var i in EventIndex)
+                    {
+                        double age = -1;
+                        if (splitline[i] != "")
+                        {
+                            age = Convert.ToDouble(splitline[i]);
+                        }
+                        toAdd.eventAges.Add(age);
+                    }
+                    patientBasedDataWithEvents.Add(toAdd);
+                }
+            }
+        }
+
+        private void initializeEventIndex(string[] titles)
+        {
+            EventIndex = new List<int>();
+            foreach (var eventName in EventNames)
+            {
+                EventIndex.Add(Array.IndexOf(titles, eventName + "-最早年紀"));
+            }
+        }
+
+        private void readSID(string filePath)
+        {
+            using (var sr = new StreamReader(filePath, Encoding.Default))
+            {
+                string[] titles = sr.ReadLine().Split('\t');
+                int index_ID = Array.IndexOf(titles, "ID");
+                int index_Birthday = Array.IndexOf(titles, "Birthday");
+                int index_Gender = Array.IndexOf(titles, "Gender");
+                int index_firstInDate = Array.IndexOf(titles, "firstInDate");
+                int index_lastOutDate = Array.IndexOf(titles, "lastOutDate");
+                while (!sr.EndOfStream)
+                {
+                    string[] splitline = sr.ReadLine().Split('\t');
+                    string ID = splitline[index_ID];
+                    string Birthday = splitline[index_Birthday];
+                    Gender gender = splitline[index_Gender] == "F" ? Gender.Female : Gender.Male;
+                    string firstInDate = splitline[index_firstInDate];
+                    string lastOutDate = splitline[index_lastOutDate];
+                    double firstInAge = firstInDate.StringToDate().Subtract(Birthday.StringToDate()).TotalDays / 365.25;
+                    if (firstInAge < 0)
+                    {
+                        firstInAge = 0;
+                    }
+                    if (firstInAge > 99)
+                    {
+                        firstInAge = 99;
+                    }
+                    double lastOutAge = lastOutDate.StringToDate().Subtract(Birthday.StringToDate()).TotalDays / 365.25;
+                    if (lastOutAge < 0)
+                    {
+                        lastOutAge = dataEndDate.Subtract(Birthday.StringToDate()).TotalDays / 365.25;
+                    }
+                    var toCompare = new PatientBasedDataWithEvent() { ID = ID, Birthday = Birthday };
+                    int index = patientBasedDataWithEvents.BinarySearch(toCompare);
+                    if (index < 0)
+                    {
+                        for (int i = 0; i < ASITables.Count(); i++)
+                        {
+                            ASITables[i].addPatientYear(gender, firstInAge, lastOutAge);
+                        }
+                    }
+                    else if (index >= 0)
+                    {
+                      //TODO
+                    }
 
                 }
             }
         }
-        private void readSID(string filePath)
+
+        private void writeASItables()
         {
-
+            foreach (var t in ASITables)
+            {
+                using (var sw = new StreamWriter(outputDir + @"\" + t.tableName + ".ASI"))
+                {
+                    sw.Write(t.getResult());
+                }
+            }
         }
-
     }
 }

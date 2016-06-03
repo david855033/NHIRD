@@ -22,8 +22,17 @@
                                     Title="Standarized ID Data"
                                     FolderPath="{Binding Path=standarizedIDFolderPath, Mode=TwoWay}"
                                     SubFileName="IDS"/>
-            <Button Width="250" Click="Button_Click">Match</Button>
-            <DockPanel>
+            <DockPanel Margin="0,0,0,30">
+                <TextBlock Text="Data End date = "  />
+                <TextBox Text="{Binding dataEndDate}"/>
+            </DockPanel>
+            
+            <local:IOFolderSelector x:Name="ouputFolderSelect" 
+                                    Title="Ouput Dir:"  
+                                    FolderPath="{Binding outputDir, Mode=TwoWay}"
+                                    />
+
+            <DockPanel Margin="0,25">
                 <TextBlock Text="Matching Result = "/>
                 <TextBlock Text="{Binding matchResult}"/>
             </DockPanel>
