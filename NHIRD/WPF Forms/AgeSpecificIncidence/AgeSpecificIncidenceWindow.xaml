@@ -27,6 +27,11 @@
                 <TextBox Text="{Binding dataEndDate}"/>
             </DockPanel>
             
+            <local:EXT_FolderSelector x:Name="IDIncludeCrieteriaFolderSelector"
+                                    Title="ID include criteria"
+                                    FolderPath="{Binding Path=IDIncludeCrieteriaFolderPath, Mode=TwoWay}"
+                                    SubFileName="PBD"/>
+
             <local:IOFolderSelector x:Name="ouputFolderSelect" 
                                     Title="Ouput Dir:"  
                                     FolderPath="{Binding outputDir, Mode=TwoWay}"
@@ -36,7 +41,7 @@
                 <TextBlock Text="Matching Result = "/>
                 <TextBlock Text="{Binding matchResult}"/>
             </DockPanel>
-            <Button Click="Button_Click_1" Width="250"> Calculate </Button>
+            <Button Click="Button_Click_1" Width="250">Calculate</Button>
         </StackPanel>
         <StackPanel HorizontalAlignment="Center" Grid.Column="1" Margin="0,20">
 

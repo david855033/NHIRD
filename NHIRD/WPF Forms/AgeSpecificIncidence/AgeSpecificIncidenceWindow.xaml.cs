@@ -47,6 +47,8 @@ namespace NHIRD
                 GlobalSetting.get("ASI_DataEndDate");
             ViewModel_Instance.outputDir =
                 GlobalSetting.get("ASI_outputDir");
+            ViewModel_Instance.IDIncludeCrieteriaFolderPath =
+              GlobalSetting.get("ASI_IDIncludeCrieteriaFolderPath");
         }
 
    

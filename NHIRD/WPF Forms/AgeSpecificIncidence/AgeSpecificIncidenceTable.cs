@@ -79,18 +79,18 @@ namespace NHIRD
             {
                 result.AppendLine(
                     i + "\t"
-                    + table[i, 0].patientYear.Round(1) + "\t"
+                    + table[i, 0].patientYear.Round(0) + "\t"
                     + table[i, 0].eventCount + "\t"
-                    + ((double)table[i, 0].eventCount / table[i, 0].patientYear * 100).Round(1) + "%\t"
+                    + ((double)table[i, 0].eventCount / table[i, 0].patientYear * 100).Round(2) + "%\t"
 
-                    + table[i, 1].patientYear.Round(1) + "\t"
+                    + table[i, 1].patientYear.Round(0) + "\t"
                     + table[i, 1].eventCount + "\t"
-                    + ((double)table[i, 1].eventCount / table[i, 1].patientYear * 100).Round(1) + "%\t"
+                    + ((double)table[i, 1].eventCount / table[i, 1].patientYear * 100).Round(2) + "%\t"
 
-                    + (table[i, 0].patientYear + table[i, 1].patientYear).Round(1) + "\t"
+                    + (table[i, 0].patientYear + table[i, 1].patientYear).Round(0) + "\t"
                     + (table[i, 0].eventCount + table[i, 1].eventCount) + "\t"
                     + ((double)(table[i, 0].eventCount + table[i, 1].eventCount) /
-                    (table[i, 0].patientYear + table[i, 1].patientYear) * 100).Round(1) + "%\t"
+                    (table[i, 0].patientYear + table[i, 1].patientYear) * 100).Round(2) + "%\t"
 
                     );
             }

@@ -12,6 +12,8 @@ namespace NHIRD
         List<string> EventNames;
         List<int> EventIndex;
         List<PatientBasedDataWithEvent> patientBasedDataWithEvents;
+        bool IDCriteraiEnable;
+        List<IDData> IDCriteria;
         AgeSpecificIncidenceTable[] ASITables;
         DateTime dataEndDate;
         string outputDir;
@@ -30,6 +32,7 @@ namespace NHIRD
             {
                 CalculateOneMatch(currentMatch);
             }
+            createOutputDir(outputDir);
             writeASItables();
             // read PBD -> 先從title分析group list後 初始化List<string> eventNames, OK
             // 初始化ASI table, 欄位: Age  男-人年 -- 女-人年 - 男EventCount -  女EventCount , 以此做數個陣列(每個eventname用一個table)
@@ -41,7 +44,11 @@ namespace NHIRD
             // 輸出ASI
         }
 
-
+        private void createOutputDir(string outputDir)
+        {
+            if (!Directory.Exists(outputDir))
+                Directory.CreateDirectory(outputDir);
+        }
 
         private void analyzeTitleOfPatientBasedDataAndGetEventNames(string anyPatientBasedDataPath)
         {
@@ -69,9 +76,16 @@ namespace NHIRD
 
         private void CalculateOneMatch(MatchOfPatiendBasedDataAndStandarizedID currentMatch)
         {
+            IDCriteraiEnable = false;
             readPBD(currentMatch.patientBasedData.path);
+            if (currentMatch.IDincludeCriteria != null)
+            {
+                IDCriteraiEnable = true;
+                readIDCriteria(currentMatch.IDincludeCriteria.path);
+            }
             readSID(currentMatch.standarizedID.path);
         }
+
         private void readPBD(string filePath)
         {
             using (var sr = new StreamReader(filePath, Encoding.Default))
@@ -105,6 +119,28 @@ namespace NHIRD
             }
         }
 
+        private void readIDCriteria(string filePath)
+        {
+            using (var sr = new StreamReader(filePath, Encoding.Default))
+            {
+                IDCriteria = new List<IDData>();
+                string[] titles = sr.ReadLine().Split('\t');
+                int index_ID = Array.IndexOf(titles, "ID");
+                int index_Birthday = Array.IndexOf(titles, "Birthday");
+                while (!sr.EndOfStream)
+                {
+                    string[] splitline = sr.ReadLine().Split('\t');
+                    IDData toAdd = new IDData()
+                    {
+                        ID = splitline[index_ID],
+                        Birthday = splitline[index_Birthday],
+                    };
+                    IDCriteria.Add(toAdd);
+                }
+            }
+        }
+
+
         private void initializeEventIndex(string[] titles)
         {
             EventIndex = new List<int>();
@@ -129,6 +165,11 @@ namespace NHIRD
                     string[] splitline = sr.ReadLine().Split('\t');
                     string ID = splitline[index_ID];
                     string Birthday = splitline[index_Birthday];
+                    var IDtoCompare = new IDData() { ID = ID, Birthday = Birthday };
+                    if (IDCriteraiEnable && IDCriteria.BinarySearch(IDtoCompare) < 0)  //ID criteria
+                    {
+                        continue;
+                    }
                     Gender gender = splitline[index_Gender] == "F" ? Gender.Female : Gender.Male;
                     string firstInDate = splitline[index_firstInDate];
                     string lastOutDate = splitline[index_lastOutDate];
@@ -142,7 +183,7 @@ namespace NHIRD
                         firstInAge = 99;
                     }
                     double lastOutAge = lastOutDate.StringToDate().Subtract(Birthday.StringToDate()).TotalDays / 365.25;
-                    if (lastOutAge < 0)
+                    if (lastOutAge < 0 || lastOutDate.StringToDate() > dataEndDate)
                     {
                         lastOutAge = dataEndDate.Subtract(Birthday.StringToDate()).TotalDays / 365.25;
                     }
@@ -157,7 +198,20 @@ namespace NHIRD
                     }
                     else if (index >= 0)
                     {
-                      //TODO
+                        lastOutAge = dataEndDate.Subtract(Birthday.StringToDate()).TotalDays / 365.25;
+                        for (int i = 0; i < ASITables.Count(); i++)
+                        {
+                            double currentEventAge = patientBasedDataWithEvents[index].eventAges[i];
+                            if (currentEventAge >= 0)
+                            {
+                                ASITables[i].addPatientYear(gender, firstInAge, currentEventAge);
+                                ASITables[i].addEvent(gender, currentEventAge);
+                            }
+                            else
+                            {
+                                ASITables[i].addPatientYear(gender, firstInAge, lastOutAge);
+                            }
+                        }
                     }
 
                 }

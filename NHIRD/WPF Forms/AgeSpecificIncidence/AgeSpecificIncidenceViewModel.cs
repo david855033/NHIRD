@@ -64,6 +64,23 @@ namespace NHIRD
             }
         }
 
+        string _IDIncludeCrieteriaFolderPath;
+        public string IDIncludeCrieteriaFolderPath
+        {
+            get
+            {
+                return _IDIncludeCrieteriaFolderPath;
+            }
+
+            set
+            {
+                _IDIncludeCrieteriaFolderPath = value;
+                GlobalSetting.set("ASI_IDIncludeCrieteriaFolderPath", value);
+                OnPropertyChanged(nameof(IDIncludeCrieteriaFolderPath));
+            }
+        }
+
+
         string _dataEndDate;
         public string dataEndDate
         {
@@ -90,35 +107,49 @@ namespace NHIRD
             }
         }
 
+
         List<MatchOfPatiendBasedDataAndStandarizedID> matchOfPatiendBasedDataAndStandarizedID;
         public void generateMatchResult()
         {
             string result = "no match";
             var patientBasedDataFileList = parentWindow.patientBasedDataFolderSelector.FileList;
             var standardIDFileList = parentWindow.standarizedIDFolderSelector.FileList;
+            var IDincludeCriteriaFileList = parentWindow.IDIncludeCrieteriaFolderSelector.FileList;
+            bool isIDCriteriaEnable = parentWindow.IDIncludeCrieteriaFolderSelector.IsCriteriaChecked;
             matchOfPatiendBasedDataAndStandarizedID = new List<MatchOfPatiendBasedDataAndStandarizedID>();
-            if (patientBasedDataFileList != null && standardIDFileList != null)
+            if (patientBasedDataFileList != null && standardIDFileList != null && (!isIDCriteriaEnable || IDincludeCriteriaFileList != null))
             {
                 result = "PBD count = " + patientBasedDataFileList.Count + "\nstarndarizeID count = " + standardIDFileList.Count + "\n";
                 foreach (var PBDfile in patientBasedDataFileList)
                 {
-                    var matchedGroupQuery = from q in standardIDFileList
-                                            where q.@group == PBDfile.@group && q.hashGroup == PBDfile.hashGroup
-                                            select q;
-                    if (matchedGroupQuery.Count() == 1)
+                    var matchedGroupQueryForSID = from q in standardIDFileList
+                                                  where q.@group == PBDfile.@group && q.hashGroup == PBDfile.hashGroup
+                                                  select q;
+                    IEnumerable<File> matchedGroupQueryForIDCriteria = new List<File>();
+                    if (isIDCriteriaEnable)
                     {
-                        matchOfPatiendBasedDataAndStandarizedID.Add(
-                            new MatchOfPatiendBasedDataAndStandarizedID()
-                            {
-                                patientBasedData = PBDfile,
-                                standarizedID = matchedGroupQuery.First()
-                            });
+                        matchedGroupQueryForIDCriteria = from q in IDincludeCriteriaFileList
+                                                         where q.@group == PBDfile.@group && q.hashGroup == PBDfile.hashGroup
+                                                         select q;
                     }
-                    else if (matchedGroupQuery.Count() > 1)
+                    if (matchedGroupQueryForSID.Count() == 1)
+                    {
+                        var toADD = new MatchOfPatiendBasedDataAndStandarizedID()
+                        {
+                            patientBasedData = PBDfile,
+                            standarizedID = matchedGroupQueryForSID.First()
+                        };
+                        if (isIDCriteriaEnable)
+                        {
+                            toADD.IDincludeCriteria = matchedGroupQueryForIDCriteria.First();
+                        }
+                        matchOfPatiendBasedDataAndStandarizedID.Add(toADD);
+                    }
+                    else if (matchedGroupQueryForSID.Count() > 1)
                     {
                         result += PBDfile.name + " has more than 1 match. \n";
                     }
-                    else if (matchedGroupQuery.Count() == 0)
+                    else if (matchedGroupQueryForSID.Count() == 0)
                     {
                         result += PBDfile.name + " has no match. \n";
                     }
@@ -126,6 +157,7 @@ namespace NHIRD
             }
 
             matchResult = $"Total {matchOfPatiendBasedDataAndStandarizedID.Count} mached:  \n" + result;
+            parentWindow.UpdateLayout();
         }
 
         public void generateAgeSpecificIncidence()

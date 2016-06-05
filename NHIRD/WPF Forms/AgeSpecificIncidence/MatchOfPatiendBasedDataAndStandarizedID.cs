@@ -9,6 +9,7 @@ namespace NHIRD
     class MatchOfPatiendBasedDataAndStandarizedID
     {
         public File patientBasedData;
+        public File IDincludeCriteria;
         public File standarizedID;   
     }
 }
