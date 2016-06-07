@@ -170,6 +170,11 @@
     <Compile Include="UserControls\%28UserControl%29StringList\StringList.xaml.cs">
       <DependentUpon>StringList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF Forms\PBD selector\PBDSelector.cs" />
+    <Compile Include="WPF Forms\PBD selector\PBDSelector.xaml.cs">
+      <DependentUpon>PBDSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF Forms\PBD selector\PBDSelectorViewModel.cs" />
     <Page Include="UserControls\%28UserControl%29 diagnosisGroupEditor\diagnosisGroup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -247,6 +252,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\%28UserControl%29StringList\StringList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF Forms\PBD selector\PBDSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

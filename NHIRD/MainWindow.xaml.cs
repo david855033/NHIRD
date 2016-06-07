@@ -158,5 +158,12 @@ namespace NHIRD
             var AgeSpecificIncidenceWindow_instance = new AgeSpecificIncidenceWindow(this);
             AgeSpecificIncidenceWindow_instance.Show();
         }
+
+        private void PBDSelector_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+            var PBDSelectorWindow_instance = new PBDSelectorWindow(this);
+            PBDSelectorWindow_instance.Show();
+        }
     }
 }

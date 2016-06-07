@@ -125,6 +125,7 @@ namespace NHIRD
                 {
                     if (IsEXTO)
                     {
+                        subFileNames.Add("*.EXTO");
                         subFileNames.Add("*.EXT");
                     }
                     else

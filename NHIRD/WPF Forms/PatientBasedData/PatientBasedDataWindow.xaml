@@ -16,7 +16,8 @@
                                       FolderPath="{Binding inputDir, Mode=TwoWay}"
                                       FileList="{Binding inputFiles, Mode=TwoWay}"
                                       IsEXTO="True" 
-                                      FileType="CD,DD,GD"/>
+                                      FileType="CD,DD,GD"
+                                      />
             <local:DiagnosisGroupEditor x:Name="diagnosisGroupEditor"/>
         </StackPanel>
         <StackPanel HorizontalAlignment="Center" Grid.Column="1" Margin="0,20">
