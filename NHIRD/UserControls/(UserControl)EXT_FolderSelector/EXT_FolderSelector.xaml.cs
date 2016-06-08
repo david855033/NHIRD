@@ -128,10 +128,6 @@ namespace NHIRD
                         subFileNames.Add("*.EXTO");
                         subFileNames.Add("*.EXT");
                     }
-                    else
-                    {
-                        subFileNames.Add("*.EXT");
-                    }
                 }
                 var FileTypes = new List<string>();
                 if (FileType != null)
@@ -144,7 +140,7 @@ namespace NHIRD
 
                 foreach (var F in FileTypes)
                 {
-                    paths.AddRange(Directory.EnumerateFiles(FolderPath, "*" + F + ".*", SearchOption.AllDirectories).ToArray());
+                    paths.AddRange(Directory.EnumerateFiles(FolderPath, "*" + F + "*.*", SearchOption.AllDirectories).ToArray());
                 }
                 foreach (var subname in subFileNames)
                 {
