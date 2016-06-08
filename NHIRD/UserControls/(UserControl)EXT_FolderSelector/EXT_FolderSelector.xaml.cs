@@ -141,17 +141,14 @@ namespace NHIRD
                         FileTypes.Add(f);
                     }
                 }
-                else
-                {
-                    FileTypes.Add("");
-                }
 
                 foreach (var F in FileTypes)
                 {
-                    foreach (var subname in subFileNames)
-                    {
-                        paths.AddRange(Directory.EnumerateFiles(FolderPath, "*" + F + subname, SearchOption.AllDirectories).ToArray());
-                    }
+                    paths.AddRange(Directory.EnumerateFiles(FolderPath, "*" + F + ".*", SearchOption.AllDirectories).ToArray());
+                }
+                foreach (var subname in subFileNames)
+                {
+                    paths.AddRange(Directory.EnumerateFiles(FolderPath, "*" + subname, SearchOption.AllDirectories).ToArray());
                 }
                 var newfiles = new ObservableCollection<File>();
                 foreach (string str_filepath in paths)

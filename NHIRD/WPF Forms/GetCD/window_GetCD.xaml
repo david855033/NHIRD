@@ -63,7 +63,8 @@
                                       IsCriteriaChecked="{Binding IsIDCriteriaEnable, Mode=TwoWay}"
                                       FolderPath="{Binding IDCriteriaFolderPath, Mode=TwoWay}"
                                       FileList="{Binding IDCriteriaFileList, Mode=TwoWay}"
-                                      FileType="CD,DD"/>
+                                      FileType="CD,DD"
+                                      SubFileName="IDS"/>
             <local:EXT_FolderSelector Title="Use Extracted Order Files:" x:Name="OrderCrieteria_FolderSelect"
                                       IsCriteriaChecked="{Binding IsActionCriteriaEnable, Mode=TwoWay}"
                                       FolderPath="{Binding ActionCriteriaFolderPath, Mode=TwoWay}"

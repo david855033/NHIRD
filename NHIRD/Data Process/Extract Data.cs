@@ -112,7 +112,7 @@ namespace NHIRD
                 using (var sr = new StreamReader(f.path, Encoding.Default))
                 {
                     string[] titles = sr.ReadLine().Split('\t');
-                    var indexBirthday = Array.FindIndex(titles, x => x.IndexOf("BIRTHDAY") >= 0);
+                    var indexBirthday = Array.FindIndex(titles, x => x.IndexOf("BIRTHDAY") >= 0 || x.IndexOf("Birthday") >= 0);
                     var indexID = Array.FindIndex(titles, x => x == "ID");
                     while (!sr.EndOfStream)
                     {
@@ -177,7 +177,7 @@ namespace NHIRD
                 //ID list
                 if (currentCriteria.key == "IDLIST")
                 {
-                    currentCriteria.indexBirthday = queryStringDataFormats.FindIndex(x => x.key.IndexOf("BIRTHDAY") >= 0);
+                    currentCriteria.indexBirthday = queryStringDataFormats.FindIndex(x => x.key.IndexOf("BIRTHDAY") >= 0 || x.key.IndexOf("Birthday") >= 0);
                     currentCriteria.indexID = queryStringDataFormats.FindIndex(x => x.key == "ID");
                 }
                 //年齡資料

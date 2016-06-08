@@ -19,9 +19,14 @@
         
             <DockPanel Margin="0,25">
                 <TextBlock Text="Select Field(可用order名稱或是診斷名稱)"/>
-                <TextBlock Text="{Binding SelectField}"/>
+                <TextBox Text="{Binding selectField}"/>
             </DockPanel>
-        
+
+            <DockPanel Margin="0,25">
+                <TextBlock Text="Exclude Field(可用order名稱或是診斷名稱, 可用逗號隔開)"/>
+                <TextBox Text="{Binding excludeField}"/>
+            </DockPanel>
+
             <local:IOFolderSelector x:Name="ouputFolderSelect" 
                                     Title="Ouput Dir:"  
                                     FolderPath="{Binding outputDir, Mode=TwoWay}"

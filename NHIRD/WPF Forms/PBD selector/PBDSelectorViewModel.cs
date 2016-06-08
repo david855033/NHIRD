@@ -55,13 +55,34 @@ namespace NHIRD
             set
             {
                 _selectField = value;
+                GlobalSetting.set("PBDSelector_selectedField", value);
                 OnPropertyChanged(nameof(selectField));
+            }
+        }
+
+        string _excludeField;
+        public string excludeField
+        {
+            get
+            {
+                return _excludeField;
+            }
+            set
+            {
+                _excludeField = value;
+                GlobalSetting.set("PBDSelector_excludeField", value);
+                OnPropertyChanged(nameof(excludeField));
             }
         }
 
         public void Do()
         {
-            System.Windows.MessageBox.Show("Do.");
+            PBDSelector instance = new PBDSelector();
+            instance.setPBDFiles(parentWindow.patientBasedDataFolderSelector.FileList);
+            instance.setOutputFolder(_outputDir);
+            instance.setSelectedField(_selectField);
+            instance.setExcludeField(_excludeField);
+            instance.Do();
         }
     }
 }

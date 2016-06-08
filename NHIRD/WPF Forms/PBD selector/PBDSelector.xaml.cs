@@ -39,6 +39,10 @@ namespace NHIRD
                   GlobalSetting.get("PBDSelector_PBD");
             ViewModel_Instance.outputDir =
                 GlobalSetting.get("PBDSelector_outputDir");
+            ViewModel_Instance.selectField=
+               GlobalSetting.get("PBDSelector_selectedField");
+            ViewModel_Instance.excludeField =
+               GlobalSetting.get("PBDSelector_excludeField");
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {

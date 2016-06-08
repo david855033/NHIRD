@@ -8,28 +8,81 @@ namespace NHIRD
 {
     class PBDSelector
     {
-        List<File> PBDFiles;
+        IEnumerable<File> PBDFiles;
         string outputFolder;
-        string selectedField;
-        public void setPBDFiles(List<File> PBDFiles)
-        { this.PBDFiles = PBDFiles; }
+        string[] selectedFields, excludeFields;
+        public void setPBDFiles(IEnumerable<File> PBDFiles)
+        {
+            this.PBDFiles = PBDFiles;
+        }
         public void setOutputFolder(string s)
         {
             outputFolder = s;
         }
-        public void setselectedField(string s)
+        public void setSelectedField(string s)
         {
-            selectedField = s;
+            selectedFields = s.Split(',');
+        }
+        public void setExcludeField(string s)
+        {
+            excludeFields = s.Split(',');
         }
 
         public void Do()
         {
             foreach (File file in PBDFiles)
             {
+                if (!Directory.Exists(outputFolder)) Directory.CreateDirectory(outputFolder);
                 using (var sr = new StreamReader(file.path, Encoding.Default))
+                using (var sw = new StreamWriter(outputFolder + "\\" + file.name, false, Encoding.Default))
                 {
-                    string[] titles = sr.ReadLine().Split('\t');
-                    //**********
+                    string title = sr.ReadLine();
+                    sw.WriteLine(title);
+                    string[] titles = title.Split('\t');
+
+                    List<int> selectedIndex = new List<int>();
+                    foreach (string s in selectedFields)
+                    {
+                        int i = Array.FindIndex(titles, x => x.IndexOf(s) >= 0);
+                        if (i >= 0 && s != "") selectedIndex.Add(i);
+                    }
+
+                    List<int> excludeIndex = new List<int>();
+                    foreach (string s in excludeFields)
+                    {
+                        int i = Array.FindIndex(titles, x => x.IndexOf(s) >= 0);
+                        if (i >= 0 && s != "") excludeIndex.Add(i);
+                    }
+
+                    while (!sr.EndOfStream)
+                    {
+                        string line = sr.ReadLine();
+                        string[] splitline = line.Split('\t');
+                        bool pass = true;
+                        foreach (int i in selectedIndex)
+                        {
+                            if (splitline[i] == "")
+                            {
+                                pass = false;
+                                break;
+                            }
+                        }
+                        if (pass)
+                        {
+                            foreach (int i in excludeIndex)
+                            {
+                                if (splitline[i] != "")
+                                {
+                                    pass = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (pass)
+                        {
+                            sw.WriteLine(line);
+                        }
+                    }
                 }
             }
         }
