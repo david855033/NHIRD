@@ -147,6 +147,7 @@ namespace NHIRD
                     paths.AddRange(Directory.EnumerateFiles(FolderPath, "*" + subname, SearchOption.AllDirectories).ToArray());
                 }
                 var newfiles = new ObservableCollection<File>();
+                paths = new List<string>(paths.Distinct());
                 foreach (string str_filepath in paths)
                 {
                     if (str_filepath.Split('\\').Last().IndexOf("All") >= 0) continue;
