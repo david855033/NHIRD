@@ -69,11 +69,11 @@ namespace NHIRD
                 hashGroup = "NA";
             }
 
-            Regex YearRegex = new Regex(@"\d{4}");
+            Regex YearRegex = new Regex(@"[A-Z]\d{4}");
             Match YearMatch = YearRegex.Match(name);
             try
             {
-                year = YearMatch.Groups[0].ToString();
+                year = YearMatch.Groups[0].ToString().Substring(1, 4);
                 if (year == "") year = "NA";
             }
             catch

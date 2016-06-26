@@ -21,76 +21,96 @@ namespace NHIRD
 
             //逐個檔案執行讀寫
             ReadJudgeWriteFiles();
-        }      
+        }
 
         // step 2 依序質性下面五個function
         void ReadJudgeWriteFiles()
         {
 
-            //先分析總共有多少組別
+            //先分析總共有多少組別及年份
             var distinctGroupQuery = (from q in rawDataFileList where q.selected == true select q.@group).Distinct();
-            //逐個組別進行(若是有比較的資料 如ID / SEQ，則先載入比較用的list)
+            var distinctYearQuery = (from q in rawDataFileList where q.selected == true select q.year).Distinct();
+            var distinctFileType = (from q in rawDataFileList where q.selected == true select q.FileType).Distinct();
+            //逐個組別以及年分進行(若是有比較的資料 如ID / SEQ，則先載入比較用的list)
             foreach (string currentDistinctGroup in distinctGroupQuery)
             {
-                var current_list_file = from q in rawDataFileList where q.@group == currentDistinctGroup select q;
                 if (CriteriaList.Any(x => x.key == "IDLIST") == true)//有使用"IDLIST"的條件，需要載入IDLIST
                     initializeIDCriteria(currentDistinctGroup);
-                // 逐個檔案進行
-                foreach (File currentfile in current_list_file)
+
+                foreach (string currentYear in distinctYearQuery)
                 {
-                    if (CriteriaList.Any(x => x.key == "ACTIONLIST") == true)
-                        initializeActionCriteria(currentfile);
-                    //依照年分及filetype挑出正確的Dataformat，傳入Readfile及Writefile
-                    var queryStringDataFormats =
-                         (from q in stringDataFormats
-                          where (currentfile.MKyear >= q.start_year || q.start_year == 0) &&
-                                (currentfile.MKyear <= q.end_year || q.end_year == 0) &&
-                                 q.FileType == currentfile.FileType
-                          select q).ToList();
-                    var queryNumberDataFormats =
-                      (from q in numberDataFormats
-                       where (currentfile.MKyear >= q.start_year || q.start_year == 0) &&
-                             (currentfile.MKyear <= q.end_year || q.end_year == 0) &&
-                              q.FileType == currentfile.FileType
-                       select q).ToList();
 
-                    //檢查目錄是否存在並且產生輸出檔名
-                    if (!Directory.Exists(outputDir))
-                        Directory.CreateDirectory(outputDir);
-                    string outpath = outputDir + "\\" + currentfile.name.Split('.')[0] + ".EXT";
-
-                    //產生屬於該筆檔案criteria對應的index, 並且儲存到criteriaList中
-                    initiateCriteriaIndex(currentfile, queryStringDataFormats, queryNumberDataFormats);
-
-                    //使用sr及sw依序讀入、判斷、寫入
-                    using (var sr = new StreamReader(currentfile.path, System.Text.Encoding.Default))
-                    using (var sw = new StreamWriter(outpath, false, System.Text.Encoding.Default))
+                    foreach (string currentFileType in distinctFileType)
                     {
-                        // --產生title
-                        string title = "";
-                        foreach (var q in queryStringDataFormats)
-                        {
-                            title += q.key + '\t';
-                        }
-                        foreach (var q in queryNumberDataFormats)
-                        {
-                            title += q.key + '\t';
-                        }
-                        sw.WriteLine(title.TrimEnd('\t'));
-                        // --產生內容
-                        while (!sr.EndOfStream)
-                        {
-                            DataRow dataRow = new DataRow(queryStringDataFormats.Count(), queryNumberDataFormats.Count());
+                        var current_list_file = from q in rawDataFileList
+                                                where q.@group == currentDistinctGroup
+                                                && q.year == currentYear
+                                                && q.FileType == currentFileType
+                                                select q;
 
-                            try
+                        //讀取actionlist作為條件使用的資料
+                        if (CriteriaList.Any(x => x.key == "ACTIONLIST") == true)
+                        {
+                            CriteriaList.Find(x => x.key == "ACTIONLIST").ActionCriteriaList?.Clear();
+                            initializeActionCriteria(currentFileType, currentYear, currentDistinctGroup);
+                        }
+
+                        // 逐個檔案進行
+                        foreach (File currentfile in current_list_file)
+                        {
+                            //依照年分及filetype挑出正確的Dataformat，傳入Readfile及Writefile
+                            var queryStringDataFormats =
+                                 (from q in stringDataFormats
+                                  where (currentfile.MKyear >= q.start_year || q.start_year == 0) &&
+                                        (currentfile.MKyear <= q.end_year || q.end_year == 0) &&
+                                         q.FileType == currentfile.FileType
+                                  select q).ToList();
+                            var queryNumberDataFormats =
+                              (from q in numberDataFormats
+                               where (currentfile.MKyear >= q.start_year || q.start_year == 0) &&
+                                     (currentfile.MKyear <= q.end_year || q.end_year == 0) &&
+                                      q.FileType == currentfile.FileType
+                               select q).ToList();
+
+                            //檢查目錄是否存在並且產生輸出檔名
+                            if (!Directory.Exists(outputDir))
+                                Directory.CreateDirectory(outputDir);
+                            string outpath = outputDir + "\\" + currentfile.name.Split('.')[0] + ".EXT";
+
+                            //產生屬於該筆檔案criteria對應的index, 並且儲存到criteriaList中
+                            initiateCriteriaIndex(currentfile, queryStringDataFormats, queryNumberDataFormats);
+
+                            //使用sr及sw依序讀入、判斷、寫入
+                            using (var sr = new StreamReader(currentfile.path, System.Text.Encoding.Default))
+                            using (var sw = new StreamWriter(outpath, false, System.Text.Encoding.Default))
                             {
-                                ReadRow(sr, dataRow, queryStringDataFormats, queryNumberDataFormats);
-                                JudgeRow(dataRow);
-                                WriteRow(sw, dataRow, queryStringDataFormats, queryNumberDataFormats);
-                            }
-                            catch
-                            {
-                                //* bad data error
+                                // --產生title
+                                string title = "";
+                                foreach (var q in queryStringDataFormats)
+                                {
+                                    title += q.key + '\t';
+                                }
+                                foreach (var q in queryNumberDataFormats)
+                                {
+                                    title += q.key + '\t';
+                                }
+                                sw.WriteLine(title.TrimEnd('\t'));
+                                // --產生內容
+                                while (!sr.EndOfStream)
+                                {
+                                    DataRow dataRow = new DataRow(queryStringDataFormats.Count(), queryNumberDataFormats.Count());
+
+                                    try
+                                    {
+                                        ReadRow(sr, dataRow, queryStringDataFormats, queryNumberDataFormats);
+                                        JudgeRow(dataRow);
+                                        WriteRow(sw, dataRow, queryStringDataFormats, queryNumberDataFormats);
+                                    }
+                                    catch
+                                    {
+                                        //* bad data error
+                                    }
+                                }
                             }
                         }
                     }
@@ -127,12 +147,17 @@ namespace NHIRD
             }
             CriteriaList.Find(x => x.key == "IDLIST").IDCriteriaList = NewIDCriteriaList;
         }
-        void initializeActionCriteria(File CurrentFile)
+        void initializeActionCriteria(string currentFileType, string currentYear, string currentGroup)
         {
             var NewActionCriteriaList = new DistinctList<ActionData>();
             //搜尋同組的Criteria File
+            string matchFileType = "";
+            if (currentFileType == "OO") matchFileType = "CD";
+            if (currentFileType == "DO") matchFileType = "DD";
+            if (currentFileType == "GO") matchFileType = "GD";
             var FilesOfTheGroup = from q in CriteriaList.Find(x => x.key == "ACTIONLIST").ActionCriteriaFileList
-                                  where q.@group == CurrentFile.@group && q.year == CurrentFile.year
+                                  where q.@group == currentGroup && q.year == currentYear
+                                        && q.FileType == matchFileType
                                   select q;
             //載入同組File中的ID+Birthday進入IDList，儲存在該筆criteria中
             foreach (var f in FilesOfTheGroup)
