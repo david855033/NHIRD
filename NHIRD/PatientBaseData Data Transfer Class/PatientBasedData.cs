@@ -12,6 +12,7 @@ namespace NHIRD
 
         public EventDetail[] diagnosisDetails;
         public EventDetail[] orderDetails;
+        public EventDetail[] customDetials;
         public string gender;
 
         public void setDiagnosisDetail(int GroupCount)
@@ -30,6 +31,14 @@ namespace NHIRD
                 orderDetails[i] = new EventDetail(this);
             }
         }
+        public void setCustomDetials(int GroupCount)
+        {
+            customDetials = new EventDetail[GroupCount];
+            for (int i = 0; i < GroupCount; i++)
+            {
+                customDetials[i] = new EventDetail(this);
+            }
+        }
 
         public static string toTitile()
         {
@@ -46,8 +55,14 @@ namespace NHIRD
             }
             foreach (var detail in orderDetails)
             {
-
                 result.Append(detail.toWriteLine());
+            }
+            if (customDetials != null)
+            {
+                foreach (var detail in customDetials)
+                {
+                    result.Append(detail.toWriteLine());
+                }
             }
 
             return result.ToString();
@@ -107,13 +122,14 @@ namespace NHIRD
 
         public static string toTitle(string prefix)
         {
-            return "\t" +  prefix + "-最早年紀"
-                 + "\t" +  prefix + "-門診次數"
+            return "\t" + prefix + "-最早年紀"
+                + "\t" + prefix + "-最早日期"
+                 + "\t" + prefix + "-門診次數"
                 + "\t" + prefix + "-住院次數";
         }
         public string toWriteLine()
         {
-            return "\t" + firstAge + "\t" + CDCount + "\t" + DDCount;
+            return "\t" + firstAge + "\t" + firstDate + "\t" + CDCount + "\t" + DDCount;
         }
     }
 }

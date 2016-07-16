@@ -12,6 +12,7 @@ namespace NHIRD
         readonly List<File> inputFile;
         readonly List<OrderGroup> orderGroupList;
         readonly List<DiagnosisGroup> diagnosisGroupList;
+        List<string> customGroupNames=new List<string>();
         readonly string outputFolder;
         StreamWriter swAllCombined;
 
@@ -114,6 +115,9 @@ namespace NHIRD
                             index = ~index;
                             NewPatient.setDiagnosisDetail(diagnosisGroupList.Count);
                             NewPatient.setOrderDetail(orderGroupList.Count);
+                            //--custom
+                            NewPatient.setCustomDetials(0);
+                            //--custom
                             PatientList.Insert(index, NewPatient);
                         }
                         PatientList[index].CDcount++;
@@ -126,7 +130,6 @@ namespace NHIRD
                                 PatientList[index].diagnosisDetails[i].firstDate = date;
                             }
                         }
-
                         for (int i = 0; i < orderGroupList.Count; i++)
                         {
                             if (orders[i] != "" && Convert.ToInt32(orders[i]) > 0)
@@ -135,6 +138,7 @@ namespace NHIRD
                                 PatientList[index].orderDetails[i].firstDate = date;
                             }
                         }
+                        //customGroup計算
                     }
                 }
             }
@@ -238,6 +242,8 @@ namespace NHIRD
                 title.Append(EventDetail.toTitle(g.name));
             foreach (var g in orderGroupList)
                 title.Append(EventDetail.toTitle("[order]" + g.name));
+            foreach (var g in customGroupNames)
+                title.Append(EventDetail.toTitle("[order]" + customGroupNames));
             return title.ToString();
         }
         bool checkDiagnosisGroup(IEnumerable<string> ICDs)

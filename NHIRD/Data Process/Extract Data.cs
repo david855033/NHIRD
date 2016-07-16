@@ -152,6 +152,9 @@ namespace NHIRD
             var NewActionCriteriaList = new DistinctList<ActionData>();
             //搜尋同組的Criteria File
             string matchFileType = "";
+            if (currentFileType == "CD") matchFileType = "OO";
+            if (currentFileType == "DD") matchFileType = "DO";
+            if (currentFileType == "GD") matchFileType = "GO";
             if (currentFileType == "OO") matchFileType = "CD";
             if (currentFileType == "DO") matchFileType = "DD";
             if (currentFileType == "GO") matchFileType = "GD";
